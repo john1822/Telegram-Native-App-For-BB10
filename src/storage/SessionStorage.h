@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QString>
 #include <QByteArray>
+#include <QVariantMap>
+#include <QList>
 #include <qglobal.h>
 
 namespace Telegram {
@@ -24,6 +26,9 @@ public:
     bool saveUserProfile(qint64 userId, quint64 accessHash,
                          const QString& firstName, const QString& lastName,
                          const QString& username, const QString& phone);
+
+    bool saveDialogs(const QList<QVariantMap>& dialogs);
+    QList<QVariantMap> loadDialogs();
 
     void clearSession();
 

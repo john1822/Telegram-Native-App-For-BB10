@@ -9,7 +9,8 @@ INCLUDEPATH += src \
                src/network \
                src/core \
                src/storage \
-               src/controllers
+               src/controllers \
+               src/models
 
 device {
     QMAKE_CXXFLAGS += -O2 -fstack-protector-strong -D_FORTIFY_SOURCE=2
@@ -44,7 +45,9 @@ HEADERS += \
     src/core/MTProtoSession.h \
     src/storage/SessionStorage.h \
     src/controllers/DiagnosticController.h \
-    src/controllers/AuthController.h
+    src/controllers/AuthController.h \
+    src/models/DialogItem.h \
+    src/controllers/ChatListController.h
 
 SOURCES += \
     src/main.cpp \
@@ -57,7 +60,9 @@ SOURCES += \
     src/core/MTProtoSession.cpp \
     src/storage/SessionStorage.cpp \
     src/controllers/DiagnosticController.cpp \
-    src/controllers/AuthController.cpp
+    src/controllers/AuthController.cpp \
+    src/models/DialogItem.cpp \
+    src/controllers/ChatListController.cpp
 
 OTHER_FILES += \
     bar-descriptor.xml \

@@ -22,12 +22,12 @@ static const uint qt_meta_data_Telegram__Core__MTProtoSession[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-      20,   14, // methods
+      21,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-      13,       // signalCount
+      14,       // signalCount
 
  // signals: signature, parameters, type, tag, flags
       51,   32,   31,   31, 0x05,
@@ -43,15 +43,16 @@ static const uint qt_meta_data_Telegram__Core__MTProtoSession[] = {
      518,  504,   31,   31, 0x05,
      557,   31,   31,   31, 0x05,
      607,  584,   31,   31, 0x05,
+     645,  637,   31,   31, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-     637,   31,   31,   31, 0x08,
-     660,   31,   31,   31, 0x08,
-     693,  686,   31,   31, 0x08,
-     722,  224,   31,   31, 0x08,
-     748,   31,   31,   31, 0x08,
-     762,   31,   31,   31, 0x08,
-     781,   31,   31,   31, 0x08,
+     681,   31,   31,   31, 0x08,
+     704,   31,   31,   31, 0x08,
+     737,  730,   31,   31, 0x08,
+     766,  224,   31,   31, 0x08,
+     792,   31,   31,   31, 0x08,
+     806,   31,   31,   31, 0x08,
+     825,   31,   31,   31, 0x08,
 
        0        // eod
 };
@@ -73,7 +74,8 @@ static const char qt_meta_stringdata_Telegram__Core__MTProtoSession[] = {
     "authLoginTokenReceived(QByteArray,int)\0"
     "authLoginSuccessReceived()\0"
     "errorCode,errorMessage\0"
-    "rpcErrorReceived(int,QString)\0"
+    "rpcErrorReceived(int,QString)\0dialogs\0"
+    "dialogsReceived(QList<QVariantMap>)\0"
     "onTransportConnected()\0onTransportDisconnected()\0"
     "packet\0onPacketReceived(QByteArray)\0"
     "onTransportError(QString)\0onPingTimer()\0"
@@ -99,13 +101,14 @@ void Telegram::Core::MTProtoSession::qt_static_metacall(QObject *_o, QMetaObject
         case 10: _t->authLoginTokenReceived((*reinterpret_cast< const QByteArray(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
         case 11: _t->authLoginSuccessReceived(); break;
         case 12: _t->rpcErrorReceived((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
-        case 13: _t->onTransportConnected(); break;
-        case 14: _t->onTransportDisconnected(); break;
-        case 15: _t->onPacketReceived((*reinterpret_cast< const QByteArray(*)>(_a[1]))); break;
-        case 16: _t->onTransportError((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 17: _t->onPingTimer(); break;
-        case 18: _t->onReconnectTimer(); break;
-        case 19: _t->onMigrateTimer(); break;
+        case 13: _t->dialogsReceived((*reinterpret_cast< const QList<QVariantMap>(*)>(_a[1]))); break;
+        case 14: _t->onTransportConnected(); break;
+        case 15: _t->onTransportDisconnected(); break;
+        case 16: _t->onPacketReceived((*reinterpret_cast< const QByteArray(*)>(_a[1]))); break;
+        case 17: _t->onTransportError((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 18: _t->onPingTimer(); break;
+        case 19: _t->onReconnectTimer(); break;
+        case 20: _t->onMigrateTimer(); break;
         default: ;
         }
     }
@@ -143,9 +146,9 @@ int Telegram::Core::MTProtoSession::qt_metacall(QMetaObject::Call _c, int _id, v
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 20)
+        if (_id < 21)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 20;
+        _id -= 21;
     }
     return _id;
 }
@@ -237,5 +240,12 @@ void Telegram::Core::MTProtoSession::rpcErrorReceived(int _t1, const QString & _
 {
     void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
     QMetaObject::activate(this, &staticMetaObject, 12, _a);
+}
+
+// SIGNAL 13
+void Telegram::Core::MTProtoSession::dialogsReceived(const QList<QVariantMap> & _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 13, _a);
 }
 QT_END_MOC_NAMESPACE

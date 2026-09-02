@@ -4,9 +4,11 @@
 #include "TLBuffer.h"
 #include "TLTypes.h"
 #include "Config.h"
+#include "../models/DialogItem.h"
 
 #include <QDateTime>
 #include <QDebug>
+#include <QSet>
 #include <string.h>
 
 namespace Telegram {
@@ -31,6 +33,14 @@ static const char* const OFFICIAL_RSA_PEMS[] = {
 "aHWfYmlEGepfaYR8Q0YqvvhYtMte3ITnuSJs171+GDqpdKcSwHnd6FudwGO4pcCO\n"
 "j4WcDuXc2CTHgH8gFTNhp/Y8/SpDOhvn9QIDAQAB\n"
 "-----END RSA PUBLIC KEY-----"
+};
+
+struct SessionDialogEntry {
+    qint64 peerId;
+    int peerType; // 1=user, 2=chat, 3=channel
+    int topMessage;
+    int unreadCount;
+    bool isPinned;
 };
 
 MTProtoSession::MTProtoSession(QObject* parent)
@@ -783,6 +793,28 @@ void MTProtoSession::sendExportLoginToken() {
     sendEncryptedMessage(rpcBuf.buffer(), true);
 }
 
+void MTProtoSession::sendMessagesGetDialogs(int offsetDate, int offsetId, int limit) {
+    if (m_state != STATE_ENCRYPTED_READY) {
+        emit errorOccurred("Cannot fetch dialogs: MTProto session is not encrypted");
+        return;
+    }
+
+    emit logMessage(QString("Requesting live Telegram dialogs (limit: %1, offset_id: %2)...").arg(limit).arg(offsetId));
+
+    TL::TLBuffer rpcBuf;
+    rpcBuf.writeUInt32(0xda9b0d0d); // invokeWithLayer
+    rpcBuf.writeInt32(195);        // layer 195
+    rpcBuf.writeUInt32(TL::ID_MESSAGES_GET_DIALOGS); // 0xa0f4cb4f
+    rpcBuf.writeInt32(0);          // flags = 0
+    rpcBuf.writeInt32(offsetDate); // offset_date
+    rpcBuf.writeInt32(offsetId);   // offset_id
+    rpcBuf.writeUInt32(TL::ID_INPUT_PEER_EMPTY); // offset_peer: inputPeerEmpty#7f07465a
+    rpcBuf.writeInt32(limit);      // limit
+    rpcBuf.writeInt64(0);          // hash = 0
+
+    sendEncryptedMessage(rpcBuf.buffer(), true);
+}
+
 // --------------------------------------------------------------------------
 // MTProto 2.0 Encrypted Message Transmission & Decryption
 // --------------------------------------------------------------------------
@@ -921,7 +953,10 @@ void MTProtoSession::processPlainMessage(TL::TLBuffer& plainBuf) {
         plainBuf.readInt32(errCode);
         plainBuf.readInt64(newServerSalt);
         m_serverSalt = static_cast<uint64_t>(newServerSalt);
-        emit logMessage(QString("Server salt refreshed: 0x%1.").arg(QString::number(m_serverSalt, 16)));
+        emit logMessage(QString("Server salt refreshed: 0x%1. Re-transmitting live dialogs request...").arg(QString::number(m_serverSalt, 16)));
+
+        // Automatically re-transmit getDialogs with the fresh salt
+        sendMessagesGetDialogs();
     } else if (constructor == TL::ID_BAD_MSG_NOTIFICATION) {
         int64_t badMsgId;
         int32_t badSeqNo, errCode;
@@ -971,6 +1006,8 @@ void MTProtoSession::processPlainMessage(TL::TLBuffer& plainBuf) {
         plainBuf.readInt32(nearestDc);
 
         emit nearestDcReceived(country, thisDc, nearestDc);
+    } else if (constructor == TL::ID_UPDATES || constructor == TL::ID_UPDATES_COMBINED) {
+        emit logMessage(QString("Incoming real-time MTProto updates stream (constructor: 0x%1)").arg(constructor, 8, 16, QChar('0')));
     }
 }
 
@@ -1087,6 +1124,7 @@ void MTProtoSession::handleRpcResult(qint64 reqMsgId, quint32 innerRpcConstructo
         emit logMessage(QString("=================================================="));
 
         emit authSuccessReceived(userId, static_cast<quint64>(accessHash), firstName, lastName, username, phone);
+        sendMessagesGetDialogs();
     } else if (innerRpcConstructor == TL::ID_AUTH_SIGN_UP_REQUIRED) {
         emit logMessage("[AUTH] Sign Up is required for this new phone number");
         emit authSignUpRequiredReceived();
@@ -1162,6 +1200,212 @@ void MTProtoSession::handleRpcResult(qint64 reqMsgId, quint32 innerRpcConstructo
         }
 
         emit rpcErrorReceived(errCode, errMsg);
+    } else if (innerRpcConstructor == TL::ID_MESSAGES_DIALOGS || innerRpcConstructor == TL::ID_MESSAGES_DIALOGS_SLICE) {
+        emit logMessage(QString("=================================================="));
+        emit logMessage(QString("LIVE TELEGRAM DIALOGS RECEIVED (constructor: 0x%1)").arg(innerRpcConstructor, 8, 16, QChar('0')));
+        emit logMessage(QString("=================================================="));
+
+        if (innerRpcConstructor == TL::ID_MESSAGES_DIALOGS_SLICE) {
+            int32_t totalCount;
+            plainBuf.readInt32(totalCount);
+            emit logMessage(QString("Dialogs slice count: %1").arg(totalCount));
+        }
+
+        // 1. Scan payload for Dialogs (TL::ID_DIALOG = 0xd58a08c6)
+        const QByteArray& rawData = plainBuf.buffer();
+        QList<SessionDialogEntry> dialogEntries;
+
+        for (int pos = 0; pos <= rawData.size() - 40; ++pos) {
+            uint32_t cons = *reinterpret_cast<const uint32_t*>(rawData.constData() + pos);
+            if (cons == TL::ID_DIALOG) {
+                TL::TLBuffer dBuf(rawData.mid(pos + 4, 36));
+                int32_t dFlags = 0;
+                uint32_t peerCons = 0;
+                int64_t peerId = 0;
+                int32_t topMsg = 0, readInbox = 0, readOutbox = 0, unreadCount = 0;
+
+                dBuf.readInt32(dFlags);
+                dBuf.readUInt32(peerCons);
+                dBuf.readInt64(peerId);
+                dBuf.readInt32(topMsg);
+                dBuf.readInt32(readInbox);
+                dBuf.readInt32(readOutbox);
+                dBuf.readInt32(unreadCount);
+
+                int peerType = 0;
+                if (peerCons == TL::ID_PEER_USER) {
+                    peerType = 1;
+                } else if (peerCons == TL::ID_PEER_CHAT || peerCons == 0xbad052c3) {
+                    peerType = 2;
+                } else if (peerCons == TL::ID_PEER_CHANNEL) {
+                    peerType = 3;
+                }
+
+                if (peerType > 0 && peerId != 0) {
+                    SessionDialogEntry de;
+                    de.peerId = peerId;
+                    de.peerType = peerType;
+                    de.topMessage = topMsg;
+                    de.unreadCount = (unreadCount >= 0 && unreadCount < 50000) ? unreadCount : 0;
+                    de.isPinned = (dFlags & (1 << 2)) != 0;
+                    dialogEntries.append(de);
+                }
+            }
+        }
+        emit logMessage(QString("Total valid dialogs scanned: %1").arg(dialogEntries.size()));
+
+        // 2. Scan for Users, Channels, Chats, and Messages
+        QMap<qint64, QString> entityNames;
+        QMap<qint64, quint64> entityAccessHashes;
+        QMap<qint64, QString> entityUsernames;
+        QMap<int32_t, QPair<QString, int32_t> > messagesMap;
+        QMap<qint64, QString> lastMessageByPeer;
+
+        for (int pos = 0; pos <= rawData.size() - 16; ++pos) {
+            uint32_t cons = *reinterpret_cast<const uint32_t*>(rawData.constData() + pos);
+
+            if (cons == 0x83314fca || cons == 0x31774388) { // user
+                TL::TLBuffer uBuf(rawData.mid(pos + 4));
+                int32_t uFlags = 0;
+                uBuf.readInt32(uFlags);
+                if (cons == 0x83314fca) {
+                    int32_t uFlags2 = 0;
+                    uBuf.readInt32(uFlags2);
+                }
+                int64_t uId = 0;
+                uBuf.readInt64(uId);
+                int64_t aHash = 0;
+                if (uFlags & (1 << 0)) {
+                    uBuf.readInt64(aHash);
+                }
+                QString fName, lName, uName, phone;
+                if (uFlags & (1 << 1)) uBuf.readString(fName);
+                if (uFlags & (1 << 2)) uBuf.readString(lName);
+                if (uFlags & (1 << 3)) uBuf.readString(uName);
+                if (uFlags & (1 << 4)) uBuf.readString(phone);
+
+                QString title = fName + (lName.isEmpty() ? "" : " " + lName);
+                if (title.trimmed().isEmpty()) title = uName.isEmpty() ? phone : "@" + uName;
+                if (!title.isEmpty() && uId != 0) {
+                    entityNames[uId] = title;
+                    entityAccessHashes[uId] = static_cast<quint64>(aHash);
+                    entityUsernames[uId] = uName;
+                    emit logMessage(QString("[USER] %1: '%2' (@%3)").arg(uId).arg(title).arg(uName));
+                }
+            } else if (cons == 0xfe4478bd || cons == 0x1c32b11c || cons == 0x83d3b767) { // channel
+                TL::TLBuffer cBuf(rawData.mid(pos + 4));
+                int32_t cFlags = 0;
+                cBuf.readInt32(cFlags);
+                if (cons == 0xfe4478bd) {
+                    int32_t cFlags2 = 0;
+                    cBuf.readInt32(cFlags2);
+                }
+                int64_t cId = 0;
+                cBuf.readInt64(cId);
+                int64_t aHash = 0;
+                if (cFlags & (1 << 13)) {
+                    cBuf.readInt64(aHash);
+                }
+                QString title, uName;
+                cBuf.readString(title);
+                if (cFlags & (1 << 6)) {
+                    cBuf.readString(uName);
+                }
+
+                if (!title.isEmpty() && cId != 0) {
+                    entityNames[cId] = title;
+                    entityAccessHashes[cId] = static_cast<quint64>(aHash);
+                    entityUsernames[cId] = uName;
+                    emit logMessage(QString("[CHANNEL] %1: '%2' (@%3)").arg(cId).arg(title).arg(uName));
+                }
+            } else if (cons == 0xd91cdd54 || cons == 0x41cbf256) { // chat
+                TL::TLBuffer chBuf(rawData.mid(pos + 4));
+                int32_t chFlags;
+                int64_t chId;
+                if (chBuf.readInt32(chFlags) && chBuf.readInt64(chId)) {
+                    QString title;
+                    chBuf.readString(title);
+                    if (!title.isEmpty() && chId != 0) {
+                        entityNames[chId] = title;
+                    }
+                }
+            } else if (cons == TL::ID_MESSAGE) { // 0x3ae56482
+                TL::TLBuffer mBuf(rawData.mid(pos + 4));
+                int32_t mFlags, mId;
+                if (mBuf.readInt32(mFlags) && mBuf.readInt32(mId)) {
+                    if (mFlags & (1 << 8)) {
+                        uint32_t pCons; mBuf.readUInt32(pCons);
+                        int64_t fid; mBuf.readInt64(fid);
+                    }
+                    uint32_t peerCons; mBuf.readUInt32(peerCons);
+                    int64_t pid; mBuf.readInt64(pid);
+
+                    int32_t date = 0;
+                    QString text;
+                    if (!(mFlags & (1 << 2)) && !(mFlags & (1 << 11)) && !(mFlags & (1 << 3))) {
+                        mBuf.readInt32(date);
+                        mBuf.readString(text);
+                        if (!text.isEmpty()) {
+                            messagesMap[mId] = qMakePair(text, date);
+                            if (pid != 0) {
+                                lastMessageByPeer[pid] = text;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Build list of DialogItem QVariantMaps
+        QList<QVariantMap> dialogList;
+        QSet<qint64> seenPeers;
+        for (int i = 0; i < dialogEntries.size(); ++i) {
+            const SessionDialogEntry& de = dialogEntries[i];
+            if (seenPeers.contains(de.peerId)) continue;
+            seenPeers.insert(de.peerId);
+
+            Models::DialogItem item;
+            item.peerId = de.peerId;
+            item.peerType = static_cast<Models::PeerType>(de.peerType);
+            item.unreadCount = de.unreadCount;
+            item.isPinned = de.isPinned;
+
+            item.title = entityNames.value(de.peerId);
+            if (item.title.isEmpty()) {
+                if (de.peerId == 777000) {
+                    item.title = "Telegram";
+                } else if (de.peerType == Models::PEER_CHANNEL) {
+                    item.title = QString("Channel %1").arg(de.peerId);
+                } else if (de.peerType == Models::PEER_CHAT) {
+                    item.title = QString("Group %1").arg(de.peerId);
+                } else {
+                    item.title = QString("User %1").arg(de.peerId);
+                }
+            }
+            item.username = entityUsernames.value(de.peerId);
+            item.accessHash = entityAccessHashes.value(de.peerId, 0);
+
+            if (messagesMap.contains(de.topMessage)) {
+                item.lastMessage = messagesMap.value(de.topMessage).first;
+                item.date = messagesMap.value(de.topMessage).second;
+            } else if (lastMessageByPeer.contains(de.peerId)) {
+                item.lastMessage = lastMessageByPeer.value(de.peerId);
+                item.date = QDateTime::currentDateTime().toTime_t();
+            } else {
+                item.lastMessage = "";
+                item.date = QDateTime::currentDateTime().toTime_t();
+            }
+
+            item.formattedTime = Models::DialogItem::formatTimestamp(item.date);
+            item.initials = Models::DialogItem::computeInitials(item.title);
+            item.avatarColor = Models::DialogItem::computeAvatarColor(item.peerId);
+
+            dialogList.append(item.toMap());
+            emit logMessage(QString("Dialog [%1]: %2 (Unread: %3, Pinned: %4)")
+                            .arg(i + 1).arg(item.title).arg(item.unreadCount).arg(item.isPinned ? "YES" : "NO"));
+        }
+
+        emit dialogsReceived(dialogList);
     }
 }
 

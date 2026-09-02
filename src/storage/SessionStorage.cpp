@@ -128,7 +128,45 @@ void SessionStorage::clearSession() {
         file.remove();
     }
 
+    QFile cacheFile("data/dialogs_cache.dat");
+    if (cacheFile.exists()) {
+        cacheFile.remove();
+    }
+
     emit sessionCleared();
+}
+
+bool SessionStorage::saveDialogs(const QList<QVariantMap>& dialogs) {
+    QFile file("data/dialogs_cache.dat");
+    if (!file.open(QIODevice::WriteOnly)) {
+        return false;
+    }
+
+    QDataStream out(&file);
+    out.setVersion(QDataStream::Qt_4_8);
+    out << static_cast<quint32>(0x5447444c); // "TGDL"
+    out << static_cast<quint32>(1);          // version 1
+    out << dialogs;
+    file.close();
+    return true;
+}
+
+QList<QVariantMap> SessionStorage::loadDialogs() {
+    QList<QVariantMap> result;
+    QFile file("data/dialogs_cache.dat");
+    if (!file.open(QIODevice::ReadOnly)) {
+        return result;
+    }
+
+    QDataStream in(&file);
+    in.setVersion(QDataStream::Qt_4_8);
+    quint32 magic = 0, version = 0;
+    in >> magic >> version;
+    if (magic == 0x5447444c && version == 1) {
+        in >> result;
+    }
+    file.close();
+    return result;
 }
 
 } // namespace Storage

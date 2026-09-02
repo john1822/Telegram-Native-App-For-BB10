@@ -5,6 +5,8 @@
 #include <QByteArray>
 #include <QString>
 #include <QTimer>
+#include <QVariantMap>
+#include <QList>
 #include <stdint.h>
 #include <stddef.h>
 
@@ -53,6 +55,9 @@ public:
     void sendAuthLogOut();
     void sendExportLoginToken();
 
+    // Phase 3: Dialogs & Chat Sync
+    void sendMessagesGetDialogs(int offsetDate = 0, int offsetId = 0, int limit = 30);
+
     void migrateToDc(int dcId);
     void restoreSession(int dcId, const QString& dcIp, int dcPort, quint64 authKeyId, const QByteArray& authKey, quint64 serverSalt);
 
@@ -77,6 +82,9 @@ signals:
     void authLoginTokenReceived(const QByteArray& token, int expires);
     void authLoginSuccessReceived();
     void rpcErrorReceived(int errorCode, const QString& errorMessage);
+
+    // Phase 3: Dialogs Signals
+    void dialogsReceived(const QList<QVariantMap>& dialogs);
 
 private slots:
     void onTransportConnected();

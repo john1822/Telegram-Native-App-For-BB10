@@ -4,12 +4,243 @@ TabbedPane {
     id: rootTabbedPane
     showTabsOnActionBar: true
 
+    onCreationCompleted: {
+        if (auth.authState == 5) {
+            rootTabbedPane.activeTab = chatsTab;
+        } else {
+            rootTabbedPane.activeTab = accountTab;
+        }
+    }
+
     // =========================================================================
-    // TAB 1: TELEGRAM AUTHENTICATION & PROFILE
+    // TAB 1: CHATS & DIALOGS
     // =========================================================================
     Tab {
-        title: "Telegram"
-        description: "Login & Account"
+        id: chatsTab
+        title: "Chats"
+        description: "Messages & Channels"
+
+        Page {
+            titleBar: TitleBar {
+                title: "Chats"
+                visibility: ChromeVisibility.Visible
+            }
+
+            actions: [
+                ActionItem {
+                    title: "Sync"
+                    ActionBar.placement: ActionBarPlacement.OnBar
+                    onTriggered: {
+                        chatList.refreshDialogs();
+                    }
+                }
+            ]
+
+            Container {
+                layout: DockLayout {}
+                background: Color.create("#0e1621") // 2026 Telegram Deep Dark Background
+
+                Container {
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    verticalAlignment: VerticalAlignment.Fill
+                    topPadding: 8.0
+                    leftPadding: 10.0
+                    rightPadding: 10.0
+                    bottomPadding: 8.0
+
+                    // Search Input Bar
+                    Container {
+                        horizontalAlignment: HorizontalAlignment.Fill
+                        bottomMargin: 8.0
+
+                        TextField {
+                            id: searchField
+                            hintText: "Search chats and contacts..."
+                            inputMode: TextFieldInputMode.Text
+                            onTextChanging: {
+                                chatList.searchQuery = text;
+                            }
+                        }
+                    }
+
+                    // Empty / Loading / Login prompt State
+                    Container {
+                        visible: chatList.dialogsCount == 0 || auth.authState != 5
+                        horizontalAlignment: HorizontalAlignment.Center
+                        verticalAlignment: VerticalAlignment.Center
+                        topPadding: 40.0
+                        bottomPadding: 40.0
+
+                        Label {
+                            visible: auth.authState != 5
+                            text: "Please sign in on the Account tab to view your chats."
+                            textStyle.color: Color.create("#708499")
+                            textStyle.fontSize: FontSize.Medium
+                            multiline: true
+                            horizontalAlignment: HorizontalAlignment.Center
+                        }
+
+                        Label {
+                            visible: auth.authState == 5 && chatList.isLoading
+                            text: "Syncing your Telegram chats..."
+                            textStyle.color: Color.create("#5288c1")
+                            textStyle.fontSize: FontSize.Medium
+                            horizontalAlignment: HorizontalAlignment.Center
+                        }
+
+                        Label {
+                            visible: auth.authState == 5 && !chatList.isLoading && chatList.dialogsCount == 0
+                            text: "No active chats found.\nTap Sync to refresh with Telegram."
+                            textStyle.color: Color.create("#708499")
+                            textStyle.fontSize: FontSize.Medium
+                            multiline: true
+                            horizontalAlignment: HorizontalAlignment.Center
+                        }
+
+                        Button {
+                            visible: auth.authState == 5 && !chatList.isLoading && chatList.dialogsCount == 0
+                            text: "Sync Chats"
+                            horizontalAlignment: HorizontalAlignment.Center
+                            topMargin: 16.0
+                            onClicked: {
+                                chatList.refreshDialogs();
+                            }
+                        }
+                    }
+
+                    // Native Cascades ListView for Dialogs
+                    ListView {
+                        visible: auth.authState == 5 && chatList.dialogsCount > 0
+                        horizontalAlignment: HorizontalAlignment.Fill
+                        verticalAlignment: VerticalAlignment.Fill
+                        dataModel: chatList.model
+
+                        listItemComponents: [
+                            ListItemComponent {
+                                type: "item"
+                                Container {
+                                    id: chatItemRoot
+                                    horizontalAlignment: HorizontalAlignment.Fill
+                                    background: Color.create("#17212b")
+                                    topPadding: 12.0
+                                    bottomPadding: 12.0
+                                    leftPadding: 14.0
+                                    rightPadding: 14.0
+                                    bottomMargin: 4.0
+
+                                    layout: StackLayout {
+                                        orientation: LayoutOrientation.LeftToRight
+                                    }
+
+                                    // Vibrant Circular Avatar with Initials
+                                    Container {
+                                        verticalAlignment: VerticalAlignment.Center
+                                        preferredWidth: 64.0
+                                        preferredHeight: 64.0
+                                        minWidth: 64.0
+                                        minHeight: 64.0
+                                        background: Color.create(ListItemData.avatarColor ? ListItemData.avatarColor : "#5288c1")
+                                        rightMargin: 12.0
+                                        layout: DockLayout {}
+
+                                        Label {
+                                            horizontalAlignment: HorizontalAlignment.Center
+                                            verticalAlignment: VerticalAlignment.Center
+                                            text: ListItemData.initials ? ListItemData.initials : "?"
+                                            textStyle.color: Color.White
+                                            textStyle.fontSize: FontSize.Medium
+                                            textStyle.fontWeight: FontWeight.Bold
+                                        }
+                                    }
+
+                                    // Chat Content Column
+                                    Container {
+                                        verticalAlignment: VerticalAlignment.Center
+                                        layoutProperties: StackLayoutProperties {
+                                            spaceQuota: 1.0
+                                        }
+
+                                        // Title & Time Row
+                                        Container {
+                                            horizontalAlignment: HorizontalAlignment.Fill
+                                            layout: StackLayout {
+                                                orientation: LayoutOrientation.LeftToRight
+                                            }
+
+                                            Label {
+                                                text: ListItemData.title ? ListItemData.title : ""
+                                                textStyle.color: Color.White
+                                                textStyle.fontSize: FontSize.Small
+                                                textStyle.fontWeight: FontWeight.Bold
+                                                layoutProperties: StackLayoutProperties {
+                                                    spaceQuota: 1.0
+                                                }
+                                            }
+
+                                            Label {
+                                                text: ListItemData.formattedTime ? ListItemData.formattedTime : ""
+                                                textStyle.color: Color.create("#708499")
+                                                textStyle.fontSize: FontSize.XXSmall
+                                                verticalAlignment: VerticalAlignment.Center
+                                            }
+                                        }
+
+                                        // Last Message & Badges Row
+                                        Container {
+                                            horizontalAlignment: HorizontalAlignment.Fill
+                                            topMargin: 2.0
+                                            layout: StackLayout {
+                                                orientation: LayoutOrientation.LeftToRight
+                                            }
+
+                                            Label {
+                                                text: ListItemData.lastMessage ? ListItemData.lastMessage : ""
+                                                textStyle.color: Color.create("#708499")
+                                                textStyle.fontSize: FontSize.XSmall
+                                                layoutProperties: StackLayoutProperties {
+                                                    spaceQuota: 1.0
+                                                }
+                                            }
+
+                                            // Unread Badge Pill
+                                            Container {
+                                                visible: ListItemData.unreadCount > 0
+                                                verticalAlignment: VerticalAlignment.Center
+                                                background: Color.create("#2ea043") // Telegram Green Pill
+                                                topPadding: 2.0
+                                                bottomPadding: 2.0
+                                                leftPadding: 6.0
+                                                rightPadding: 6.0
+
+                                                Label {
+                                                    text: "" + ListItemData.unreadCount
+                                                    textStyle.color: Color.White
+                                                    textStyle.fontSize: FontSize.XXSmall
+                                                    textStyle.fontWeight: FontWeight.Bold
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+
+                        onTriggered: {
+                            chatList.selectDialog(indexPath);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // =========================================================================
+    // TAB 2: TELEGRAM AUTHENTICATION & PROFILE
+    // =========================================================================
+    Tab {
+        id: accountTab
+        title: "Account"
+        description: "Login & Profile"
 
         Page {
             Container {
@@ -390,6 +621,15 @@ TabbedPane {
                                 textStyle.color: Color.create("#708499")
                                 textStyle.fontSize: FontSize.XSmall
                                 bottomMargin: 14.0
+                            }
+
+                            Button {
+                                text: "View Chats"
+                                horizontalAlignment: HorizontalAlignment.Fill
+                                bottomMargin: 10.0
+                                onClicked: {
+                                    rootTabbedPane.activeTab = chatsTab;
+                                }
                             }
 
                             Button {

@@ -76,7 +76,45 @@ enum ConstructorId {
     ID_PASSWORD_KDF_ALGO_SHA256 = 0x3a912d4a,
     ID_PASSWORD_KDF_ALGO_UNKNOWN = 0xd45ab096,
     ID_AUTH_CHECK_PASSWORD     = 0xd18b4d16,
-    ID_INPUT_CHECK_PASSWORD_SRP = 0xd27ff082
+    ID_INPUT_CHECK_PASSWORD_SRP = 0xd27ff082,
+
+    // Phase 3: Dialogs & Chat Sync
+    ID_MESSAGES_GET_DIALOGS    = 0xa0f4cb4f,
+    ID_MESSAGES_DIALOGS        = 0x15ba6c40,
+    ID_MESSAGES_DIALOGS_SLICE  = 0x71e094f3,
+    ID_MESSAGES_DIALOGS_NOT_MODIFIED = 0xf0e3e596,
+
+    ID_INPUT_PEER_EMPTY        = 0x7f3b18ea,
+    ID_INPUT_PEER_SELF         = 0x7da07ec9,
+    ID_INPUT_PEER_CHAT         = 0x35a95cb9,
+    ID_INPUT_PEER_USER         = 0xdde8a54c,
+    ID_INPUT_PEER_CHANNEL      = 0x27bcbbfc,
+
+    ID_DIALOG                  = 0xd58a08c6,
+    ID_DIALOG_FOLDER           = 0x714c7a79,
+
+    ID_PEER_USER               = 0x59511722,
+    ID_PEER_CHAT               = 0x36c6019a,
+    ID_PEER_CHANNEL            = 0xa2a5371e,
+
+    ID_USER                    = 0x31774388,
+    ID_USER_EMPTY              = 0xd3bc4b7a,
+
+    ID_CHAT                    = 0x41cbf256,
+    ID_CHAT_EMPTY              = 0x29562764,
+    ID_CHAT_FORBIDDEN          = 0x06592a1a,
+    ID_CHANNEL                 = 0x83d3b767,
+    ID_CHANNEL_FORBIDDEN       = 0x17d493d5,
+
+    ID_MESSAGE                 = 0x3ae56482,
+    ID_MESSAGE_EMPTY           = 0x90a6ca84,
+    ID_MESSAGE_SERVICE         = 0x2b085862,
+
+    // Real-Time Updates
+    ID_UPDATES                 = 0x74ae4240,
+    ID_UPDATES_COMBINED        = 0x78d4dec1,
+    ID_UPDATE_SHORT_MESSAGE    = 0x313bc7f8,
+    ID_UPDATE_SHORT_CHAT_MESSAGE = 0x4d6deea8
 };
 
 } // namespace TL

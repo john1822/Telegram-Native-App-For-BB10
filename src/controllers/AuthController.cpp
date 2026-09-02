@@ -246,6 +246,8 @@ void AuthController::onSessionStateChanged(int newState, const QString& stateTex
         if (m_authState == STATE_CONNECTING || m_authState == STATE_INITIALIZING) {
             setAuthState(STATE_PHONE_INPUT);
             setStatus("Connected to Telegram");
+        } else if (m_authState == STATE_LOGGED_IN) {
+            m_session->sendMessagesGetDialogs();
         }
     }
 }
