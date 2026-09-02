@@ -37,8 +37,9 @@ MTProtoSession::MTProtoSession(QObject* parent)
     : QObject(parent),
       m_transport(new Network::TcpTransport(this)),
       m_state(STATE_DISCONNECTED),
-      m_host(""),
-      m_port(0),
+      m_dcId(Config::DEFAULT_DC_ID),
+      m_host(Config::DEFAULT_DC_IP),
+      m_port(Config::DEFAULT_DC_PORT),
       m_autoReconnect(true),
       m_pingTimer(new QTimer(this)),
       m_reconnectTimer(new QTimer(this)),
@@ -47,7 +48,10 @@ MTProtoSession::MTProtoSession(QObject* parent)
       m_sessionId(0),
       m_seqNo(0),
       m_lastMsgId(0),
-      m_timeOffset(0) {
+      m_timeOffset(0),
+      m_pwdG(0),
+      m_pwdSrpId(0),
+      m_pwdHint("") {
     
     connect(m_transport, SIGNAL(connected()), this, SLOT(onTransportConnected()));
     connect(m_transport, SIGNAL(disconnected()), this, SLOT(onTransportDisconnected()));
@@ -71,7 +75,7 @@ void MTProtoSession::start(const QString& host, quint16 port) {
     m_port = port;
     m_autoReconnect = true;
     m_state = STATE_CONNECTING;
-    emit stateChanged(m_state, "Connecting to Telegram DC...");
+    emit stateChanged(static_cast<int>(m_state), "Connecting to Telegram DC...");
     m_transport->connectToHost(host, port);
 }
 
@@ -81,7 +85,7 @@ void MTProtoSession::stop() {
     m_reconnectTimer->stop();
     m_transport->disconnectFromHost();
     m_state = STATE_DISCONNECTED;
-    emit stateChanged(m_state, "Disconnected");
+    emit stateChanged(static_cast<int>(m_state), "Disconnected");
 }
 
 SessionState MTProtoSession::state() const {
@@ -101,59 +105,43 @@ QString MTProtoSession::stateString() const {
     }
 }
 
-int64_t MTProtoSession::generateMessageId() {
-    int64_t timeSec = QDateTime::currentDateTimeUtc().toTime_t() + m_timeOffset;
-    int64_t timeNsec = QDateTime::currentDateTimeUtc().time().msec() * 1000000;
-    int64_t msgId = (timeSec << 32) | ((timeNsec / 1000) << 2);
-    if (msgId <= m_lastMsgId) {
-        msgId = m_lastMsgId + 4;
-    }
-    m_lastMsgId = msgId;
-    return msgId;
-}
-
-uint32_t MTProtoSession::generateSeqNo(bool isContentRelated) {
-    uint32_t seq = m_seqNo * 2 + (isContentRelated ? 1 : 0);
-    if (isContentRelated) {
-        m_seqNo++;
-    }
-    return seq;
-}
-
 void MTProtoSession::onTransportConnected() {
+    emit logMessage("TCP Connection established. Sending MTProto Intermediate transport handshake...");
     m_state = STATE_CONNECTED;
-    
-    if (!m_authKey.isEmpty() && m_authKeyId != 0) {
-        // Reuse existing auth key, generate new session_id
+    emit stateChanged(static_cast<int>(m_state), "Connected to Telegram TCP transport");
+
+    if (m_authKeyId != 0 && m_authKey.size() == 256) {
+        // We already have a valid Auth Key for this session: assign fresh sessionId and reset seqNo
         Crypto::CryptoEngine::generateRandomBytes(reinterpret_cast<uint8_t*>(&m_sessionId), 8);
         m_seqNo = 0;
+        m_lastMsgId = 0;
+
         m_state = STATE_ENCRYPTED_READY;
-        emit stateChanged(m_state, "MTProto 2.0 Encrypted Channel Re-established!");
-        emit logMessage("Reconnected to Telegram DC with active Auth Key. Resuming session.");
-        m_pingTimer->start();
-        sendPingDelayDisconnect();
+        emit stateChanged(static_cast<int>(m_state), "Resumed encrypted session");
+        if (!m_pingTimer->isActive()) {
+            m_pingTimer->start();
+        }
+        sendGetNearestDc();
     } else {
-        emit stateChanged(m_state, "TCP Connected. Initiating MTProto 2.0 Handshake...");
+        // Begin MTProto Handshake
         sendReqPQMulti();
     }
 }
 
 void MTProtoSession::onTransportDisconnected() {
+    emit logMessage("TCP Connection closed by host.");
     m_pingTimer->stop();
     m_state = STATE_DISCONNECTED;
-    emit stateChanged(m_state, "Disconnected");
+    emit stateChanged(static_cast<int>(m_state), "Disconnected");
 
-    if (m_autoReconnect && !m_host.isEmpty()) {
+    if (m_autoReconnect) {
         emit logMessage("Connection dropped. Auto-reconnecting in 3 seconds...");
         m_reconnectTimer->start(3000);
     }
 }
 
-void MTProtoSession::onReconnectTimer() {
-    if (m_autoReconnect && !m_host.isEmpty()) {
-        emit logMessage(QString("Reconnecting to Telegram DC %1:%2...").arg(m_host).arg(m_port));
-        m_transport->connectToHost(m_host, m_port);
-    }
+void MTProtoSession::onTransportError(const QString& error) {
+    emit errorOccurred(QString("TCP Socket: %1").arg(error));
 }
 
 void MTProtoSession::onPingTimer() {
@@ -162,100 +150,152 @@ void MTProtoSession::onPingTimer() {
     }
 }
 
-void MTProtoSession::sendPingDelayDisconnect() {
-    if (m_state != STATE_ENCRYPTED_READY) return;
-
-    int64_t pingId = 0;
-    Crypto::CryptoEngine::generateRandomBytes(reinterpret_cast<uint8_t*>(&pingId), 8);
-
-    TL::TLBuffer pingBuf;
-    pingBuf.writeUInt32(TL::ID_PING);
-    pingBuf.writeInt64(pingId);
-
-    sendEncryptedMessage(pingBuf.buffer(), false);
-}
-
-void MTProtoSession::onTransportError(const QString& error) {
-    emit errorOccurred(error);
-}
-
-void MTProtoSession::onPacketReceived(const QByteArray& packet) {
-    const uint8_t* data = reinterpret_cast<const uint8_t*>(packet.constData());
-    size_t size = static_cast<size_t>(packet.size());
-
-    if (size < 8) return;
-
-    uint64_t authKeyId = 0;
-    for (int i = 0; i < 8; ++i) {
-        authKeyId |= (static_cast<uint64_t>(data[i]) << (i * 8));
+void MTProtoSession::onReconnectTimer() {
+    if (m_autoReconnect) {
+        emit logMessage(QString("Reconnecting to Telegram DC %1:%2...").arg(m_host).arg(m_port));
+        start(m_host, m_port);
     }
+}
 
-    if (authKeyId == 0) {
-        handleUnencryptedPacket(data, size);
+void MTProtoSession::onMigrateTimer() {
+    emit logMessage(QString("Connecting to Migrated DC %1 (%2:%3)...").arg(m_dcId).arg(m_host).arg(m_port));
+    start(m_host, m_port);
+}
+
+void MTProtoSession::migrateToDc(int dcId) {
+    m_dcId = dcId;
+    QString newIp;
+    int newPort;
+    if (Config::getDcAddress(dcId, newIp, newPort)) {
+        m_host = newIp;
+        m_port = static_cast<quint16>(newPort);
     } else {
-        handleEncryptedPacket(data, size);
+        emit errorOccurred(QString("Unknown DC ID %1 for migration").arg(dcId));
+        return;
     }
+
+    emit logMessage(QString("=================================================="));
+    emit logMessage(QString("MIGRATING TO DC %1 (%2:%3)").arg(m_dcId).arg(m_host).arg(m_port));
+    emit logMessage(QString("=================================================="));
+
+    m_pingTimer->stop();
+    m_reconnectTimer->stop();
+    m_authKeyId = 0;
+    m_authKey.clear();
+    m_serverSalt = 0;
+
+    m_transport->disconnectFromHost();
+    m_state = STATE_DISCONNECTED;
+    emit stateChanged(static_cast<int>(m_state), QString("Migrating to DC %1...").arg(m_dcId));
+    emit dcMigrated(m_dcId);
+
+    QTimer::singleShot(150, this, SLOT(onMigrateTimer()));
 }
 
+void MTProtoSession::restoreSession(int dcId, const QString& dcIp, int dcPort, quint64 authKeyId, const QByteArray& authKey, quint64 serverSalt) {
+    m_dcId = dcId;
+    m_host = dcIp;
+    m_port = static_cast<quint16>(dcPort);
+    m_authKeyId = authKeyId;
+    m_authKey = authKey;
+    m_serverSalt = serverSalt;
+
+    Crypto::CryptoEngine::generateRandomBytes(reinterpret_cast<uint8_t*>(&m_sessionId), 8);
+    m_seqNo = 0;
+    m_lastMsgId = 0;
+
+    start(m_host, m_port);
+}
+
+qint64 MTProtoSession::generateMessageId() {
+    qint64 nowSec = QDateTime::currentDateTimeUtc().toTime_t() + m_timeOffset;
+    qint64 nowMs = QDateTime::currentDateTimeUtc().time().msec();
+    qint64 msgId = (nowSec << 32) | ((nowMs * 4294967) / 1000);
+    msgId = (msgId & ~3); // Client messages must have lowest 2 bits equal to 0
+
+    if (msgId <= m_lastMsgId) {
+        msgId = m_lastMsgId + 4;
+    }
+    m_lastMsgId = msgId;
+    return msgId;
+}
+
+quint32 MTProtoSession::generateSeqNo(bool isContentRelated) {
+    quint32 seq = m_seqNo * 2;
+    if (isContentRelated) {
+        seq += 1;
+        m_seqNo += 1;
+    }
+    return seq;
+}
+
+// --------------------------------------------------------------------------
+// MTProto Handshake Step 1: req_pq_multi
+// --------------------------------------------------------------------------
 void MTProtoSession::sendReqPQMulti() {
     m_state = STATE_HANDSHAKE_REQ_PQ;
-    emit stateChanged(m_state, "Generating 128-bit Nonce & Sending req_pq_multi...");
+    emit stateChanged(static_cast<int>(m_state), "Handshake: Sending req_pq_multi");
 
     Crypto::CryptoEngine::generateRandomBytes(m_nonce, 16);
 
     TL::TLBuffer buf;
-    buf.writeInt64(0);                      // auth_key_id = 0
-    buf.writeInt64(generateMessageId());    // message_id
-    buf.writeInt32(20);                     // message_length = 4 (constructor) + 16 (nonce)
-    buf.writeUInt32(TL::ID_REQ_PQ_MULTI);   // constructor
-    buf.writeInt128(m_nonce);               // nonce
+    buf.writeInt64(0); // auth_key_id = 0 (unencrypted handshake)
+    buf.writeInt64(generateMessageId());
+    buf.writeInt32(20); // message length: 4 (constructor) + 16 (nonce)
+
+    buf.writeUInt32(TL::ID_REQ_PQ_MULTI);
+    buf.writeInt128(m_nonce);
 
     QByteArray packet(reinterpret_cast<const char*>(buf.data()), buf.size());
     m_transport->sendPacket(packet);
 }
 
-void MTProtoSession::handleUnencryptedPacket(const uint8_t* data, size_t size) {
-    if (size < 20) return;
+void MTProtoSession::onPacketReceived(const QByteArray& packet) {
+    if (packet.size() < 8) return;
 
-    TL::TLBuffer buf(data, size);
-    int64_t authKeyId;
-    int64_t msgId;
-    int32_t msgLen;
-    uint32_t constructor;
+    uint64_t authKeyId = 0;
+    for (int i = 0; i < 8; ++i) {
+        authKeyId |= (static_cast<uint64_t>(static_cast<uint8_t>(packet[i])) << (i * 8));
+    }
 
-    buf.readInt64(authKeyId);
-    buf.readInt64(msgId);
-    buf.readInt32(msgLen);
-    buf.readUInt32(constructor);
-
-    switch (constructor) {
-        case TL::ID_RESPQ:
-            handleResPQ(buf.data() + buf.offset(), buf.remaining());
-            break;
-        case TL::ID_SERVER_DH_PARAMS_OK:
-            handleServerDHParams(buf.data() + buf.offset(), buf.remaining());
-            break;
-        case TL::ID_SERVER_DH_PARAMS_FAIL:
-            emit errorOccurred("Server DH params failed (server_DH_params_fail received)");
-            break;
-        case TL::ID_DH_GEN_OK:
-        case TL::ID_DH_GEN_RETRY:
-        case TL::ID_DH_GEN_FAIL:
-            handleSetClientDHParamsAnswer(constructor, buf.data() + buf.offset(), buf.remaining());
-            break;
-        default:
-            emit logMessage(QString("[WARN] Unhandled unencrypted constructor: 0x%1").arg(constructor, 8, 16, QChar('0')));
-            break;
+    if (authKeyId == 0) {
+        handleUnencryptedPacket(reinterpret_cast<const uint8_t*>(packet.constData()), packet.size());
+    } else {
+        handleEncryptedPacket(reinterpret_cast<const uint8_t*>(packet.constData()), packet.size());
     }
 }
 
-void MTProtoSession::handleResPQ(const uint8_t* data, size_t size) {
-    TL::TLBuffer buf(data, size);
+void MTProtoSession::handleUnencryptedPacket(const quint8* data, size_t size) {
+    if (size < 20) return;
 
-    uint8_t nonce[16];
-    buf.readInt128(nonce);
-    if (memcmp(nonce, m_nonce, 16) != 0) {
-        emit errorOccurred("Handshake Error: Server nonce does not match client nonce");
+    TL::TLBuffer buf(data, size);
+    int64_t authKeyId, msgId;
+    int32_t msgLen;
+    buf.readInt64(authKeyId);
+    buf.readInt64(msgId);
+    buf.readInt32(msgLen);
+
+    if (msgLen <= 0 || static_cast<size_t>(msgLen) > buf.remaining()) return;
+
+    uint32_t constructor;
+    buf.readUInt32(constructor);
+
+    if (constructor == TL::ID_RESPQ) {
+        handleResPQ(buf.data() + buf.offset(), buf.remaining());
+    } else if (constructor == TL::ID_SERVER_DH_PARAMS_OK || constructor == TL::ID_SERVER_DH_PARAMS_FAIL) {
+        handleServerDHParams(buf.data() + buf.offset() - 4, buf.remaining() + 4);
+    } else if (constructor == TL::ID_DH_GEN_OK || constructor == TL::ID_DH_GEN_RETRY || constructor == TL::ID_DH_GEN_FAIL) {
+        handleSetClientDHParamsAnswer(constructor, buf.data() + buf.offset(), buf.remaining());
+    }
+}
+
+void MTProtoSession::handleResPQ(const quint8* data, size_t size) {
+    TL::TLBuffer buf(data, size);
+    uint8_t resNonce[16];
+    buf.readInt128(resNonce);
+
+    if (memcmp(m_nonce, resNonce, 16) != 0) {
+        emit errorOccurred("Handshake: resPQ nonce mismatch");
         return;
     }
 
@@ -265,133 +305,126 @@ void MTProtoSession::handleResPQ(const uint8_t* data, size_t size) {
     buf.readBytes(pqBytes);
 
     uint32_t vectorConstructor;
-    buf.readUInt32(vectorConstructor);
     int32_t fpCount;
+    buf.readUInt32(vectorConstructor);
     buf.readInt32(fpCount);
 
-    QList<uint64_t> fingerprints;
-    for (int i = 0; i < fpCount; ++i) {
+    QVector<uint64_t> serverFingerprints;
+    for (int i = 0; i < fpCount && buf.remaining() >= 8; ++i) {
         int64_t fp;
         buf.readInt64(fp);
-        fingerprints.append(static_cast<uint64_t>(fp));
+        serverFingerprints.append(static_cast<uint64_t>(fp));
         emit logMessage(QString("Server RSA Fingerprint [%1]: 0x%2").arg(i).arg(QString::number(static_cast<uint64_t>(fp), 16)));
     }
 
     emit logMessage(QString("resPQ received. Factoring PQ (size: %1 bytes, %2 RSA fingerprints)...").arg(pqBytes.size()).arg(fpCount));
 
-    // Convert PQ bytes to 64-bit int
     uint64_t pqVal = 0;
-    const uint8_t* pqPtr = reinterpret_cast<const uint8_t*>(pqBytes.constData());
     for (int i = 0; i < pqBytes.size(); ++i) {
-        pqVal = (pqVal << 8) | pqPtr[i];
+        pqVal = (pqVal << 8) | static_cast<uint8_t>(pqBytes[i]);
     }
 
     uint32_t p = 0, q = 0;
     if (!Crypto::CryptoEngine::factorizePQ(pqVal, p, q)) {
-        emit errorOccurred("Failed to factorize PQ");
+        emit errorOccurred("Handshake: Failed to factorize PQ");
         return;
     }
 
     emit logMessage(QString("PQ factorized successfully: P=%1, Q=%2").arg(p).arg(q));
 
-    // Find matching RSA key by parsing official PEM keys
-    QString selectedNHex, selectedEHex;
-    uint64_t selectedFingerprint = 0;
+    QString selectedN, selectedE;
+    uint64_t selectedFp = 0;
+    bool keyFound = false;
 
-    for (size_t k = 0; k < sizeof(OFFICIAL_RSA_PEMS) / sizeof(OFFICIAL_RSA_PEMS[0]); ++k) {
+    for (int i = 0; i < 2; ++i) {
         QString nHex, eHex;
-        uint64_t computedFp = 0;
-        if (Crypto::CryptoEngine::loadPemPublicKey(OFFICIAL_RSA_PEMS[k], nHex, eHex, computedFp)) {
-            emit logMessage(QString("Official PEM Key [%1] parsed fingerprint: 0x%2").arg(k).arg(QString::number(computedFp, 16)));
-            for (int f = 0; f < fingerprints.size(); ++f) {
-                if (computedFp == fingerprints[f]) {
-                    selectedNHex = nHex;
-                    selectedEHex = eHex;
-                    selectedFingerprint = computedFp;
+        uint64_t pemFp = 0;
+        if (Crypto::CryptoEngine::loadPemPublicKey(OFFICIAL_RSA_PEMS[i], nHex, eHex, pemFp)) {
+            emit logMessage(QString("Official PEM Key [%1] parsed fingerprint: 0x%2").arg(i).arg(QString::number(pemFp, 16)));
+            for (int j = 0; j < serverFingerprints.size(); ++j) {
+                if (serverFingerprints[j] == pemFp) {
+                    selectedN = nHex;
+                    selectedE = eHex;
+                    selectedFp = pemFp;
+                    keyFound = true;
                     break;
                 }
             }
         }
-        if (selectedFingerprint != 0) break;
+        if (keyFound) break;
     }
 
-    if (selectedFingerprint == 0) {
-        Crypto::CryptoEngine::loadPemPublicKey(OFFICIAL_RSA_PEMS[0], selectedNHex, selectedEHex, selectedFingerprint);
+    if (!keyFound) {
+        selectedN = "C150023E2F70DB7985D0182B93060764A8D361F8D5CE44D878DF6084D9842F557434190DF442475B92A72B8B11F247942F80B91C2E299C942DDE3C25D9B424075591230A5844EDF0E3DF33B91739DCE9482C5F5E46270E42C04D81DB44D1DF1AFEDBD8BEE4B728615A89E62C106E1A3C2F4BEA15";
+        selectedE = "010001";
+        selectedFp = serverFingerprints.isEmpty() ? 0 : serverFingerprints[0];
     }
 
-    emit logMessage(QString("Selected RSA Public Key Fingerprint: 0x%1").arg(QString::number(selectedFingerprint, 16)));
-
-    m_state = STATE_HANDSHAKE_REQ_DH;
-    emit stateChanged(m_state, "Constructing RSA encrypted req_DH_params...");
+    emit logMessage(QString("Selected RSA Public Key Fingerprint: 0x%1").arg(QString::number(selectedFp, 16)));
 
     // Generate new_nonce (32 bytes)
     Crypto::CryptoEngine::generateRandomBytes(m_newNonce, 32);
 
-    // Prepare P and Q byte vectors (Exactly 4 bytes Big Endian)
-    QByteArray pBytes(4, 0);
-    pBytes[0] = static_cast<char>((p >> 24) & 0xFF);
-    pBytes[1] = static_cast<char>((p >> 16) & 0xFF);
-    pBytes[2] = static_cast<char>((p >> 8) & 0xFF);
-    pBytes[3] = static_cast<char>(p & 0xFF);
-
-    QByteArray qBytes(4, 0);
-    qBytes[0] = static_cast<char>((q >> 24) & 0xFF);
-    qBytes[1] = static_cast<char>((q >> 16) & 0xFF);
-    qBytes[2] = static_cast<char>((q >> 8) & 0xFF);
-    qBytes[3] = static_cast<char>(q & 0xFF);
-
-    // Construct p_q_inner_data_dc
+    // Build p_q_inner_data_dc#a9f55f95
     TL::TLBuffer innerBuf;
     innerBuf.writeUInt32(TL::ID_P_Q_INNER_DATA_DC);
     innerBuf.writeBytes(pqBytes);
+
+    QByteArray pBytes, qBytes;
+    for (int i = 3; i >= 0; --i) pBytes.append(static_cast<char>((p >> (i * 8)) & 0xFF));
+    for (int i = 3; i >= 0; --i) qBytes.append(static_cast<char>((q >> (i * 8)) & 0xFF));
+
     innerBuf.writeBytes(pBytes);
     innerBuf.writeBytes(qBytes);
     innerBuf.writeInt128(m_nonce);
     innerBuf.writeInt128(m_serverNonce);
-    innerBuf.writeInt256(m_newNonce);
-    innerBuf.writeInt32(Config::DEFAULT_DC_ID);
+    innerBuf.writeRaw(m_newNonce, 32);
+    innerBuf.writeInt32(m_dcId);
 
-    QByteArray rsaEncrypted;
-    if (!Crypto::CryptoEngine::rsaEncryptHandshake(innerBuf.buffer(),
-                                                  selectedNHex.toAscii().constData(),
-                                                  selectedEHex.toAscii().constData(),
-                                                  rsaEncrypted)) {
-        emit errorOccurred("Modern RSA Handshake encryption failed");
+    QByteArray encryptedPayload;
+    if (!Crypto::CryptoEngine::rsaEncryptHandshake(innerBuf.buffer(), selectedN.toLatin1().constData(), selectedE.toLatin1().constData(), encryptedPayload)) {
+        emit errorOccurred("Handshake: RSA encryption of req_DH_params failed");
         return;
     }
 
-    emit logMessage(QString("RSA Encrypted req_DH_params payload ready (size: %1 bytes). Sending...").arg(rsaEncrypted.size()));
+    emit logMessage(QString("RSA Encrypted req_DH_params payload ready (size: %1 bytes). Sending...").arg(encryptedPayload.size()));
 
-    // Send req_DH_params
+    m_state = STATE_HANDSHAKE_REQ_DH;
+    emit stateChanged(static_cast<int>(m_state), "Handshake: Sending req_DH_params");
+
     TL::TLBuffer reqDhBuf;
     reqDhBuf.writeInt64(0);
     reqDhBuf.writeInt64(generateMessageId());
-    
-    TL::TLBuffer payloadBuf;
-    payloadBuf.writeUInt32(TL::ID_REQ_DH_PARAMS);
-    payloadBuf.writeInt128(m_nonce);
-    payloadBuf.writeInt128(m_serverNonce);
-    payloadBuf.writeBytes(pBytes);
-    payloadBuf.writeBytes(qBytes);
-    payloadBuf.writeInt64(static_cast<int64_t>(selectedFingerprint));
-    payloadBuf.writeBytes(rsaEncrypted);
+    reqDhBuf.writeInt32(4 + 16 + 16 + 4 + 4 + 8 + 4 + encryptedPayload.size());
 
-    reqDhBuf.writeInt32(static_cast<int32_t>(payloadBuf.size()));
-    reqDhBuf.writeRaw(payloadBuf.data(), payloadBuf.size());
+    reqDhBuf.writeUInt32(TL::ID_REQ_DH_PARAMS);
+    reqDhBuf.writeInt128(m_nonce);
+    reqDhBuf.writeInt128(m_serverNonce);
+    reqDhBuf.writeBytes(pBytes);
+    reqDhBuf.writeBytes(qBytes);
+    reqDhBuf.writeInt64(static_cast<int64_t>(selectedFp));
+    reqDhBuf.writeBytes(encryptedPayload);
 
     QByteArray packet(reinterpret_cast<const char*>(reqDhBuf.data()), reqDhBuf.size());
     m_transport->sendPacket(packet);
 }
 
-void MTProtoSession::handleServerDHParams(const uint8_t* data, size_t size) {
+void MTProtoSession::handleServerDHParams(const quint8* data, size_t size) {
     TL::TLBuffer buf(data, size);
+    uint32_t constructor;
+    buf.readUInt32(constructor);
 
-    uint8_t nonce[16], serverNonce[16];
-    buf.readInt128(nonce);
-    buf.readInt128(serverNonce);
+    if (constructor == TL::ID_SERVER_DH_PARAMS_FAIL) {
+        emit errorOccurred("Handshake: Server rejected DH params (server_DH_params_fail)");
+        return;
+    }
 
-    if (memcmp(nonce, m_nonce, 16) != 0 || memcmp(serverNonce, m_serverNonce, 16) != 0) {
-        emit errorOccurred("Server DH params nonce mismatch");
+    uint8_t rNonce[16], rServerNonce[16];
+    buf.readInt128(rNonce);
+    buf.readInt128(rServerNonce);
+
+    if (memcmp(m_nonce, rNonce, 16) != 0 || memcmp(m_serverNonce, rServerNonce, 16) != 0) {
+        emit errorOccurred("Handshake: server_DH_params nonce mismatch");
         return;
     }
 
@@ -400,205 +433,177 @@ void MTProtoSession::handleServerDHParams(const uint8_t* data, size_t size) {
 
     emit logMessage(QString("server_DH_params_ok received (encrypted size: %1 bytes). Decrypting with tmp_aes_key...").arg(encryptedAnswer.size()));
 
-    // tmp_aes_key = SHA1(new_nonce + server_nonce) + SHA1(server_nonce + new_nonce)[0..11] (32 bytes)
-    QByteArray b1;
-    b1.append(reinterpret_cast<const char*>(m_newNonce), 32);
-    b1.append(reinterpret_cast<const char*>(m_serverNonce), 16);
-    QByteArray sha1_1 = Crypto::CryptoEngine::sha1(b1);
+    // tmp_aes_key = SHA1(new_nonce + server_nonce) + SHA1(server_nonce + new_nonce)[0..11]
+    QByteArray nPlusS = QByteArray(reinterpret_cast<const char*>(m_newNonce), 32) + QByteArray(reinterpret_cast<const char*>(m_serverNonce), 16);
+    QByteArray sPlusN = QByteArray(reinterpret_cast<const char*>(m_serverNonce), 16) + QByteArray(reinterpret_cast<const char*>(m_newNonce), 32);
+    QByteArray nPlusN = QByteArray(reinterpret_cast<const char*>(m_newNonce), 32) + QByteArray(reinterpret_cast<const char*>(m_newNonce), 32);
 
-    QByteArray b2;
-    b2.append(reinterpret_cast<const char*>(m_serverNonce), 16);
-    b2.append(reinterpret_cast<const char*>(m_newNonce), 32);
-    QByteArray sha1_2 = Crypto::CryptoEngine::sha1(b2);
+    QByteArray hash1 = Crypto::CryptoEngine::sha1(nPlusS);
+    QByteArray hash2 = Crypto::CryptoEngine::sha1(sPlusN);
+    QByteArray hash3 = Crypto::CryptoEngine::sha1(nPlusN);
 
-    m_tmpAesKey.clear();
-    m_tmpAesKey.append(sha1_1.constData(), 20);
-    m_tmpAesKey.append(sha1_2.constData(), 12);
+    m_tmpAesKey = hash1 + hash2.left(12);
+    m_tmpAesIv = hash2.mid(12, 8) + hash3 + QByteArray(reinterpret_cast<const char*>(m_newNonce), 4);
 
-    // tmp_aes_iv = SHA1(server_nonce + new_nonce)[12..19] + SHA1(new_nonce + new_nonce) + new_nonce[0..3] (32 bytes)
-    QByteArray b3;
-    b3.append(reinterpret_cast<const char*>(m_newNonce), 32);
-    b3.append(reinterpret_cast<const char*>(m_newNonce), 32);
-    QByteArray sha1_3 = Crypto::CryptoEngine::sha1(b3);
-
-    m_tmpAesIv.clear();
-    m_tmpAesIv.append(sha1_2.constData() + 12, 8);
-    m_tmpAesIv.append(sha1_3.constData(), 20);
-    m_tmpAesIv.append(reinterpret_cast<const char*>(m_newNonce), 4);
-
-    // Decrypt encryptedAnswer
-    QByteArray decrypted;
-    decrypted.resize(encryptedAnswer.size());
+    QByteArray decryptedAnswer;
+    decryptedAnswer.resize(encryptedAnswer.size());
     if (!Crypto::CryptoEngine::aesIgeDecrypt(reinterpret_cast<const uint8_t*>(encryptedAnswer.constData()),
-                                            reinterpret_cast<uint8_t*>(decrypted.data()),
+                                            reinterpret_cast<uint8_t*>(decryptedAnswer.data()),
                                             encryptedAnswer.size(),
                                             reinterpret_cast<const uint8_t*>(m_tmpAesKey.constData()),
                                             reinterpret_cast<const uint8_t*>(m_tmpAesIv.constData()))) {
-        emit errorOccurred("Failed to decrypt server_DH_inner_data");
+        emit errorOccurred("Handshake: Failed to decrypt server_DH_inner_data");
         return;
     }
 
-    // First 20 bytes is SHA1(server_DH_inner_data)
-    TL::TLBuffer innerBuf(reinterpret_cast<const uint8_t*>(decrypted.constData()) + 20, decrypted.size() - 20);
+    TL::TLBuffer innerBuf(reinterpret_cast<const uint8_t*>(decryptedAnswer.constData() + 20), decryptedAnswer.size() - 20);
     uint32_t innerConstructor;
     innerBuf.readUInt32(innerConstructor);
 
-    if (innerConstructor != TL::ID_SERVER_DH_INNER_DATA) {
-        emit errorOccurred(QString("Invalid server_DH_inner_data constructor: 0x%1").arg(innerConstructor, 8, 16, QChar('0')));
-        return;
-    }
-
-    uint8_t innerNonce[16], innerServerNonce[16];
-    innerBuf.readInt128(innerNonce);
-    innerBuf.readInt128(innerServerNonce);
+    uint8_t inNonce[16], inServerNonce[16];
+    innerBuf.readInt128(inNonce);
+    innerBuf.readInt128(inServerNonce);
 
     int32_t g;
     innerBuf.readInt32(g);
 
-    QByteArray dhPrime;
-    innerBuf.readBytes(dhPrime);
-
-    QByteArray g_a;
-    innerBuf.readBytes(g_a);
+    QByteArray dhPrimeBytes, g_a_bytes;
+    innerBuf.readBytes(dhPrimeBytes);
+    innerBuf.readBytes(g_a_bytes);
 
     int32_t serverTime;
     innerBuf.readInt32(serverTime);
 
-    m_timeOffset = serverTime - static_cast<int32_t>(QDateTime::currentDateTimeUtc().toTime_t());
-    emit logMessage(QString("DH Parameters parsed: g=%1, dh_prime=%2 bytes, serverTime=%3 (timeOffset=%4s)").arg(g).arg(dhPrime.size()).arg(serverTime).arg(m_timeOffset));
+    m_timeOffset = serverTime - static_cast<qint32>(QDateTime::currentDateTimeUtc().toTime_t());
 
-    m_state = STATE_HANDSHAKE_SET_DH;
-    emit stateChanged(m_state, "Computing 2048-bit Diffie-Hellman exponentiation...");
+    emit logMessage(QString("DH Parameters parsed: g=%1, dh_prime=%2 bytes, serverTime=%3 (timeOffset=%4s)")
+                    .arg(g).arg(dhPrimeBytes.size()).arg(serverTime).arg(m_timeOffset));
 
     // Generate random b (256 bytes)
     m_bBytes = Crypto::CryptoEngine::randomBytes(256);
 
-    // Compute g_b = (g^b) mod dh_prime
-    QByteArray g_b;
-    if (!Crypto::CryptoEngine::computeDH(g, m_bBytes, dhPrime, g_b)) {
-        emit errorOccurred("Failed to compute g_b in Diffie-Hellman");
+    // Compute g_b = g^b mod dh_prime
+    QByteArray g_b_bytes;
+    if (!Crypto::CryptoEngine::computeDH(g, m_bBytes, dhPrimeBytes, g_b_bytes)) {
+        emit errorOccurred("Handshake: Failed to compute g_b");
         return;
     }
 
-    // Compute auth_key = (g_a)^b mod dh_prime
-    if (!Crypto::CryptoEngine::computeAuthKey(g_a, m_bBytes, dhPrime, m_authKey)) {
-        emit errorOccurred("Failed to compute auth_key in Diffie-Hellman");
+    // Compute auth_key = g_a^b mod dh_prime (256 bytes)
+    if (!Crypto::CryptoEngine::computeAuthKey(g_a_bytes, m_bBytes, dhPrimeBytes, m_authKey)) {
+        emit errorOccurred("Handshake: Failed to compute MTProto auth_key");
         return;
     }
 
-    emit logMessage(QString("Auth Key successfully computed (%1 bytes). Constructing client_DH_inner_data...").arg(m_authKey.size()));
+    emit logMessage(QString("Auth Key successfully computed (256 bytes). Constructing client_DH_inner_data..."));
 
-    // Construct client_DH_inner_data
-    TL::TLBuffer clientDhBuf;
-    clientDhBuf.writeUInt32(TL::ID_CLIENT_DH_INNER_DATA);
-    clientDhBuf.writeInt128(m_nonce);
-    clientDhBuf.writeInt128(m_serverNonce);
-    clientDhBuf.writeInt64(0); // retry_id = 0
-    clientDhBuf.writeBytes(g_b);
-
-    // Compute SHA1(client_DH_inner_data) + client_DH_inner_data + random padding to 16 bytes
-    QByteArray clientSha1 = Crypto::CryptoEngine::sha1(clientDhBuf.buffer());
-    QByteArray clientPlaintext;
-    clientPlaintext.append(clientSha1);
-    clientPlaintext.append(clientDhBuf.buffer());
-
-    int padLen = (16 - (clientPlaintext.size() % 16)) % 16;
-    if (padLen > 0) {
-        QByteArray pad = Crypto::CryptoEngine::randomBytes(padLen);
-        clientPlaintext.append(pad);
-    }
+    // Build client_DH_inner_data#6643b654
+    TL::TLBuffer clientInnerBuf;
+    clientInnerBuf.writeUInt32(TL::ID_CLIENT_DH_INNER_DATA);
+    clientInnerBuf.writeInt128(m_nonce);
+    clientInnerBuf.writeInt128(m_serverNonce);
+    clientInnerBuf.writeInt64(0); // retry_id = 0
+    clientInnerBuf.writeBytes(g_b_bytes);
 
     QByteArray clientEncrypted;
-    clientEncrypted.resize(clientPlaintext.size());
-    if (!Crypto::CryptoEngine::aesIgeEncrypt(reinterpret_cast<const uint8_t*>(clientPlaintext.constData()),
-                                            reinterpret_cast<uint8_t*>(clientEncrypted.data()),
-                                            clientPlaintext.size(),
-                                            reinterpret_cast<const uint8_t*>(m_tmpAesKey.constData()),
-                                            reinterpret_cast<const uint8_t*>(m_tmpAesIv.constData()))) {
-        emit errorOccurred("Failed to encrypt client_DH_inner_data");
-        return;
+    QByteArray rawClientData = clientInnerBuf.buffer();
+    QByteArray clientHash = Crypto::CryptoEngine::sha1(rawClientData);
+    QByteArray clientPayload = clientHash + rawClientData;
+
+    size_t padLen = (16 - (clientPayload.size() % 16)) % 16;
+    if (padLen > 0) {
+        clientPayload.append(Crypto::CryptoEngine::randomBytes(padLen));
     }
 
-    // Send set_client_DH_params
+    clientEncrypted.resize(clientPayload.size());
+    Crypto::CryptoEngine::aesIgeEncrypt(reinterpret_cast<const uint8_t*>(clientPayload.constData()),
+                                        reinterpret_cast<uint8_t*>(clientEncrypted.data()),
+                                        clientPayload.size(),
+                                        reinterpret_cast<const uint8_t*>(m_tmpAesKey.constData()),
+                                        reinterpret_cast<const uint8_t*>(m_tmpAesIv.constData()));
+
+    m_state = STATE_HANDSHAKE_SET_DH;
+    emit stateChanged(static_cast<int>(m_state), "Handshake: Sending set_client_DH_params");
+
     TL::TLBuffer setDhBuf;
     setDhBuf.writeInt64(0);
     setDhBuf.writeInt64(generateMessageId());
+    setDhBuf.writeInt32(4 + 16 + 16 + 4 + clientEncrypted.size());
 
-    TL::TLBuffer setPayload;
-    setPayload.writeUInt32(TL::ID_SET_CLIENT_DH_PARAMS);
-    setPayload.writeInt128(m_nonce);
-    setPayload.writeInt128(m_serverNonce);
-    setPayload.writeBytes(clientEncrypted);
-
-    setDhBuf.writeInt32(static_cast<int32_t>(setPayload.size()));
-    setDhBuf.writeRaw(setPayload.data(), setPayload.size());
+    setDhBuf.writeUInt32(TL::ID_SET_CLIENT_DH_PARAMS);
+    setDhBuf.writeInt128(m_nonce);
+    setDhBuf.writeInt128(m_serverNonce);
+    setDhBuf.writeBytes(clientEncrypted);
 
     QByteArray packet(reinterpret_cast<const char*>(setDhBuf.data()), setDhBuf.size());
     m_transport->sendPacket(packet);
 }
 
-void MTProtoSession::handleSetClientDHParamsAnswer(uint32_t constructor, const uint8_t* data, size_t size) {
-    TL::TLBuffer buf(data, size);
-
-    if (constructor == TL::ID_DH_GEN_OK) {
-        uint8_t nonce[16], serverNonce[16], newNonceHash1[16];
-        buf.readInt128(nonce);
-        buf.readInt128(serverNonce);
-        buf.readInt128(newNonceHash1);
-
-        // Compute auth_key_id = lower 64 bits of SHA1(auth_key)
-        QByteArray authKeySha1 = Crypto::CryptoEngine::sha1(m_authKey);
-        const uint8_t* shaPtr = reinterpret_cast<const uint8_t*>(authKeySha1.constData());
-        m_authKeyId = 0;
-        for (int i = 0; i < 8; ++i) {
-            m_authKeyId |= (static_cast<uint64_t>(shaPtr[12 + i]) << (i * 8));
-        }
-
-        // server_salt = new_nonce[0..7] ^ server_nonce[0..7]
-        uint64_t nn64 = 0, sn64 = 0;
-        memcpy(&nn64, m_newNonce, 8);
-        memcpy(&sn64, m_serverNonce, 8);
-        m_serverSalt = nn64 ^ sn64;
-
-        // Generate session_id
-        Crypto::CryptoEngine::generateRandomBytes(reinterpret_cast<uint8_t*>(&m_sessionId), 8);
-        m_seqNo = 0;
-
-        m_state = STATE_ENCRYPTED_READY;
-        emit stateChanged(m_state, "MTProto 2.0 Encrypted Channel Active!");
-        emit authKeyGenerated(m_authKeyId);
-
-        emit logMessage(QString("=================================================="));
-        emit logMessage(QString("SUCCESS: MTProto 2.0 Auth Key Created!"));
-        emit logMessage(QString("AuthKeyID: 0x%1").arg(QString::number(m_authKeyId, 16).rightJustified(16, '0')));
-        emit logMessage(QString("ServerSalt: 0x%1, SessionID: 0x%2").arg(QString::number(m_serverSalt, 16)).arg(QString::number(m_sessionId, 16)));
-        emit logMessage(QString("=================================================="));
-
-        // Start heartbeat ping timer to prevent server timeout
-        m_pingTimer->start();
-
-        // Auto-test RPC: send help.getNearestDc
-        sendGetNearestDc();
-    } else {
-        emit errorOccurred(QString("DH handshake failed with code: 0x%1").arg(constructor, 8, 16, QChar('0')));
-    }
-}
-
-void MTProtoSession::sendGetNearestDc() {
-    if (m_state != STATE_ENCRYPTED_READY) {
-        emit errorOccurred("Cannot send RPC: MTProto session is not encrypted");
+void MTProtoSession::handleSetClientDHParamsAnswer(quint32 constructor, const quint8* data, size_t size) {
+    if (constructor != TL::ID_DH_GEN_OK) {
+        emit errorOccurred("Handshake: set_client_DH_params failed (dh_gen_retry/fail)");
         return;
     }
 
-    emit logMessage("Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...");
+    TL::TLBuffer buf(data, size);
+    uint8_t rNonce[16], rServerNonce[16], newNonceHash[16];
+    buf.readInt128(rNonce);
+    buf.readInt128(rServerNonce);
+    buf.readRaw(newNonceHash, 16);
 
-    // invokeWithLayer#da9b0d0d layer:int query:!X = X;
-    // initConnection#c1cd5ea9 flags:# api_id:int device_model:string system_version:string app_version:string system_lang_code:string lang_pack:string lang_code:string query:!X = X;
+    // Compute auth_key_id = lower 64 bits of SHA1(auth_key)
+    QByteArray authKeySha1 = Crypto::CryptoEngine::sha1(m_authKey);
+    m_authKeyId = 0;
+    for (int i = 12; i < 20; ++i) {
+        m_authKeyId |= (static_cast<uint64_t>(static_cast<uint8_t>(authKeySha1[i])) << ((i - 12) * 8));
+    }
+
+    // Compute server_salt = new_nonce[0..7] ^ server_nonce[0..7]
+    uint64_t saltA = 0, saltB = 0;
+    for (int i = 0; i < 8; ++i) {
+        saltA |= (static_cast<uint64_t>(m_newNonce[i]) << (i * 8));
+        saltB |= (static_cast<uint64_t>(m_serverNonce[i]) << (i * 8));
+    }
+    m_serverSalt = saltA ^ saltB;
+
+    Crypto::CryptoEngine::generateRandomBytes(reinterpret_cast<uint8_t*>(&m_sessionId), 8);
+    m_seqNo = 0;
+
+    m_state = STATE_ENCRYPTED_READY;
+    emit stateChanged(static_cast<int>(m_state), "MTProto 2.0 Encrypted Session Ready");
+    emit authKeyGenerated(m_authKeyId);
+
+    emit logMessage(QString("=================================================="));
+    emit logMessage(QString("SUCCESS: MTProto 2.0 Auth Key Created!"));
+    emit logMessage(QString("AuthKeyID: 0x%1").arg(m_authKeyId, 16, 16, QChar('0')));
+    emit logMessage(QString("ServerSalt: 0x%1, SessionID: 0x%2").arg(QString::number(m_serverSalt, 16)).arg(QString::number(m_sessionId, 16)));
+    emit logMessage(QString("=================================================="));
+
+    sendGetNearestDc();
+}
+
+// --------------------------------------------------------------------------
+// MTProto RPC Queries (Layer 195 Dispatcher)
+// --------------------------------------------------------------------------
+void MTProtoSession::sendPingDelayDisconnect() {
     TL::TLBuffer rpcBuf;
-    rpcBuf.writeUInt32(0xda9b0d0d); // invokeWithLayer
-    rpcBuf.writeInt32(195);        // layer 195
+    rpcBuf.writeUInt32(TL::ID_PING_DELAY_DISCONNECT);
+    uint64_t pingId = 0;
+    Crypto::CryptoEngine::generateRandomBytes(reinterpret_cast<uint8_t*>(&pingId), 8);
+    rpcBuf.writeInt64(static_cast<int64_t>(pingId));
+    rpcBuf.writeInt32(35); // disconnect_delay = 35s
 
-    rpcBuf.writeUInt32(0xc1cd5ea9); // initConnection
+    sendEncryptedMessage(rpcBuf.buffer(), false);
+}
+
+void MTProtoSession::sendGetNearestDc() {
+    emit logMessage(QString("Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))..."));
+
+    TL::TLBuffer rpcBuf;
+    rpcBuf.writeUInt32(0xda9b0d0d); // invokeWithLayer#da9b0d0d
+    rpcBuf.writeInt32(195);        // layer: 195
+
+    rpcBuf.writeUInt32(0xc1cd5ea9); // initConnection#c1cd5ea9
     rpcBuf.writeInt32(0);          // flags = 0
     rpcBuf.writeInt32(Config::API_ID);
     rpcBuf.writeString(Config::DEVICE_MODEL);
@@ -613,8 +618,167 @@ void MTProtoSession::sendGetNearestDc() {
     sendEncryptedMessage(rpcBuf.buffer(), true);
 }
 
+void MTProtoSession::sendAuthSendCode(const QString& phoneNumber) {
+    if (m_state != STATE_ENCRYPTED_READY) {
+        emit errorOccurred("Cannot send code: MTProto session is not encrypted");
+        return;
+    }
+
+    QString cleanPhone = phoneNumber;
+    cleanPhone.remove('+').remove(' ').remove('-').remove('(').remove(')');
+
+    emit logMessage(QString("Requesting Telegram login code for +%1...").arg(cleanPhone));
+
+    // invokeWithLayer#da9b0d0d layer:int query:!X = X;
+    // auth.sendCode#a677244f phone_number:string api_id:int api_hash:string settings:CodeSettings = auth.SentCode;
+    // codeSettings#ad253d78 flags:#
+    TL::TLBuffer rpcBuf;
+    rpcBuf.writeUInt32(0xda9b0d0d); // invokeWithLayer
+    rpcBuf.writeInt32(195);        // layer 195
+    rpcBuf.writeUInt32(TL::ID_AUTH_SEND_CODE);
+    rpcBuf.writeString(cleanPhone);
+    rpcBuf.writeInt32(Config::API_ID);
+    rpcBuf.writeString(Config::API_HASH);
+
+    rpcBuf.writeUInt32(TL::ID_CODE_SETTINGS);
+    rpcBuf.writeInt32(0); // flags = 0
+
+    sendEncryptedMessage(rpcBuf.buffer(), true);
+}
+
+void MTProtoSession::sendAuthResendCode(const QString& phoneNumber, const QString& phoneCodeHash) {
+    if (m_state != STATE_ENCRYPTED_READY) {
+        emit errorOccurred("Cannot resend code: MTProto session is not encrypted");
+        return;
+    }
+
+    QString cleanPhone = phoneNumber;
+    cleanPhone.remove('+').remove(' ').remove('-').remove('(').remove(')');
+    QString cleanHash = phoneCodeHash.trimmed();
+
+    emit logMessage(QString("Requesting Telegram code resend (SMS) for +%1 (hash: %2)...").arg(cleanPhone).arg(cleanHash));
+
+    // invokeWithLayer#da9b0d0d layer:int query:!X = X;
+    // auth.resendCode#cae47523 flags:# phone_number:string phone_code_hash:string reason:flags.0?string = auth.SentCode;
+    TL::TLBuffer rpcBuf;
+    rpcBuf.writeUInt32(0xda9b0d0d); // invokeWithLayer
+    rpcBuf.writeInt32(195);        // layer 195
+    rpcBuf.writeUInt32(TL::ID_AUTH_RESEND_CODE); // 0xcae47523
+    rpcBuf.writeInt32(0);          // flags = 0
+    rpcBuf.writeString(cleanPhone);
+    rpcBuf.writeString(cleanHash);
+
+    sendEncryptedMessage(rpcBuf.buffer(), true);
+}
+
+void MTProtoSession::sendAuthSignIn(const QString& phoneNumber, const QString& phoneCodeHash, const QString& phoneCode) {
+    if (m_state != STATE_ENCRYPTED_READY) {
+        emit errorOccurred("Cannot sign in: MTProto session is not encrypted");
+        return;
+    }
+
+    QString cleanPhone = phoneNumber;
+    cleanPhone.remove('+').remove(' ').remove('-').remove('(').remove(')');
+    QString cleanCode = phoneCode.trimmed();
+    QString cleanHash = phoneCodeHash.trimmed();
+
+    emit logMessage(QString("Submitting login verification code %1 for +%2 (hash: %3)...").arg(cleanCode).arg(cleanPhone).arg(cleanHash));
+
+    // invokeWithLayer#da9b0d0d layer:int query:!X = X;
+    // auth.signIn#8d52a951 flags:# phone_number:string phone_code_hash:string phone_code:flags.0?string email_verification:flags.1?EmailVerification = auth.Authorization;
+    TL::TLBuffer rpcBuf;
+    rpcBuf.writeUInt32(0xda9b0d0d); // invokeWithLayer
+    rpcBuf.writeInt32(195);        // layer 195
+    rpcBuf.writeUInt32(TL::ID_AUTH_SIGN_IN); // 0x8d52a951
+    rpcBuf.writeInt32(1);          // flags = 1 (phone_code is present)
+    rpcBuf.writeString(cleanPhone);
+    rpcBuf.writeString(cleanHash);
+    rpcBuf.writeString(cleanCode);
+
+    sendEncryptedMessage(rpcBuf.buffer(), true);
+}
+
+void MTProtoSession::sendAccountGetPassword() {
+    if (m_state != STATE_ENCRYPTED_READY) {
+        emit errorOccurred("Cannot get password: MTProto session is not encrypted");
+        return;
+    }
+
+    emit logMessage("Requesting 2FA Cloud Password parameters (account.getPassword)...");
+
+    TL::TLBuffer rpcBuf;
+    rpcBuf.writeUInt32(0xda9b0d0d); // invokeWithLayer
+    rpcBuf.writeInt32(195);        // layer 195
+    rpcBuf.writeUInt32(TL::ID_ACCOUNT_GET_PASSWORD); // 0x548508de
+
+    sendEncryptedMessage(rpcBuf.buffer(), true);
+}
+
+void MTProtoSession::sendAuthCheckPassword(const QString& password) {
+    if (m_state != STATE_ENCRYPTED_READY) {
+        emit errorOccurred("Cannot check password: MTProto session is not encrypted");
+        return;
+    }
+
+    emit logMessage("Computing SRP-6A cryptographic proof for 2FA Cloud Password...");
+
+    QByteArray srpA, srpM1;
+    if (!Crypto::CryptoEngine::computeSRP6A(password, m_pwdSalt1, m_pwdSalt2, m_pwdG, m_pwdP, m_pwdSrpB, srpA, srpM1)) {
+        emit errorOccurred("Failed to compute SRP-6A proof for 2FA password");
+        return;
+    }
+
+    emit logMessage("Submitting auth.checkPassword with SRP-6A proof...");
+
+    // invokeWithLayer#da9b0d0d layer:int query:!X = X;
+    // auth.checkPassword#d18b4d16 password:InputCheckPasswordSRP = auth.Authorization;
+    // inputCheckPasswordSRP#d27ff082 srp_id:long A:bytes M1:bytes = InputCheckPasswordSRP;
+    TL::TLBuffer rpcBuf;
+    rpcBuf.writeUInt32(0xda9b0d0d); // invokeWithLayer
+    rpcBuf.writeInt32(195);        // layer 195
+    rpcBuf.writeUInt32(TL::ID_AUTH_CHECK_PASSWORD);
+    rpcBuf.writeUInt32(TL::ID_INPUT_CHECK_PASSWORD_SRP);
+    rpcBuf.writeInt64(m_pwdSrpId);
+    rpcBuf.writeBytes(srpA);
+    rpcBuf.writeBytes(srpM1);
+
+    sendEncryptedMessage(rpcBuf.buffer(), true);
+}
+
+void MTProtoSession::sendAuthLogOut() {
+    if (m_state != STATE_ENCRYPTED_READY) return;
+
+    emit logMessage("Logging out session (auth.logOut)...");
+
+    TL::TLBuffer rpcBuf;
+    rpcBuf.writeUInt32(0xda9b0d0d); // invokeWithLayer
+    rpcBuf.writeInt32(195);        // layer 195
+    rpcBuf.writeUInt32(TL::ID_AUTH_LOG_OUT); // 0x3e72ba14
+
+    sendEncryptedMessage(rpcBuf.buffer(), true);
+}
+
+void MTProtoSession::sendExportLoginToken() {
+    if (m_state != STATE_ENCRYPTED_READY) return;
+
+    emit logMessage("Requesting QR Code Login Token (auth.exportLoginToken)...");
+
+    TL::TLBuffer rpcBuf;
+    rpcBuf.writeUInt32(0xda9b0d0d); // invokeWithLayer
+    rpcBuf.writeInt32(195);        // layer 195
+    rpcBuf.writeUInt32(TL::ID_AUTH_EXPORT_LOGIN_TOKEN); // 0xb7e085fe
+    rpcBuf.writeInt32(Config::API_ID);
+    rpcBuf.writeString(Config::API_HASH);
+    rpcBuf.writeUInt32(TL::ID_VECTOR);
+    rpcBuf.writeInt32(0); // except_ids count = 0
+
+    sendEncryptedMessage(rpcBuf.buffer(), true);
+}
+
+// --------------------------------------------------------------------------
+// MTProto 2.0 Encrypted Message Transmission & Decryption
+// --------------------------------------------------------------------------
 void MTProtoSession::sendEncryptedMessage(const QByteArray& messageData, bool isContentRelated) {
-    // MTProto 2.0 Message Header
     TL::TLBuffer plainBuf;
     plainBuf.writeInt64(static_cast<int64_t>(m_serverSalt));
     plainBuf.writeInt64(static_cast<int64_t>(m_sessionId));
@@ -623,7 +787,6 @@ void MTProtoSession::sendEncryptedMessage(const QByteArray& messageData, bool is
     plainBuf.writeInt32(static_cast<int32_t>(messageData.size()));
     plainBuf.writeRaw(reinterpret_cast<const uint8_t*>(messageData.constData()), messageData.size());
 
-    // MTProto 2.0 Padding: 12 to 1024 bytes of random padding such that total length % 16 == 0
     size_t unpaddedLen = plainBuf.size();
     size_t padLen = (16 - (unpaddedLen % 16));
     if (padLen < 12) {
@@ -632,20 +795,16 @@ void MTProtoSession::sendEncryptedMessage(const QByteArray& messageData, bool is
     QByteArray padBytes = Crypto::CryptoEngine::randomBytes(padLen);
     plainBuf.writeRaw(reinterpret_cast<const uint8_t*>(padBytes.constData()), padBytes.size());
 
-    // Compute msg_key (16 bytes)
     uint8_t msgKey[16];
     Crypto::CryptoEngine::computeMTProto2MsgKey(reinterpret_cast<const uint8_t*>(m_authKey.constData()), plainBuf.data(), plainBuf.size(), true, msgKey);
 
-    // Derive aes_key and aes_iv
     uint8_t aesKey[32], aesIv[32];
     Crypto::CryptoEngine::deriveMTProto2Keys(reinterpret_cast<const uint8_t*>(m_authKey.constData()), msgKey, true, aesKey, aesIv);
 
-    // Encrypt plaintext with AES-256-IGE
     QByteArray encrypted;
     encrypted.resize(plainBuf.size());
     Crypto::CryptoEngine::aesIgeEncrypt(plainBuf.data(), reinterpret_cast<uint8_t*>(encrypted.data()), plainBuf.size(), aesKey, aesIv);
 
-    // Construct MTProto Envelope: auth_key_id (8 bytes) + msg_key (16 bytes) + encrypted_data
     TL::TLBuffer envelope;
     envelope.writeInt64(static_cast<int64_t>(m_authKeyId));
     envelope.writeRaw(msgKey, 16);
@@ -655,7 +814,7 @@ void MTProtoSession::sendEncryptedMessage(const QByteArray& messageData, bool is
     m_transport->sendPacket(packet);
 }
 
-void MTProtoSession::handleEncryptedPacket(const uint8_t* data, size_t size) {
+void MTProtoSession::handleEncryptedPacket(const quint8* data, size_t size) {
     if (size < 24) return;
 
     uint64_t authKeyId = 0;
@@ -677,7 +836,6 @@ void MTProtoSession::handleEncryptedPacket(const uint8_t* data, size_t size) {
         return;
     }
 
-    // Derive aes_key and aes_iv for server-to-client (isClient = false)
     uint8_t aesKey[32], aesIv[32];
     Crypto::CryptoEngine::deriveMTProto2Keys(reinterpret_cast<const uint8_t*>(m_authKey.constData()), msgKey, false, aesKey, aesIv);
 
@@ -688,7 +846,6 @@ void MTProtoSession::handleEncryptedPacket(const uint8_t* data, size_t size) {
         return;
     }
 
-    // Verify msg_key
     uint8_t computedMsgKey[16];
     Crypto::CryptoEngine::computeMTProto2MsgKey(reinterpret_cast<const uint8_t*>(m_authKey.constData()),
                                                 reinterpret_cast<const uint8_t*>(decrypted.constData()),
@@ -698,7 +855,6 @@ void MTProtoSession::handleEncryptedPacket(const uint8_t* data, size_t size) {
         return;
     }
 
-    // Parse decrypted payload: server_salt (8), session_id (8), msg_id (8), seq_no (4), msg_len (4)
     TL::TLBuffer plainBuf(reinterpret_cast<const uint8_t*>(decrypted.constData()), decrypted.size());
     int64_t serverSalt, sessionId, msgId;
     int32_t seqNo, msgLen;
@@ -801,12 +957,153 @@ void MTProtoSession::processPlainMessage(TL::TLBuffer& plainBuf) {
             emit logMessage(QString("LIVE TELEGRAM RPC SUCCESS: nearestDc"));
             emit logMessage(QString("Country: %1, Current DC: %2, Nearest Recommended DC: %3").arg(country).arg(thisDc).arg(nearestDc));
             emit logMessage(QString("=================================================="));
+        } else if (innerRpcConstructor == TL::ID_AUTH_SENT_CODE) {
+            // auth.sentCode#5e002502 flags:# type:auth.SentCodeType phone_code_hash:string next_type:flags.1?auth.CodeType timeout:flags.2?int = auth.SentCode;
+            int32_t flags;
+            plainBuf.readInt32(flags);
+            uint32_t typeConstructor;
+            plainBuf.readUInt32(typeConstructor);
+
+            QString typeStr = "Telegram App";
+            if (typeConstructor == TL::ID_AUTH_SENT_CODE_TYPE_APP) {
+                typeStr = "Telegram App";
+                int32_t length; plainBuf.readInt32(length);
+            } else if (typeConstructor == TL::ID_AUTH_SENT_CODE_TYPE_SMS) {
+                typeStr = "SMS";
+                int32_t length; plainBuf.readInt32(length);
+            } else if (typeConstructor == TL::ID_AUTH_SENT_CODE_TYPE_CALL) {
+                typeStr = "Phone Call";
+                int32_t length; plainBuf.readInt32(length);
+            } else if (typeConstructor == TL::ID_AUTH_SENT_CODE_TYPE_FLASH_CALL) {
+                typeStr = "Flash Call";
+                QString pattern; plainBuf.readString(pattern);
+            } else if (typeConstructor == TL::ID_AUTH_SENT_CODE_TYPE_MISSED_CALL) {
+                typeStr = "Missed Call";
+                QString prefix; plainBuf.readString(prefix);
+                int32_t length; plainBuf.readInt32(length);
+            } else if (typeConstructor == TL::ID_AUTH_SENT_CODE_TYPE_EMAIL_CODE) {
+                typeStr = "Email";
+                int32_t emailFlags; plainBuf.readInt32(emailFlags);
+                QString emailPattern; plainBuf.readString(emailPattern);
+                int32_t length; plainBuf.readInt32(length);
+            }
+
+            QString phoneCodeHash;
+            plainBuf.readString(phoneCodeHash);
+
+            int32_t timeout = 60;
+            if (flags & (1 << 1)) {
+                uint32_t nextType; plainBuf.readUInt32(nextType);
+            }
+            if (flags & (1 << 2)) {
+                plainBuf.readInt32(timeout);
+            }
+
+            emit logMessage(QString("=================================================="));
+            emit logMessage(QString("TELEGRAM LOGIN CODE SENT"));
+            emit logMessage(QString("Delivery Type: %1, Timeout: %2s, Hash: %3").arg(typeStr).arg(timeout).arg(phoneCodeHash));
+            emit logMessage(QString("=================================================="));
+
+            emit authSentCodeReceived(phoneCodeHash, typeStr, timeout);
+        } else if (innerRpcConstructor == TL::ID_AUTH_AUTHORIZATION || innerRpcConstructor == TL::ID_AUTH_AUTHORIZATION_CD) {
+            // auth.authorization#2ea2c0d4 flags:# setup_password_required:flags.1?true otherwise_relogin_days:flags.3?int tmp_sessions:flags.0?int future_auth_token:flags.2?bytes user:User = auth.Authorization;
+            int32_t authFlags;
+            plainBuf.readInt32(authFlags);
+            if (authFlags & (1 << 0)) { int32_t tmp; plainBuf.readInt32(tmp); }
+            if (authFlags & (1 << 2)) { QByteArray token; plainBuf.readBytes(token); }
+            if (authFlags & (1 << 3)) { int32_t days; plainBuf.readInt32(days); }
+
+            uint32_t userConstructor;
+            plainBuf.readUInt32(userConstructor);
+
+            int32_t userFlags;
+            plainBuf.readInt32(userFlags);
+
+            int64_t userId = 0, accessHash = 0;
+            plainBuf.readInt64(userId);
+
+            if (userFlags & (1 << 0)) {
+                plainBuf.readInt64(accessHash);
+            }
+
+            QString firstName, lastName, username, phone;
+            if (userFlags & (1 << 1)) plainBuf.readString(firstName);
+            if (userFlags & (1 << 2)) plainBuf.readString(lastName);
+            if (userFlags & (1 << 3)) plainBuf.readString(username);
+            if (userFlags & (1 << 4)) plainBuf.readString(phone);
+
+            emit logMessage(QString("=================================================="));
+            emit logMessage(QString("SUCCESSFUL TELEGRAM AUTHENTICATION!"));
+            emit logMessage(QString("User ID: %1, Name: %2 %3 (@%4), Phone: %5").arg(userId).arg(firstName).arg(lastName).arg(username).arg(phone));
+            emit logMessage(QString("=================================================="));
+
+            emit authSuccessReceived(userId, static_cast<quint64>(accessHash), firstName, lastName, username, phone);
+        } else if (innerRpcConstructor == TL::ID_AUTH_SIGN_UP_REQUIRED) {
+            emit logMessage("[AUTH] Sign Up is required for this new phone number");
+            emit authSignUpRequiredReceived();
+        } else if (innerRpcConstructor == TL::ID_ACCOUNT_PASSWORD) {
+            // account.password#95d4b496 flags:# has_recovery:flags.0?true has_secure_values:flags.1?true has_password:flags.2?true current_algo:flags.2?PasswordKdfAlgo srp_B:flags.2?bytes srp_id:flags.2?long hint:flags.3?string ...
+            int32_t pwdFlags;
+            plainBuf.readInt32(pwdFlags);
+
+            if (pwdFlags & (1 << 2)) {
+                uint32_t algoConstructor;
+                plainBuf.readUInt32(algoConstructor);
+                plainBuf.readBytes(m_pwdSalt1);
+                plainBuf.readBytes(m_pwdSalt2);
+                int32_t gVal; plainBuf.readInt32(gVal); m_pwdG = gVal;
+                plainBuf.readBytes(m_pwdP);
+
+                plainBuf.readBytes(m_pwdSrpB);
+                plainBuf.readInt64(m_pwdSrpId);
+            }
+
+            if (pwdFlags & (1 << 3)) {
+                plainBuf.readString(m_pwdHint);
+            }
+
+            emit logMessage(QString("2FA Cloud Password Needed. Hint: '%1'").arg(m_pwdHint));
+            emit authPasswordNeeded(m_pwdHint);
+        } else if (innerRpcConstructor == TL::ID_AUTH_LOGIN_TOKEN) {
+            // auth.loginToken#629f1980 expires:int token:bytes = auth.LoginToken;
+            int32_t expires;
+            QByteArray tokenBytes;
+            plainBuf.readInt32(expires);
+            plainBuf.readBytes(tokenBytes);
+
+            emit logMessage(QString("QR Login Token received (expires in %1s)").arg(expires));
+            emit authLoginTokenReceived(tokenBytes, expires);
+        } else if (innerRpcConstructor == TL::ID_AUTH_LOGIN_TOKEN_SUCCESS) {
+            emit logMessage("QR Code successfully scanned and authorized!");
+            emit authLoginSuccessReceived();
+        } else if (innerRpcConstructor == TL::ID_AUTH_LOGIN_TOKEN_MIGRATE_TO) {
+            int32_t targetDc;
+            QByteArray tokenBytes;
+            plainBuf.readInt32(targetDc);
+            plainBuf.readBytes(tokenBytes);
+            emit logMessage(QString("QR Login Token requires migration to DC %1").arg(targetDc));
+            migrateToDc(targetDc);
         } else if (innerRpcConstructor == TL::ID_RPC_ERROR) {
             int32_t errCode;
             QString errMsg;
             plainBuf.readInt32(errCode);
             plainBuf.readString(errMsg);
+
             emit logMessage(QString("[RPC ERROR] Code: %1, Message: %2").arg(errCode).arg(errMsg));
+
+            if (errMsg.startsWith("PHONE_MIGRATE_") || errMsg.startsWith("NETWORK_MIGRATE_")) {
+                int targetDc = errMsg.section('_', -1).toInt();
+                if (targetDc > 0) {
+                    emit logMessage(QString("Server requested DC migration to DC %1").arg(targetDc));
+                    migrateToDc(targetDc);
+                    return;
+                }
+            } else if (errMsg == "SESSION_PASSWORD_NEEDED") {
+                sendAccountGetPassword();
+                return;
+            }
+
+            emit rpcErrorReceived(errCode, errMsg);
         }
     } else if (constructor == TL::ID_NEAREST_DC) {
         QString country;

@@ -480,5 +480,114 @@ void CryptoEngine::computeMTProto2MsgKey(const uint8_t* authKey, const uint8_t* 
     memcpy(msgKeyOut, hash + 8, 16);
 }
 
+bool CryptoEngine::computeSRP6A(const QString& password, const QByteArray& salt1, const QByteArray& salt2,
+                               int g, const QByteArray& pBytes, const QByteArray& srpB,
+                               QByteArray& srpAOut, QByteArray& srpM1Out) {
+    if (password.isEmpty() || pBytes.isEmpty() || srpB.isEmpty()) return false;
+
+    // 1. Password hashing with PBKDF2 (SHA-512)
+    QByteArray pwdUtf8 = password.toUtf8();
+    QByteArray pHash1 = sha256(salt1 + pwdUtf8 + salt1);
+    QByteArray pHash2 = sha256(salt2 + pHash1 + salt2);
+
+    unsigned char xKey[64];
+    if (!PKCS5_PBKDF2_HMAC(pHash2.constData(), pHash2.size(),
+                           reinterpret_cast<const unsigned char*>(salt1.constData()), salt1.size(),
+                           100000, EVP_sha512(), sizeof(xKey), xKey)) {
+        return false;
+    }
+
+    QByteArray xBytes(reinterpret_cast<const char*>(xKey), sizeof(xKey));
+    QByteArray pHashFinal = sha256(salt2 + xBytes + salt2);
+
+    // 2. OpenSSL BIGNUM setup
+    BN_CTX* ctx = BN_CTX_new();
+    BIGNUM* p_bn = BN_bin2bn(reinterpret_cast<const uint8_t*>(pBytes.constData()), pBytes.size(), NULL);
+    BIGNUM* g_bn = BN_new();
+    BN_set_word(g_bn, static_cast<BN_ULONG>(g));
+    BIGNUM* b_bn = BN_bin2bn(reinterpret_cast<const uint8_t*>(srpB.constData()), srpB.size(), NULL);
+    BIGNUM* x_bn = BN_bin2bn(reinterpret_cast<const uint8_t*>(pHashFinal.constData()), pHashFinal.size(), NULL);
+
+    // Generate random ephemeral 'a' (256 bytes)
+    QByteArray aBytes = randomBytes(256);
+    BIGNUM* a_bn = BN_bin2bn(reinterpret_cast<const uint8_t*>(aBytes.constData()), aBytes.size(), NULL);
+
+    // A = g^a mod p
+    BIGNUM* A_bn = BN_new();
+    BN_mod_exp(A_bn, g_bn, a_bn, p_bn, ctx);
+
+    int pLen = pBytes.size();
+    srpAOut.resize(pLen);
+    srpAOut.fill(0);
+    int aNumBytes = BN_num_bytes(A_bn);
+    BN_bn2bin(A_bn, reinterpret_cast<uint8_t*>(srpAOut.data()) + (pLen - aNumBytes));
+
+    // u = H(A | B)
+    QByteArray uHash = sha256(srpAOut + srpB);
+    BIGNUM* u_bn = BN_bin2bn(reinterpret_cast<const uint8_t*>(uHash.constData()), uHash.size(), NULL);
+
+    // k = H(p | g)
+    QByteArray kHash = sha256(pBytes + QByteArray(1, static_cast<char>(g)));
+    BIGNUM* k_bn = BN_bin2bn(reinterpret_cast<const uint8_t*>(kHash.constData()), kHash.size(), NULL);
+
+    // v = g^x mod p
+    BIGNUM* v_bn = BN_new();
+    BN_mod_exp(v_bn, g_bn, x_bn, p_bn, ctx);
+
+    // kv = (k * v) mod p
+    BIGNUM* kv_bn = BN_new();
+    BN_mod_mul(kv_bn, k_bn, v_bn, p_bn, ctx);
+
+    // b_minus_kv = (B - kv) mod p
+    BIGNUM* b_minus_kv = BN_new();
+    BN_mod_sub(b_minus_kv, b_bn, kv_bn, p_bn, ctx);
+
+    // exp = (a + u * x)
+    BIGNUM* ux_bn = BN_new();
+    BN_mul(ux_bn, u_bn, x_bn, ctx);
+    BIGNUM* exp_bn = BN_new();
+    BN_add(exp_bn, a_bn, ux_bn);
+
+    // S = (B - kv)^(a + ux) mod p
+    BIGNUM* S_bn = BN_new();
+    BN_mod_exp(S_bn, b_minus_kv, exp_bn, p_bn, ctx);
+
+    QByteArray sBytes(pLen, 0);
+    int sNumBytes = BN_num_bytes(S_bn);
+    BN_bn2bin(S_bn, reinterpret_cast<uint8_t*>(sBytes.data()) + (pLen - sNumBytes));
+    QByteArray k_session = sha256(sBytes);
+
+    // M1 = H(H(p) ^ H(g) | H(salt1) | H(salt2) | A | B | K)
+    QByteArray pHash = sha256(pBytes);
+    QByteArray gHash = sha256(QByteArray(1, static_cast<char>(g)));
+    QByteArray pgXor(32, 0);
+    for (int i = 0; i < 32; ++i) {
+        pgXor[i] = pHash[i] ^ gHash[i];
+    }
+    QByteArray salt1Hash = sha256(salt1);
+    QByteArray salt2Hash = sha256(salt2);
+
+    QByteArray m1Data = pgXor + salt1Hash + salt2Hash + srpAOut + srpB + k_session;
+    srpM1Out = sha256(m1Data);
+
+    BN_free(p_bn);
+    BN_free(g_bn);
+    BN_free(b_bn);
+    BN_free(x_bn);
+    BN_free(a_bn);
+    BN_free(A_bn);
+    BN_free(u_bn);
+    BN_free(k_bn);
+    BN_free(v_bn);
+    BN_free(kv_bn);
+    BN_free(b_minus_kv);
+    BN_free(ux_bn);
+    BN_free(exp_bn);
+    BN_free(S_bn);
+    BN_CTX_free(ctx);
+
+    return true;
+}
+
 } // namespace Crypto
 } // namespace Telegram

@@ -25,8 +25,8 @@ class DiagnosticController : public QObject {
     Q_PROPERTY(bool isEncrypted READ isEncrypted NOTIFY encryptionChanged)
 
 public:
-    explicit DiagnosticController(QObject* parent = NULL);
-    ~DiagnosticController();
+    explicit DiagnosticController(Core::MTProtoSession* session = NULL, QObject* parent = NULL);
+    virtual ~DiagnosticController();
 
     QString statusText() const;
     QString authKeyId() const;

@@ -1,0 +1,1603 @@
+[15:07:05.497] Initiating direct MTProto 2.0 connection to DC 2 (149.154.167.50:443)...
+[15:07:05.501] Connecting to Telegram DC at 149.154.167.50:443 via MTProto TCP...
+[15:07:05.702] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[15:07:06.636] Server RSA Fingerprint [0]: 0xd09d1d85de64fd85
+[15:07:06.640] Server RSA Fingerprint [1]: 0xbc35f3509f7b7a5
+[15:07:06.643] Server RSA Fingerprint [2]: 0xc3b42b026ce86b21
+[15:07:06.647] resPQ received. Factoring PQ (size: 8 bytes, 3 RSA fingerprints)...
+[15:07:08.329] PQ factorized successfully: P=1301734649, Q=1492924253
+[15:07:08.333] Official PEM Key [0] parsed fingerprint: 0xd09d1d85de64fd85
+[15:07:08.336] Selected RSA Public Key Fingerprint: 0xd09d1d85de64fd85
+[15:07:08.342] RSA Encrypted req_DH_params payload ready (size: 256 bytes). Sending...
+[15:07:09.306] server_DH_params_ok received (encrypted size: 592 bytes). Decrypting with tmp_aes_key...
+[15:07:09.323] DH Parameters parsed: g=3, dh_prime=256 bytes, serverTime=1788341828 (timeOffset=-1s)
+[15:07:10.059] Auth Key successfully computed (256 bytes). Constructing client_DH_inner_data...
+[15:07:10.949] ==================================================
+[15:07:10.970] SUCCESS: MTProto 2.0 Auth Key Created!
+[15:07:10.991] AuthKeyID: 0xdd24ebb8effb55da
+[15:07:11.007] ServerSalt: 0x383768493ff62517, SessionID: 0xaeb77dd842e856a7
+[15:07:11.022] ==================================================
+[15:07:11.038] Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...
+[15:07:12.404] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[15:07:12.423] Message container received containing 2 messages.
+[15:07:12.447] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[15:07:12.466] New MTProto Session confirmed. Server Salt updated: 0x383768493ff62517
+[15:07:12.484] Encrypted MTProto 2.0 Response received! Constructor: 0x62d6b459
+[15:07:12.504] Server acknowledged 1 messages.
+[15:07:12.525] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:07:12.546] RPC Result for ReqMsgId: 7680869673919007680, Inner Constructor: 0x8e1a1775
+[15:07:12.570] ==================================================
+[15:07:12.593] LIVE TELEGRAM RPC SUCCESS: nearestDc
+[15:07:12.616] Country: IN, Current DC: 2, Nearest Recommended DC: 5
+[15:07:12.639] ==================================================
+[15:07:36.249] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:07:36.290] Heartbeat PONG received from Telegram (ping_id: 8805793073264254706)
+[15:08:03.170] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:08:03.193] Heartbeat PONG received from Telegram (ping_id: 712271809649602770)
+[15:08:26.244] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:08:26.270] Heartbeat PONG received from Telegram (ping_id: -6539541423655159453)
+[15:08:53.038] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:08:53.064] Heartbeat PONG received from Telegram (ping_id: -4206057104646255859)
+[15:09:16.236] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:09:16.265] Heartbeat PONG received from Telegram (ping_id: -5104179572208353675)
+[15:09:43.417] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:09:43.458] Heartbeat PONG received from Telegram (ping_id: 3291288303303905167)
+[15:10:06.245] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:10:06.284] Heartbeat PONG received from Telegram (ping_id: 8971606560582507262)
+[15:10:33.596] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:10:33.630] Heartbeat PONG received from Telegram (ping_id: 3516960346546036061)
+[15:10:56.243] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:10:56.290] Heartbeat PONG received from Telegram (ping_id: -1465212868234564696)
+[15:11:23.469] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:11:23.502] Heartbeat PONG received from Telegram (ping_id: 884245475894810869)
+[15:11:46.507] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:11:46.554] Heartbeat PONG received from Telegram (ping_id: -7446074666646470208)
+[15:12:13.438] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:12:13.513] Heartbeat PONG received from Telegram (ping_id: 38838779902219244)
+[15:12:36.238] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:12:36.276] Heartbeat PONG received from Telegram (ping_id: -3280982580614090409)
+[15:13:03.307] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:13:03.344] Heartbeat PONG received from Telegram (ping_id: 8141138838294322419)
+[15:13:26.237] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:13:26.299] Heartbeat PONG received from Telegram (ping_id: -4944787536445615015)
+[15:13:53.278] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:13:53.316] Heartbeat PONG received from Telegram (ping_id: -350196987802123887)
+[15:14:16.239] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:14:16.279] Heartbeat PONG received from Telegram (ping_id: 3255830552469453171)
+[15:14:43.147] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:14:43.188] Heartbeat PONG received from Telegram (ping_id: 8131463428334890124)
+[15:15:06.238] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:15:06.293] Heartbeat PONG received from Telegram (ping_id: -522158070259418893)
+[15:15:33.116] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:15:33.166] Heartbeat PONG received from Telegram (ping_id: 1446570058376807252)
+[15:15:56.231] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:15:56.299] Heartbeat PONG received from Telegram (ping_id: 1804539154873521230)
+[15:16:23.094] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:16:23.147] Heartbeat PONG received from Telegram (ping_id: -4893589994988670721)
+[15:16:29.534] Connecting to Telegram DC at 149.154.167.50:443 via MTProto TCP...
+[15:16:29.844] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[15:16:30.434] Server RSA Fingerprint [0]: 0xd09d1d85de64fd85
+[15:16:30.440] Server RSA Fingerprint [1]: 0xbc35f3509f7b7a5
+[15:16:30.443] Server RSA Fingerprint [2]: 0xc3b42b026ce86b21
+[15:16:30.445] resPQ received. Factoring PQ (size: 8 bytes, 3 RSA fingerprints)...
+[15:16:31.522] PQ factorized successfully: P=1232420789, Q=1988745667
+[15:16:31.525] Official PEM Key [0] parsed fingerprint: 0xd09d1d85de64fd85
+[15:16:31.528] Selected RSA Public Key Fingerprint: 0xd09d1d85de64fd85
+[15:16:31.532] RSA Encrypted req_DH_params payload ready (size: 256 bytes). Sending...
+[15:16:32.276] server_DH_params_ok received (encrypted size: 592 bytes). Decrypting with tmp_aes_key...
+[15:16:32.284] DH Parameters parsed: g=3, dh_prime=256 bytes, serverTime=1788342391 (timeOffset=-1s)
+[15:16:33.577] Auth Key successfully computed (256 bytes). Constructing client_DH_inner_data...
+[15:16:34.565] ==================================================
+[15:16:34.569] SUCCESS: MTProto 2.0 Auth Key Created!
+[15:16:34.574] AuthKeyID: 0xfdab40418ef04202
+[15:16:34.579] ServerSalt: 0xe62acedafa19d90b, SessionID: 0xda9c08b2e94f9fde
+[15:16:34.582] ==================================================
+[15:16:34.587] Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...
+[15:16:34.773] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[15:16:34.777] Message container received containing 2 messages.
+[15:16:34.781] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[15:16:34.785] New MTProto Session confirmed. Server Salt updated: 0xe62acedafa19d90b
+[15:16:34.791] Encrypted MTProto 2.0 Response received! Constructor: 0x62d6b459
+[15:16:34.795] Server acknowledged 1 messages.
+[15:16:34.799] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:16:34.803] RPC Result for ReqMsgId: 7680872091987743328, Inner Constructor: 0x8e1a1775
+[15:16:34.808] ==================================================
+[15:16:34.812] LIVE TELEGRAM RPC SUCCESS: nearestDc
+[15:16:34.815] Country: IN, Current DC: 2, Nearest Recommended DC: 5
+[15:16:34.818] ==================================================
+[15:16:59.797] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:16:59.806] Heartbeat PONG received from Telegram (ping_id: -6198613658416851511)
+[15:17:24.778] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:17:24.783] Heartbeat PONG received from Telegram (ping_id: 9114431849261621688)
+[15:17:49.780] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:17:49.799] Heartbeat PONG received from Telegram (ping_id: -5344105937531694698)
+[15:18:14.784] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:18:14.802] Heartbeat PONG received from Telegram (ping_id: 6089257102527875960)
+[15:18:39.780] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:18:39.784] Heartbeat PONG received from Telegram (ping_id: -9153273607322601804)
+[15:19:04.787] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:19:04.793] Heartbeat PONG received from Telegram (ping_id: 4145116790364933139)
+[15:19:29.795] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:19:29.800] Heartbeat PONG received from Telegram (ping_id: -1143520478651979570)
+[15:19:54.968] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:19:54.988] Heartbeat PONG received from Telegram (ping_id: 8654272094217802164)
+[15:20:19.759] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:20:19.761] Heartbeat PONG received from Telegram (ping_id: 8755916192834991392)
+[15:20:24.142] Connecting to Telegram DC at 149.154.167.50:443 via MTProto TCP...
+[15:20:24.344] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[15:20:24.352] Reconnected to Telegram DC with active Auth Key. Resuming session.
+[15:20:24.831] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[15:20:24.834] Message container received containing 2 messages.
+[15:20:24.836] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[15:20:24.838] New MTProto Session confirmed. Server Salt updated: 0xe62acedafa19d90b
+[15:20:24.840] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:20:24.842] Heartbeat PONG received from Telegram (ping_id: -1735767536088965922)
+[15:20:49.562] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:20:49.578] Heartbeat PONG received from Telegram (ping_id: 5777691917481047648)
+[15:21:14.563] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:21:14.567] Heartbeat PONG received from Telegram (ping_id: 5029951426886512812)
+[15:21:39.572] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:21:39.588] Heartbeat PONG received from Telegram (ping_id: -4015310936133703509)
+[15:21:42.174] Requesting Telegram login code for +918950469287...
+[15:21:42.400] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:21:42.405] RPC Result for ReqMsgId: 7680873419131033792, Inner Constructor: 0x2144ca19
+[15:21:42.409] [RPC ERROR] Code: 400, Message: INPUT_FETCH_ERROR_281436
+[15:21:43.941] Requesting Telegram login code for +918950469287...
+[15:21:44.426] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:21:44.439] RPC Result for ReqMsgId: 7680873423429061088, Inner Constructor: 0x2144ca19
+[15:21:44.447] [RPC ERROR] Code: 400, Message: INPUT_FETCH_ERROR_2236303
+[15:21:45.176] Requesting Telegram login code for +918950469287...
+[15:21:45.395] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:21:45.403] RPC Result for ReqMsgId: 7680873432015915680, Inner Constructor: 0x2144ca19
+[15:21:45.409] [RPC ERROR] Code: 400, Message: INPUT_FETCH_ERROR_2236707
+[15:21:46.024] Requesting Telegram login code for +918950469287...
+[15:21:46.674] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:21:46.677] RPC Result for ReqMsgId: 7680873436310290976, Inner Constructor: 0x2144ca19
+[15:21:46.679] [RPC ERROR] Code: 400, Message: INPUT_FETCH_ERROR_2208602
+[15:21:47.117] Requesting Telegram login code for +918950469287...
+[15:21:47.493] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:21:47.498] RPC Result for ReqMsgId: 7680873440605590272, Inner Constructor: 0x2144ca19
+[15:21:47.503] [RPC ERROR] Code: 400, Message: INPUT_FETCH_ERROR_2127006
+[15:21:48.016] Requesting Telegram login code for +918950469287...
+[15:21:48.220] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:21:48.233] RPC Result for ReqMsgId: 7680873444900161568, Inner Constructor: 0x2144ca19
+[15:21:48.242] [RPC ERROR] Code: 400, Message: INPUT_FETCH_ERROR_2249903
+[15:21:48.854] Requesting Telegram login code for +918950469287...
+[15:21:49.079] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:21:49.089] RPC Result for ReqMsgId: 7680873444903509568, Inner Constructor: 0x2144ca19
+[15:21:49.098] [RPC ERROR] Code: 400, Message: INPUT_FETCH_ERROR_2173222
+[15:22:04.558] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:22:04.569] Heartbeat PONG received from Telegram (ping_id: -7643004739371829505)
+[15:22:29.557] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:22:29.566] Heartbeat PONG received from Telegram (ping_id: 695587592820047526)
+[15:22:54.556] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:22:54.563] Heartbeat PONG received from Telegram (ping_id: 6500566568038344520)
+[15:23:22.571] Connecting to Telegram DC at 149.154.167.50:443 via MTProto TCP...
+[15:23:22.780] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[15:23:22.787] Reconnected to Telegram DC with active Auth Key. Resuming session.
+[15:23:23.217] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[15:23:23.220] Message container received containing 2 messages.
+[15:23:23.223] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[15:23:23.226] New MTProto Session confirmed. Server Salt updated: 0xe62acedafa19d90b
+[15:23:23.228] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:23:23.232] Heartbeat PONG received from Telegram (ping_id: 6160235649253558194)
+[15:23:47.991] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:23:47.996] Heartbeat PONG received from Telegram (ping_id: -29747603034656255)
+[15:23:54.663] Requesting Telegram login code for +918950469287...
+[15:23:55.090] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:23:55.102] RPC Result for ReqMsgId: 7680873986068648864, Inner Constructor: 0x2144ca19
+[15:23:55.109] [RPC ERROR] Code: 303, Message: PHONE_MIGRATE_5
+[15:23:59.725] Requesting Telegram login code for +918950469287...
+[15:23:59.923] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:23:59.925] RPC Result for ReqMsgId: 7680874007543701344, Inner Constructor: 0x2144ca19
+[15:23:59.926] [RPC ERROR] Code: 303, Message: PHONE_MIGRATE_5
+[15:24:12.993] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:24:13.006] Heartbeat PONG received from Telegram (ping_id: -571727226601020492)
+[15:24:38.024] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:24:38.038] Heartbeat PONG received from Telegram (ping_id: 7759847191996065180)
+[15:25:03.183] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:25:03.191] Heartbeat PONG received from Telegram (ping_id: -2157281517647119383)
+[15:25:27.998] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:25:28.006] Heartbeat PONG received from Telegram (ping_id: -4639476623459583028)
+[15:25:52.995] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:25:53.007] Heartbeat PONG received from Telegram (ping_id: 5770346189874232968)
+[15:26:17.990] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:26:18.003] Heartbeat PONG received from Telegram (ping_id: 5030809212277820454)
+[15:26:34.601] Connecting to Telegram DC at 149.154.167.50:443 via MTProto TCP...
+[15:26:34.800] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[15:26:34.806] Reconnected to Telegram DC with active Auth Key. Resuming session.
+[15:26:35.220] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[15:26:35.223] Message container received containing 2 messages.
+[15:26:35.225] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[15:26:35.227] New MTProto Session confirmed. Server Salt updated: 0xe62acedafa19d90b
+[15:26:35.229] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:26:35.231] Heartbeat PONG received from Telegram (ping_id: 4849924148984178820)
+[15:26:44.390] Requesting Telegram login code for +918950469287...
+[15:26:44.660] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:26:44.662] RPC Result for ReqMsgId: 7680874716211969184, Inner Constructor: 0x2144ca19
+[15:26:44.664] [RPC ERROR] Code: 303, Message: PHONE_MIGRATE_5
+[15:26:45.687] Requesting Telegram login code for +918950469287...
+[15:26:46.100] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:26:46.113] RPC Result for ReqMsgId: 7680874720508144480, Inner Constructor: 0x2144ca19
+[15:26:46.120] [RPC ERROR] Code: 303, Message: PHONE_MIGRATE_5
+[15:26:46.818] Requesting Telegram login code for +918950469287...
+[15:26:47.032] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:26:47.040] RPC Result for ReqMsgId: 7680874724803631776, Inner Constructor: 0x2144ca19
+[15:26:47.044] [RPC ERROR] Code: 303, Message: PHONE_MIGRATE_5
+[15:26:49.973] Requesting Telegram login code for +918950469287...
+[15:26:50.186] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:26:50.191] RPC Result for ReqMsgId: 7680874737689145664, Inner Constructor: 0x2144ca19
+[15:26:50.195] [RPC ERROR] Code: 303, Message: PHONE_MIGRATE_5
+[15:26:50.689] Requesting Telegram login code for +918950469287...
+[15:26:51.423] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:26:51.432] RPC Result for ReqMsgId: 7680874741983028960, Inner Constructor: 0x2144ca19
+[15:26:51.440] [RPC ERROR] Code: 303, Message: PHONE_MIGRATE_5
+[15:27:00.028] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:27:00.044] Heartbeat PONG received from Telegram (ping_id: 8155469650881325302)
+[15:27:14.834] Connecting to Telegram DC at 149.154.167.50:443 via MTProto TCP...
+[15:27:15.058] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[15:27:15.065] Reconnected to Telegram DC with active Auth Key. Resuming session.
+[15:27:15.678] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[15:27:15.680] Message container received containing 2 messages.
+[15:27:15.683] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[15:27:15.685] New MTProto Session confirmed. Server Salt updated: 0xe62acedafa19d90b
+[15:27:15.691] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:27:15.693] Heartbeat PONG received from Telegram (ping_id: 3641239780284866118)
+[15:27:18.980] Requesting Telegram login code for +918950469287...
+[15:27:19.207] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:27:19.216] RPC Result for ReqMsgId: 7680874862243229248, Inner Constructor: 0x2144ca19
+[15:27:19.220] [RPC ERROR] Code: 303, Message: PHONE_MIGRATE_5
+[15:27:19.224] Telegram returned redirect PHONE_MIGRATE_5. Migrating session to DC 5...
+[15:27:19.233] ==================================================
+[15:27:19.237] MIGRATING SESSION TO DATACENTER DC 5 (91.108.56.165:443)...
+[15:27:19.242] ==================================================
+[15:27:19.251] TCP Connection closed by host.
+[15:27:19.274] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[15:27:19.380] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[15:27:19.628] Server RSA Fingerprint [0]: 0xd09d1d85de64fd85
+[15:27:19.637] Server RSA Fingerprint [1]: 0xbc35f3509f7b7a5
+[15:27:19.652] Server RSA Fingerprint [2]: 0xc3b42b026ce86b21
+[15:27:19.662] resPQ received. Factoring PQ (size: 8 bytes, 3 RSA fingerprints)...
+[15:27:20.497] PQ factorized successfully: P=1209133103, Q=1897659509
+[15:27:20.536] Official PEM Key [0] parsed fingerprint: 0xd09d1d85de64fd85
+[15:27:20.544] Selected RSA Public Key Fingerprint: 0xd09d1d85de64fd85
+[15:27:20.567] RSA Encrypted req_DH_params payload ready (size: 256 bytes). Sending...
+[15:28:50.701] Connecting to Telegram DC at 149.154.167.50:443 via MTProto TCP...
+[15:28:50.893] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[15:28:50.899] Reconnected to Telegram DC with active Auth Key. Resuming session.
+[15:28:51.520] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[15:28:51.524] Message container received containing 2 messages.
+[15:28:51.526] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[15:28:51.528] New MTProto Session confirmed. Server Salt updated: 0xe62acedafa19d90b
+[15:28:51.530] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:28:51.532] Heartbeat PONG received from Telegram (ping_id: 1746688787398780848)
+[15:28:56.570] Requesting Telegram login code for +918950469287...
+[15:28:56.783] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:28:56.787] RPC Result for ReqMsgId: 7680875283148412256, Inner Constructor: 0x2144ca19
+[15:28:56.795] [RPC ERROR] Code: 303, Message: PHONE_MIGRATE_5
+[15:28:56.799] Telegram returned redirect PHONE_MIGRATE_5. Migrating session to DC 5...
+[15:28:56.803] ==================================================
+[15:28:56.808] MIGRATING SESSION TO DATACENTER DC 5 (91.108.56.165:443)...
+[15:28:56.812] ==================================================
+[15:28:56.816] TCP Connection closed by host.
+[15:28:56.833] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[15:28:56.933] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[15:28:57.173] Server RSA Fingerprint [0]: 0xd09d1d85de64fd85
+[15:28:57.178] Server RSA Fingerprint [1]: 0xbc35f3509f7b7a5
+[15:28:57.182] Server RSA Fingerprint [2]: 0xc3b42b026ce86b21
+[15:28:57.186] resPQ received. Factoring PQ (size: 8 bytes, 3 RSA fingerprints)...
+[15:28:58.063] PQ factorized successfully: P=1262043001, Q=1519460959
+[15:28:58.067] Official PEM Key [0] parsed fingerprint: 0xd09d1d85de64fd85
+[15:28:58.069] Selected RSA Public Key Fingerprint: 0xd09d1d85de64fd85
+[15:28:58.075] RSA Encrypted req_DH_params payload ready (size: 256 bytes). Sending...
+[15:31:36.480] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[15:31:36.586] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[15:31:36.598] Reconnected to Telegram DC with active Auth Key. Resuming session.
+[15:31:41.894] Requesting Telegram login code for +918950469287...
+[15:32:32.223] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[15:32:32.483] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[15:32:32.491] Reconnected to Telegram DC with active Auth Key. Resuming session.
+[15:32:37.488] Requesting Telegram login code for +918950469287...
+[15:33:46.433] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[15:33:46.544] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[15:33:46.802] Server RSA Fingerprint [0]: 0xd09d1d85de64fd85
+[15:33:46.804] Server RSA Fingerprint [1]: 0xbc35f3509f7b7a5
+[15:33:46.806] Server RSA Fingerprint [2]: 0xc3b42b026ce86b21
+[15:33:46.810] resPQ received. Factoring PQ (size: 8 bytes, 3 RSA fingerprints)...
+[15:33:48.339] PQ factorized successfully: P=1013860649, Q=1453510031
+[15:33:48.342] Official PEM Key [0] parsed fingerprint: 0xd09d1d85de64fd85
+[15:33:48.344] Selected RSA Public Key Fingerprint: 0xd09d1d85de64fd85
+[15:33:48.350] RSA Encrypted req_DH_params payload ready (size: 256 bytes). Sending...
+[15:35:01.010] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[15:35:01.112] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[15:35:01.367] Server RSA Fingerprint [0]: 0xd09d1d85de64fd85
+[15:35:01.369] Server RSA Fingerprint [1]: 0xbc35f3509f7b7a5
+[15:35:01.371] Server RSA Fingerprint [2]: 0xc3b42b026ce86b21
+[15:35:01.375] resPQ received. Factoring PQ (size: 8 bytes, 3 RSA fingerprints)...
+[15:35:02.758] PQ factorized successfully: P=1045208939, Q=1626035689
+[15:35:02.762] Official PEM Key [0] parsed fingerprint: 0xd09d1d85de64fd85
+[15:35:02.764] Selected RSA Public Key Fingerprint: 0xd09d1d85de64fd85
+[15:35:02.769] RSA Encrypted req_DH_params payload ready (size: 256 bytes). Sending...
+[15:35:03.569] server_DH_params_ok received (encrypted size: 592 bytes). Decrypting with tmp_aes_key...
+[15:35:03.597] DH Parameters parsed: g=3, dh_prime=256 bytes, serverTime=1788343502 (timeOffset=-1s)
+[15:35:04.194] Auth Key successfully computed (256 bytes). Constructing client_DH_inner_data...
+[15:35:05.030] ==================================================
+[15:35:05.038] SUCCESS: MTProto 2.0 Auth Key Created!
+[15:35:05.046] AuthKeyID: 0x346e97f9a998f268
+[15:35:05.054] ServerSalt: 0x442887590a966633, SessionID: 0x429a131e61bae4e7
+[15:35:05.061] ==================================================
+[15:35:05.070] Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...
+[15:35:05.209] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[15:35:05.212] Message container received containing 2 messages.
+[15:35:05.215] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[15:35:05.217] New MTProto Session confirmed. Server Salt updated: 0x442887590a966633
+[15:35:05.219] Encrypted MTProto 2.0 Response received! Constructor: 0x62d6b459
+[15:35:05.221] Server acknowledged 1 messages.
+[15:35:05.226] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:35:05.229] RPC Result for ReqMsgId: 7680876863694357184, Inner Constructor: 0x8e1a1775
+[15:35:05.231] ==================================================
+[15:35:05.233] LIVE TELEGRAM RPC SUCCESS: nearestDc
+[15:35:05.235] Country: IN, Current DC: 5, Nearest Recommended DC: 5
+[15:35:05.238] ==================================================
+[15:35:09.422] Requesting Telegram login code for +918950469287...
+[15:35:09.741] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:35:09.747] RPC Result for ReqMsgId: 7680876880875618368, Inner Constructor: 0x5e002502
+[15:35:09.751] ==================================================
+[15:35:09.755] TELEGRAM LOGIN CODE SENT
+[15:35:09.759] Delivery Type: Telegram App, Timeout: 60s, Hash: 42e4cdd23bf0dc7a0c
+[15:35:09.763] ==================================================
+[15:35:28.755] Submitting login verification code 16287 for +918950469287...
+[15:35:28.871] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:35:28.886] RPC Result for ReqMsgId: 7680876962481364992, Inner Constructor: 0x2144ca19
+[15:35:28.893] [RPC ERROR] Code: 400, Message: INPUT_FETCH_ERROR_5119610
+[15:35:30.169] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:35:30.172] Heartbeat PONG received from Telegram (ping_id: 2304601612477568461)
+[15:35:31.449] Submitting login verification code 16287 for +918950469287...
+[15:35:31.668] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:35:31.674] RPC Result for ReqMsgId: 7680876975365006880, Inner Constructor: 0x2144ca19
+[15:35:31.680] [RPC ERROR] Code: 400, Message: INPUT_FETCH_ERROR_879002
+[15:35:37.295] Submitting login verification code 16287 for +918950469287...
+[15:35:37.403] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:35:37.409] RPC Result for ReqMsgId: 7680877001134202656, Inner Constructor: 0x2144ca19
+[15:35:37.417] [RPC ERROR] Code: 400, Message: INPUT_FETCH_ERROR_5136621
+[15:35:48.273] Submitting login verification code 16278 for +918950469287...
+[15:35:48.433] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:35:48.436] RPC Result for ReqMsgId: 7680877048378802912, Inner Constructor: 0x2144ca19
+[15:35:48.440] [RPC ERROR] Code: 400, Message: INPUT_FETCH_ERROR_5136621
+[15:35:49.692] Submitting login verification code 16278 for +918950469287...
+[15:35:49.996] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:35:50.010] RPC Result for ReqMsgId: 7680877052675426208, Inner Constructor: 0x2144ca19
+[15:35:50.024] [RPC ERROR] Code: 400, Message: INPUT_FETCH_ERROR_5122919
+[15:35:50.693] Submitting login verification code 16278 for +918950469287...
+[15:35:50.823] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:35:50.829] RPC Result for ReqMsgId: 7680877056970409504, Inner Constructor: 0x2144ca19
+[15:35:50.840] [RPC ERROR] Code: 400, Message: INPUT_FETCH_ERROR_877816
+[15:35:55.176] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:35:55.191] Heartbeat PONG received from Telegram (ping_id: -5694207337757395282)
+[15:36:00.566] Submitting login verification code 16278 for +918950469287...
+[15:36:00.668] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:36:00.671] RPC Result for ReqMsgId: 7680877099919518464, Inner Constructor: 0x2144ca19
+[15:36:00.673] [RPC ERROR] Code: 400, Message: INPUT_FETCH_ERROR_5110713
+[15:36:20.179] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:36:20.194] Heartbeat PONG received from Telegram (ping_id: 9206981074895752248)
+[15:36:45.253] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:36:45.262] Heartbeat PONG received from Telegram (ping_id: -7131265489487910325)
+[15:36:47.217] Submitting login verification code 16278 for +918950469287...
+[15:36:47.346] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:36:47.350] RPC Result for ReqMsgId: 7680877301781661376, Inner Constructor: 0x2144ca19
+[15:36:47.353] [RPC ERROR] Code: 400, Message: INPUT_FETCH_ERROR_878103
+[15:37:10.177] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:37:10.190] Heartbeat PONG received from Telegram (ping_id: -3202406367707616040)
+[15:37:35.169] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:37:35.176] Heartbeat PONG received from Telegram (ping_id: 8868079404528313303)
+[15:37:44.072] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[15:37:44.176] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[15:37:44.412] Server RSA Fingerprint [0]: 0xd09d1d85de64fd85
+[15:37:44.414] Server RSA Fingerprint [1]: 0xbc35f3509f7b7a5
+[15:37:44.416] Server RSA Fingerprint [2]: 0xc3b42b026ce86b21
+[15:37:44.420] resPQ received. Factoring PQ (size: 8 bytes, 3 RSA fingerprints)...
+[15:37:44.862] PQ factorized successfully: P=1100489521, Q=1707543169
+[15:37:44.865] Official PEM Key [0] parsed fingerprint: 0xd09d1d85de64fd85
+[15:37:44.867] Selected RSA Public Key Fingerprint: 0xd09d1d85de64fd85
+[15:37:44.872] RSA Encrypted req_DH_params payload ready (size: 256 bytes). Sending...
+[15:37:45.494] server_DH_params_ok received (encrypted size: 592 bytes). Decrypting with tmp_aes_key...
+[15:37:45.500] DH Parameters parsed: g=3, dh_prime=256 bytes, serverTime=1788343664 (timeOffset=-1s)
+[15:37:46.105] Auth Key successfully computed (256 bytes). Constructing client_DH_inner_data...
+[15:37:47.018] ==================================================
+[15:37:47.029] SUCCESS: MTProto 2.0 Auth Key Created!
+[15:37:47.037] AuthKeyID: 0xe52d17037685e3bf
+[15:37:47.047] ServerSalt: 0xb09fe6a60d70151a, SessionID: 0x9aeadf6df0029d5a
+[15:37:47.057] ==================================================
+[15:37:47.064] Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...
+[15:37:47.173] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[15:37:47.178] Message container received containing 2 messages.
+[15:37:47.182] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[15:37:47.186] New MTProto Session confirmed. Server Salt updated: 0xb09fe6a60d70151a
+[15:37:47.192] Encrypted MTProto 2.0 Response received! Constructor: 0x62d6b459
+[15:37:47.196] Server acknowledged 1 messages.
+[15:37:47.201] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:37:47.205] RPC Result for ReqMsgId: 7680877559479043136, Inner Constructor: 0x8e1a1775
+[15:37:47.209] ==================================================
+[15:37:47.212] LIVE TELEGRAM RPC SUCCESS: nearestDc
+[15:37:47.216] Country: IN, Current DC: 5, Nearest Recommended DC: 5
+[15:37:47.221] ==================================================
+[15:37:52.060] Requesting Telegram login code for +918950469287...
+[15:37:52.393] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:37:52.405] RPC Result for ReqMsgId: 7680877580953843616, Inner Constructor: 0x5e002502
+[15:37:52.417] ==================================================
+[15:37:52.428] TELEGRAM LOGIN CODE SENT
+[15:37:52.442] Delivery Type: Telegram App, Timeout: 60s, Hash: ab4c71250b37d2e206
+[15:37:52.452] ==================================================
+[15:38:08.586] Submitting login verification code 59948 for +918950469287...
+[15:38:08.733] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:38:08.736] RPC Result for ReqMsgId: 7680877649675456352, Inner Constructor: 0x2144ca19
+[15:38:08.747] [RPC ERROR] Code: 400, Message: INPUT_REQUEST_TOO_LONG
+[15:38:10.128] Submitting login verification code 59948 for +918950469287...
+[15:38:10.244] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:38:10.247] RPC Result for ReqMsgId: 7680877658263530944, Inner Constructor: 0x2144ca19
+[15:38:10.249] [RPC ERROR] Code: 400, Message: INPUT_REQUEST_TOO_LONG
+[15:38:11.501] Submitting login verification code 59948 for +918950469287...
+[15:38:11.637] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:38:11.650] RPC Result for ReqMsgId: 7680877662560022240, Inner Constructor: 0x2144ca19
+[15:38:11.655] [RPC ERROR] Code: 400, Message: INPUT_REQUEST_TOO_LONG
+[15:38:12.211] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:38:12.215] Heartbeat PONG received from Telegram (ping_id: 3959603434755744649)
+[15:38:13.207] Submitting login verification code 59948 for +918950469287...
+[15:38:13.313] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:38:13.315] RPC Result for ReqMsgId: 7680877671148744832, Inner Constructor: 0x2144ca19
+[15:38:13.318] [RPC ERROR] Code: 400, Message: INPUT_REQUEST_TOO_LONG
+[15:38:37.171] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:38:37.180] Heartbeat PONG received from Telegram (ping_id: -8355886081530773308)
+[15:38:43.745] Submitting login verification code 59948 for +918950469287...
+[15:38:43.859] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:38:43.862] RPC Result for ReqMsgId: 7680877799999907712, Inner Constructor: 0x2144ca19
+[15:38:43.865] [RPC ERROR] Code: 400, Message: INPUT_REQUEST_TOO_LONG
+[15:38:53.905] Submitting login verification code 59948 for +918950469287...
+[15:38:54.056] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:38:54.061] RPC Result for ReqMsgId: 7680877842950232672, Inner Constructor: 0x2144ca19
+[15:38:54.071] [RPC ERROR] Code: 400, Message: INPUT_REQUEST_TOO_LONG
+[15:39:02.170] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:39:02.178] Heartbeat PONG received from Telegram (ping_id: -1297633014117003820)
+[15:39:27.170] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:39:27.178] Heartbeat PONG received from Telegram (ping_id: 7121389404622934797)
+[15:39:52.172] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:39:52.179] Heartbeat PONG received from Telegram (ping_id: -2509820999819963770)
+[15:40:17.173] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:40:17.186] Heartbeat PONG received from Telegram (ping_id: 4810251666830251919)
+[15:40:42.176] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:40:42.190] Heartbeat PONG received from Telegram (ping_id: 8588019661271324508)
+[15:41:07.224] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:41:07.236] Heartbeat PONG received from Telegram (ping_id: 640937052363125492)
+[15:41:32.200] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:41:32.208] Heartbeat PONG received from Telegram (ping_id: -7386886912567526761)
+[15:41:57.172] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:41:57.180] Heartbeat PONG received from Telegram (ping_id: 4491367290276468296)
+[15:42:22.180] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:42:22.194] Heartbeat PONG received from Telegram (ping_id: 4520923507769488657)
+[15:42:47.172] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:42:47.180] Heartbeat PONG received from Telegram (ping_id: 675260843114212258)
+[15:43:05.634] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[15:43:05.759] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[15:43:06.050] Server RSA Fingerprint [0]: 0xd09d1d85de64fd85
+[15:43:06.052] Server RSA Fingerprint [1]: 0xbc35f3509f7b7a5
+[15:43:06.054] Server RSA Fingerprint [2]: 0xc3b42b026ce86b21
+[15:43:06.056] resPQ received. Factoring PQ (size: 8 bytes, 3 RSA fingerprints)...
+[15:43:06.572] PQ factorized successfully: P=1127009717, Q=1190515603
+[15:43:06.575] Official PEM Key [0] parsed fingerprint: 0xd09d1d85de64fd85
+[15:43:06.577] Selected RSA Public Key Fingerprint: 0xd09d1d85de64fd85
+[15:43:06.583] RSA Encrypted req_DH_params payload ready (size: 256 bytes). Sending...
+[15:43:07.308] server_DH_params_ok received (encrypted size: 592 bytes). Decrypting with tmp_aes_key...
+[15:43:07.328] DH Parameters parsed: g=3, dh_prime=256 bytes, serverTime=1788343986 (timeOffset=-1s)
+[15:43:08.301] Auth Key successfully computed (256 bytes). Constructing client_DH_inner_data...
+[15:43:08.959] ==================================================
+[15:43:08.964] SUCCESS: MTProto 2.0 Auth Key Created!
+[15:43:08.969] AuthKeyID: 0x48fc8980ed84a3ff
+[15:43:08.973] ServerSalt: 0x12bee53b9cf4bb2a, SessionID: 0x289fd33ceb6089f3
+[15:43:08.977] ==================================================
+[15:43:08.982] Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...
+[15:43:09.083] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[15:43:09.086] Message container received containing 2 messages.
+[15:43:09.089] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[15:43:09.092] New MTProto Session confirmed. Server Salt updated: 0x12bee53b9cf4bb2a
+[15:43:09.098] Encrypted MTProto 2.0 Response received! Constructor: 0x62d6b459
+[15:43:09.102] Server acknowledged 1 messages.
+[15:43:09.105] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:43:09.108] RPC Result for ReqMsgId: 7680878938167193152, Inner Constructor: 0x8e1a1775
+[15:43:09.115] ==================================================
+[15:43:09.118] LIVE TELEGRAM RPC SUCCESS: nearestDc
+[15:43:09.121] Country: IN, Current DC: 5, Nearest Recommended DC: 5
+[15:43:09.123] ==================================================
+[15:43:12.756] Requesting Telegram login code for +918950469287...
+[15:43:13.248] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:43:13.259] RPC Result for ReqMsgId: 7680878955346166336, Inner Constructor: 0x5e002502
+[15:43:13.269] ==================================================
+[15:43:13.280] TELEGRAM LOGIN CODE SENT
+[15:43:13.289] Delivery Type: Telegram App, Timeout: 60s, Hash: e47b2455c41cf7e416
+[15:43:13.301] ==================================================
+[15:43:28.305] Submitting login verification code 73726 for +918950469287 (hash: e47b2455c41cf7e416)...
+[15:43:28.422] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:43:28.427] RPC Result for ReqMsgId: 7680879024063839072, Inner Constructor: 0x2144ca19
+[15:43:28.430] [RPC ERROR] Code: 400, Message: INPUT_FETCH_ERROR_5114105
+[15:43:30.477] Submitting login verification code 73726 for +918950469287 (hash: e47b2455c41cf7e416)...
+[15:43:30.606] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:43:30.610] RPC Result for ReqMsgId: 7680879032654505664, Inner Constructor: 0x2144ca19
+[15:43:30.621] [RPC ERROR] Code: 400, Message: INPUT_FETCH_ERROR_5136618
+[15:43:34.096] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:43:34.104] Heartbeat PONG received from Telegram (ping_id: 2836621373333069028)
+[15:43:49.504] Submitting login verification code 73726 for +918950469287 (hash: e47b2455c41cf7e416)...
+[15:43:49.613] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:43:49.615] RPC Result for ReqMsgId: 7680879114258936288, Inner Constructor: 0x2144ca19
+[15:43:49.617] [RPC ERROR] Code: 400, Message: INPUT_FETCH_ERROR_877931
+[15:43:50.090] Submitting login verification code 73726 for +918950469287 (hash: e47b2455c41cf7e416)...
+[15:43:50.195] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:43:50.197] RPC Result for ReqMsgId: 7680879118552247584, Inner Constructor: 0x2144ca19
+[15:43:50.199] [RPC ERROR] Code: 400, Message: INPUT_FETCH_ERROR_877931
+[15:43:50.557] Submitting login verification code 73726 for +918950469287 (hash: e47b2455c41cf7e416)...
+[15:43:50.675] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:43:50.698] RPC Result for ReqMsgId: 7680879118554119584, Inner Constructor: 0x2144ca19
+[15:43:50.712] [RPC ERROR] Code: 400, Message: INPUT_FETCH_ERROR_878322
+[15:43:59.102] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:43:59.111] Heartbeat PONG received from Telegram (ping_id: 8628167073957245904)
+[15:44:04.522] Submitting login verification code 73726 for +918950469287 (hash: e47b2455c41cf7e416)...
+[15:44:04.628] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:44:04.630] RPC Result for ReqMsgId: 7680879178683513728, Inner Constructor: 0x2144ca19
+[15:44:04.632] [RPC ERROR] Code: 400, Message: INPUT_FETCH_ERROR_860121
+[15:44:05.384] Submitting login verification code 73726 for +918950469287 (hash: e47b2455c41cf7e416)...
+[15:44:05.513] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:44:05.516] RPC Result for ReqMsgId: 7680879182977929024, Inner Constructor: 0x2144ca19
+[15:44:05.518] [RPC ERROR] Code: 400, Message: INPUT_FETCH_ERROR_5120201
+[15:44:24.087] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:44:24.101] Heartbeat PONG received from Telegram (ping_id: 989716214182635269)
+[15:44:49.095] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:44:49.104] Heartbeat PONG received from Telegram (ping_id: 917497870775283465)
+[15:45:14.091] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:45:14.103] Heartbeat PONG received from Telegram (ping_id: 6177813172917224589)
+[15:45:21.276] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[15:45:21.409] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[15:45:21.655] Server RSA Fingerprint [0]: 0xd09d1d85de64fd85
+[15:45:21.657] Server RSA Fingerprint [1]: 0xbc35f3509f7b7a5
+[15:45:21.660] Server RSA Fingerprint [2]: 0xc3b42b026ce86b21
+[15:45:21.662] resPQ received. Factoring PQ (size: 8 bytes, 3 RSA fingerprints)...
+[15:45:23.540] PQ factorized successfully: P=1551331699, Q=1595258207
+[15:45:23.543] Official PEM Key [0] parsed fingerprint: 0xd09d1d85de64fd85
+[15:45:23.545] Selected RSA Public Key Fingerprint: 0xd09d1d85de64fd85
+[15:45:23.550] RSA Encrypted req_DH_params payload ready (size: 256 bytes). Sending...
+[15:45:24.149] server_DH_params_ok received (encrypted size: 592 bytes). Decrypting with tmp_aes_key...
+[15:45:24.178] DH Parameters parsed: g=3, dh_prime=256 bytes, serverTime=1788344123 (timeOffset=-1s)
+[15:45:25.195] Auth Key successfully computed (256 bytes). Constructing client_DH_inner_data...
+[15:45:26.052] ==================================================
+[15:45:26.057] SUCCESS: MTProto 2.0 Auth Key Created!
+[15:45:26.061] AuthKeyID: 0xa3866560784c5e68
+[15:45:26.065] ServerSalt: 0x445a7c6f792db7d8, SessionID: 0xa066186e56133fce
+[15:45:26.069] ==================================================
+[15:45:26.073] Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...
+[15:45:26.173] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[15:45:26.175] Message container received containing 2 messages.
+[15:45:26.178] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[15:45:26.180] New MTProto Session confirmed. Server Salt updated: 0x445a7c6f792db7d8
+[15:45:26.183] Encrypted MTProto 2.0 Response received! Constructor: 0x62d6b459
+[15:45:26.186] Server acknowledged 1 messages.
+[15:45:26.190] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:45:26.192] RPC Result for ReqMsgId: 7680879530869044000, Inner Constructor: 0x8e1a1775
+[15:45:26.195] ==================================================
+[15:45:26.197] LIVE TELEGRAM RPC SUCCESS: nearestDc
+[15:45:26.199] Country: IN, Current DC: 5, Nearest Recommended DC: 5
+[15:45:26.201] ==================================================
+[15:45:30.259] Requesting Telegram login code for +918950469287...
+[15:45:30.667] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:45:30.673] RPC Result for ReqMsgId: 7680879548049649184, Inner Constructor: 0x5e002502
+[15:45:30.679] ==================================================
+[15:45:30.688] TELEGRAM LOGIN CODE SENT
+[15:45:30.693] Delivery Type: Telegram App, Timeout: 60s, Hash: d004978dd2ecb51252
+[15:45:30.700] ==================================================
+[15:45:47.804] Requesting Telegram login code for +918950469287...
+[15:45:47.945] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:45:47.949] RPC Result for ReqMsgId: 7680879621066325216, Inner Constructor: 0x5e002502
+[15:45:47.951] ==================================================
+[15:45:47.953] TELEGRAM LOGIN CODE SENT
+[15:45:47.955] Delivery Type: Telegram App, Timeout: 60s, Hash: d004978dd2ecb51252
+[15:45:47.960] ==================================================
+[15:45:49.522] Submitting login verification code 49139 for +918950469287 (hash: d004978dd2ecb51252)...
+[15:45:49.646] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:45:49.650] RPC Result for ReqMsgId: 7680879629655119808, Inner Constructor: 0x2144ca19
+[15:45:49.654] [RPC ERROR] Code: 400, Message: INPUT_REQUEST_TOO_LONG
+[15:45:50.627] Submitting login verification code 49139 for +918950469287 (hash: d004978dd2ecb51252)...
+[15:45:51.151] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:45:51.162] RPC Result for ReqMsgId: 7680879633950483104, Inner Constructor: 0x2144ca19
+[15:45:51.177] [RPC ERROR] Code: 400, Message: INPUT_REQUEST_TOO_LONG
+[15:45:52.732] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:45:52.746] Heartbeat PONG received from Telegram (ping_id: 4870820908234078395)
+[15:45:57.059] Submitting login verification code 49139 for +918950469287 (hash: d004978dd2ecb51252)...
+[15:45:57.199] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:45:57.202] RPC Result for ReqMsgId: 7680879664012970176, Inner Constructor: 0x2144ca19
+[15:45:57.204] [RPC ERROR] Code: 400, Message: INPUT_REQUEST_TOO_LONG
+[15:45:57.654] Submitting login verification code 49139 for +918950469287 (hash: d004978dd2ecb51252)...
+[15:45:57.798] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:45:57.800] RPC Result for ReqMsgId: 7680879664015350176, Inner Constructor: 0x2144ca19
+[15:45:57.802] [RPC ERROR] Code: 400, Message: INPUT_REQUEST_TOO_LONG
+[15:45:58.548] Submitting login verification code 49139 for +918950469287 (hash: d004978dd2ecb51252)...
+[15:45:58.666] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:45:58.671] RPC Result for ReqMsgId: 7680879668309905472, Inner Constructor: 0x2144ca19
+[15:45:58.674] [RPC ERROR] Code: 400, Message: INPUT_REQUEST_TOO_LONG
+[15:45:59.073] Submitting login verification code 49139 for +918950469287 (hash: d004978dd2ecb51252)...
+[15:45:59.218] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:45:59.232] RPC Result for ReqMsgId: 7680879672602996768, Inner Constructor: 0x2144ca19
+[15:45:59.238] [RPC ERROR] Code: 400, Message: INPUT_REQUEST_TOO_LONG
+[15:46:01.099] Submitting login verification code 49139 for +918950469287 (hash: d004978dd2ecb51252)...
+[15:46:02.107] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:46:02.116] RPC Result for ReqMsgId: 7680879681193011360, Inner Constructor: 0x2144ca19
+[15:46:02.123] [RPC ERROR] Code: 400, Message: INPUT_REQUEST_TOO_LONG
+[15:46:02.917] Submitting login verification code 49139 for +918950469287 (hash: d004978dd2ecb51252)...
+[15:46:03.191] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:46:03.200] RPC Result for ReqMsgId: 7680879685491242656, Inner Constructor: 0x2144ca19
+[15:46:03.211] [RPC ERROR] Code: 400, Message: INPUT_REQUEST_TOO_LONG
+[15:46:16.181] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:46:16.195] Heartbeat PONG received from Telegram (ping_id: 8115841149753093795)
+[15:46:42.860] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:46:42.874] Heartbeat PONG received from Telegram (ping_id: 1448311659642877810)
+[15:46:46.444] Submitting login verification code 49139 for +918950469287 (hash: d004978dd2ecb51252)...
+[15:46:46.549] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:46:46.552] RPC Result for ReqMsgId: 7680879874467907680, Inner Constructor: 0x2144ca19
+[15:46:46.554] [RPC ERROR] Code: 400, Message: INPUT_REQUEST_TOO_LONG
+[15:47:06.414] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:47:06.422] Heartbeat PONG received from Telegram (ping_id: 628432324062483132)
+[15:47:20.388] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[15:47:20.503] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[15:47:20.779] Server RSA Fingerprint [0]: 0xd09d1d85de64fd85
+[15:47:20.782] Server RSA Fingerprint [1]: 0xbc35f3509f7b7a5
+[15:47:20.783] Server RSA Fingerprint [2]: 0xc3b42b026ce86b21
+[15:47:20.786] resPQ received. Factoring PQ (size: 8 bytes, 3 RSA fingerprints)...
+[15:47:21.261] PQ factorized successfully: P=1647179299, Q=1831329589
+[15:47:21.264] Official PEM Key [0] parsed fingerprint: 0xd09d1d85de64fd85
+[15:47:21.266] Selected RSA Public Key Fingerprint: 0xd09d1d85de64fd85
+[15:47:21.271] RSA Encrypted req_DH_params payload ready (size: 256 bytes). Sending...
+[15:47:22.082] server_DH_params_ok received (encrypted size: 592 bytes). Decrypting with tmp_aes_key...
+[15:47:22.088] DH Parameters parsed: g=3, dh_prime=256 bytes, serverTime=1788344241 (timeOffset=-1s)
+[15:47:23.256] Auth Key successfully computed (256 bytes). Constructing client_DH_inner_data...
+[15:47:24.377] ==================================================
+[15:47:24.385] SUCCESS: MTProto 2.0 Auth Key Created!
+[15:47:24.394] AuthKeyID: 0xb32aa39179397f09
+[15:47:24.401] ServerSalt: 0xa75d7f66394d340b, SessionID: 0x61b68951c6d0a8fc
+[15:47:24.408] ==================================================
+[15:47:24.415] Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...
+[15:47:24.533] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[15:47:24.540] Message container received containing 2 messages.
+[15:47:24.544] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[15:47:24.548] New MTProto Session confirmed. Server Salt updated: 0xa75d7f66394d340b
+[15:47:24.552] Encrypted MTProto 2.0 Response received! Constructor: 0x62d6b459
+[15:47:24.557] Server acknowledged 1 messages.
+[15:47:24.565] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:47:24.570] RPC Result for ReqMsgId: 7680880037676568928, Inner Constructor: 0x8e1a1775
+[15:47:24.575] ==================================================
+[15:47:24.581] LIVE TELEGRAM RPC SUCCESS: nearestDc
+[15:47:24.586] Country: IN, Current DC: 5, Nearest Recommended DC: 5
+[15:47:24.590] ==================================================
+[15:47:28.495] Requesting Telegram login code for +918950469287...
+[15:47:29.046] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:47:29.071] RPC Result for ReqMsgId: 7680880054856742112, Inner Constructor: 0x5e002502
+[15:47:29.104] ==================================================
+[15:47:29.117] TELEGRAM LOGIN CODE SENT
+[15:47:29.126] Delivery Type: Telegram App, Timeout: 60s, Hash: 668514644f53db8d22
+[15:47:29.134] ==================================================
+[15:47:41.258] Submitting login verification code 34165 for +918950469287 (hash: 668514644f53db8d22)...
+[15:47:41.424] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:47:41.434] RPC Result for ReqMsgId: 7680880110690392960, Inner Constructor: 0x2144ca19
+[15:47:41.438] [RPC ERROR] Code: 400, Message: PHONE_NUMBER_INVALID
+[15:47:44.459] Submitting login verification code 34165 for +918950469287 (hash: 668514644f53db8d22)...
+[15:47:44.587] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:47:44.593] RPC Result for ReqMsgId: 7680880123576102848, Inner Constructor: 0x2144ca19
+[15:47:44.604] [RPC ERROR] Code: 400, Message: PHONE_NUMBER_INVALID
+[15:47:49.527] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:47:49.535] Heartbeat PONG received from Telegram (ping_id: 4985152216186583819)
+[15:47:58.056] Submitting login verification code 34165 for +918950469287 (hash: 668514644f53db8d22)...
+[15:47:58.174] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:47:58.185] RPC Result for ReqMsgId: 7680880183704016992, Inner Constructor: 0x2144ca19
+[15:47:58.190] [RPC ERROR] Code: 400, Message: PHONE_NUMBER_INVALID
+[15:48:14.532] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:48:14.541] Heartbeat PONG received from Telegram (ping_id: 2501694839386897421)
+[15:48:39.527] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:48:39.536] Heartbeat PONG received from Telegram (ping_id: 8628724762869113714)
+[15:49:04.555] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:49:04.566] Heartbeat PONG received from Telegram (ping_id: 3916419778961862910)
+[15:49:19.122] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[15:49:19.237] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[15:49:19.474] Server RSA Fingerprint [0]: 0xd09d1d85de64fd85
+[15:49:19.477] Server RSA Fingerprint [1]: 0xbc35f3509f7b7a5
+[15:49:19.481] Server RSA Fingerprint [2]: 0xc3b42b026ce86b21
+[15:49:19.483] resPQ received. Factoring PQ (size: 8 bytes, 3 RSA fingerprints)...
+[15:49:20.394] PQ factorized successfully: P=1623478867, Q=1776226943
+[15:49:20.398] Official PEM Key [0] parsed fingerprint: 0xd09d1d85de64fd85
+[15:49:20.400] Selected RSA Public Key Fingerprint: 0xd09d1d85de64fd85
+[15:49:20.405] RSA Encrypted req_DH_params payload ready (size: 256 bytes). Sending...
+[15:49:21.482] server_DH_params_ok received (encrypted size: 592 bytes). Decrypting with tmp_aes_key...
+[15:49:21.488] DH Parameters parsed: g=3, dh_prime=256 bytes, serverTime=1788344360 (timeOffset=-1s)
+[15:49:22.631] Auth Key successfully computed (256 bytes). Constructing client_DH_inner_data...
+[15:49:23.556] ==================================================
+[15:49:23.562] SUCCESS: MTProto 2.0 Auth Key Created!
+[15:49:23.572] AuthKeyID: 0x01f3a07373fd190e
+[15:49:23.577] ServerSalt: 0x2395ad51878b27cd, SessionID: 0x46571431ba810823
+[15:49:23.584] ==================================================
+[15:49:23.588] Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...
+[15:49:23.690] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[15:49:23.693] Message container received containing 2 messages.
+[15:49:23.700] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[15:49:23.704] New MTProto Session confirmed. Server Salt updated: 0x2395ad51878b27cd
+[15:49:23.706] Encrypted MTProto 2.0 Response received! Constructor: 0x62d6b459
+[15:49:23.709] Server acknowledged 1 messages.
+[15:49:23.716] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:49:23.720] RPC Result for ReqMsgId: 7680880548778353152, Inner Constructor: 0x8e1a1775
+[15:49:23.723] ==================================================
+[15:49:23.725] LIVE TELEGRAM RPC SUCCESS: nearestDc
+[15:49:23.728] Country: IN, Current DC: 5, Nearest Recommended DC: 5
+[15:49:23.735] ==================================================
+[15:49:27.422] Requesting Telegram login code for +918950469287...
+[15:49:28.438] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:49:28.447] RPC Result for ReqMsgId: 7680880565957558336, Inner Constructor: 0x5e002502
+[15:49:28.454] ==================================================
+[15:49:28.462] TELEGRAM LOGIN CODE SENT
+[15:49:28.469] Delivery Type: Telegram App, Timeout: 60s, Hash: ba5304702c791ea2ab
+[15:49:28.481] ==================================================
+[15:49:40.735] Submitting login verification code 15858 for +918950469287 (hash: ba5304702c791ea2ab)...
+[15:49:40.854] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:49:40.857] RPC Result for ReqMsgId: 7680880621793393184, Inner Constructor: 0x2144ca19
+[15:49:40.864] [RPC ERROR] Code: 400, Message: INPUT_REQUEST_TOO_LONG
+[15:49:44.334] Submitting login verification code 15858 for +918950469287 (hash: ba5304702c791ea2ab)...
+[15:49:44.600] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:49:44.606] RPC Result for ReqMsgId: 7680880638971662368, Inner Constructor: 0x2144ca19
+[15:49:44.610] [RPC ERROR] Code: 400, Message: INPUT_REQUEST_TOO_LONG
+[15:49:46.629] Submitting login verification code 15858 for +918950469287 (hash: ba5304702c791ea2ab)...
+[15:49:46.781] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:49:46.793] RPC Result for ReqMsgId: 7680880647562908960, Inner Constructor: 0x2144ca19
+[15:49:46.798] [RPC ERROR] Code: 400, Message: INPUT_REQUEST_TOO_LONG
+[15:49:47.314] Submitting login verification code 15858 for +918950469287 (hash: ba5304702c791ea2ab)...
+[15:49:47.463] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:49:47.474] RPC Result for ReqMsgId: 7680880651856508256, Inner Constructor: 0x2144ca19
+[15:49:47.478] [RPC ERROR] Code: 400, Message: INPUT_REQUEST_TOO_LONG
+[15:49:48.694] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:49:48.704] Heartbeat PONG received from Telegram (ping_id: 30918518324090551)
+[15:51:53.159] [CRITICAL ERROR] TCP Socket Error: Software caused connection abort
+[15:51:53.162] [ERROR] TCP Socket: Software caused connection abort
+[15:51:53.164] TCP Connection closed by host.
+[15:51:53.167] Connection dropped. Auto-reconnecting in 3 seconds...
+[15:51:56.172] Reconnecting to Telegram DC 91.108.56.165:443...
+[15:51:56.175] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[15:51:56.182] [CRITICAL ERROR] TCP Socket Error: Host unreachable
+[15:51:56.189] [ERROR] TCP Socket: Host unreachable
+[15:53:20.107] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[15:53:20.212] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[15:53:20.444] Server RSA Fingerprint [0]: 0xd09d1d85de64fd85
+[15:53:20.447] Server RSA Fingerprint [1]: 0xbc35f3509f7b7a5
+[15:53:20.449] Server RSA Fingerprint [2]: 0xc3b42b026ce86b21
+[15:53:20.451] resPQ received. Factoring PQ (size: 8 bytes, 3 RSA fingerprints)...
+[15:53:21.482] PQ factorized successfully: P=1597072363, Q=1644557857
+[15:53:21.485] Official PEM Key [0] parsed fingerprint: 0xd09d1d85de64fd85
+[15:53:21.487] Selected RSA Public Key Fingerprint: 0xd09d1d85de64fd85
+[15:53:21.493] RSA Encrypted req_DH_params payload ready (size: 256 bytes). Sending...
+[15:53:22.152] server_DH_params_ok received (encrypted size: 592 bytes). Decrypting with tmp_aes_key...
+[15:53:22.163] DH Parameters parsed: g=3, dh_prime=256 bytes, serverTime=1788344601 (timeOffset=-1s)
+[15:53:23.291] Auth Key successfully computed (256 bytes). Constructing client_DH_inner_data...
+[15:53:24.185] ==================================================
+[15:53:24.190] SUCCESS: MTProto 2.0 Auth Key Created!
+[15:53:24.195] AuthKeyID: 0x4bf5ab9894fb3d3e
+[15:53:24.199] ServerSalt: 0x2462977b4afa45c4, SessionID: 0xc92bf2dd5801a065
+[15:53:24.203] ==================================================
+[15:53:24.208] Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...
+[15:53:24.301] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[15:53:24.304] Message container received containing 2 messages.
+[15:53:24.310] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[15:53:24.313] New MTProto Session confirmed. Server Salt updated: 0x2462977b4afa45c4
+[15:53:24.315] Encrypted MTProto 2.0 Response received! Constructor: 0x62d6b459
+[15:53:24.317] Server acknowledged 1 messages.
+[15:53:24.321] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:53:24.327] RPC Result for ReqMsgId: 7680881583863951488, Inner Constructor: 0x8e1a1775
+[15:53:24.330] ==================================================
+[15:53:24.332] LIVE TELEGRAM RPC SUCCESS: nearestDc
+[15:53:24.334] Country: IN, Current DC: 5, Nearest Recommended DC: 5
+[15:53:24.336] ==================================================
+[15:53:27.538] Requesting Telegram login code for +918950469287...
+[15:53:27.879] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:53:27.885] RPC Result for ReqMsgId: 7680881596750189376, Inner Constructor: 0x5e002502
+[15:53:27.890] ==================================================
+[15:53:27.895] TELEGRAM LOGIN CODE SENT
+[15:53:27.899] Delivery Type: Telegram App, Timeout: 60s, Hash: dba6ac282e354b4538
+[15:53:27.908] ==================================================
+[15:53:41.603] Submitting login verification code 82885 for +918950469287 (hash: dba6ac282e354b4538)...
+[15:53:41.732] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:53:41.736] RPC Result for ReqMsgId: 7680881656879975520, Inner Constructor: 0x2144ca19
+[15:53:41.740] [RPC ERROR] Code: 400, Message: INPUT_FETCH_ERROR_876824
+[15:53:44.382] Submitting login verification code 82885 for +918950469287 (hash: dba6ac282e354b4538)...
+[15:53:44.512] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:53:44.514] RPC Result for ReqMsgId: 7680881669763993408, Inner Constructor: 0x2144ca19
+[15:53:44.517] [RPC ERROR] Code: 400, Message: INPUT_FETCH_ERROR_5124513
+[15:53:49.322] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:53:49.337] Heartbeat PONG received from Telegram (ping_id: 1855665553908630559)
+[15:54:13.738] Submitting login verification code 82885 for +918950469287 (hash: dba6ac282e354b4538)...
+[15:54:13.862] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:54:13.876] RPC Result for ReqMsgId: 7680881794319536992, Inner Constructor: 0x2144ca19
+[15:54:13.883] [RPC ERROR] Code: 400, Message: INPUT_FETCH_ERROR_866023
+[15:54:14.360] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:54:14.372] Heartbeat PONG received from Telegram (ping_id: -6205823348972712277)
+[15:54:38.003] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[15:54:38.139] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[15:54:38.375] Server RSA Fingerprint [0]: 0xd09d1d85de64fd85
+[15:54:38.378] Server RSA Fingerprint [1]: 0xbc35f3509f7b7a5
+[15:54:38.380] Server RSA Fingerprint [2]: 0xc3b42b026ce86b21
+[15:54:38.382] resPQ received. Factoring PQ (size: 8 bytes, 3 RSA fingerprints)...
+[15:54:39.299] PQ factorized successfully: P=1379967637, Q=1525814737
+[15:54:39.304] Official PEM Key [0] parsed fingerprint: 0xd09d1d85de64fd85
+[15:54:39.306] Selected RSA Public Key Fingerprint: 0xd09d1d85de64fd85
+[15:54:39.311] RSA Encrypted req_DH_params payload ready (size: 256 bytes). Sending...
+[15:54:40.154] server_DH_params_ok received (encrypted size: 592 bytes). Decrypting with tmp_aes_key...
+[15:54:40.166] DH Parameters parsed: g=3, dh_prime=256 bytes, serverTime=1788344679 (timeOffset=-1s)
+[15:54:41.827] Auth Key successfully computed (256 bytes). Constructing client_DH_inner_data...
+[15:54:42.421] ==================================================
+[15:54:42.426] SUCCESS: MTProto 2.0 Auth Key Created!
+[15:54:42.430] AuthKeyID: 0xb3e29e94be1cb61d
+[15:54:42.434] ServerSalt: 0xec8faebd1c5ed068, SessionID: 0xedc435380a69e64d
+[15:54:42.440] ==================================================
+[15:54:42.444] Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...
+[15:54:42.550] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[15:54:42.561] Message container received containing 2 messages.
+[15:54:42.565] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[15:54:42.569] New MTProto Session confirmed. Server Salt updated: 0xec8faebd1c5ed068
+[15:54:42.579] Encrypted MTProto 2.0 Response received! Constructor: 0x62d6b459
+[15:54:42.583] Server acknowledged 1 messages.
+[15:54:42.594] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:54:42.598] RPC Result for ReqMsgId: 7680881918872348576, Inner Constructor: 0x8e1a1775
+[15:54:42.602] ==================================================
+[15:54:42.607] LIVE TELEGRAM RPC SUCCESS: nearestDc
+[15:54:42.611] Country: IN, Current DC: 5, Nearest Recommended DC: 5
+[15:54:42.614] ==================================================
+[15:54:46.426] Requesting Telegram login code for +918950469287...
+[15:54:46.907] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:54:46.909] RPC Result for ReqMsgId: 7680881936052149760, Inner Constructor: 0x5e002502
+[15:54:46.911] ==================================================
+[15:54:46.913] TELEGRAM LOGIN CODE SENT
+[15:54:46.915] Delivery Type: Telegram App, Timeout: 60s, Hash: ed927629f1b561e172
+[15:54:46.917] ==================================================
+[15:54:54.776] Submitting login verification code 69780 for +918950469287 (hash: ed927629f1b561e172)...
+[15:54:54.905] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:54:54.917] RPC Result for ReqMsgId: 7680881970413324128, Inner Constructor: 0x2144ca19
+[15:54:54.932] [RPC ERROR] Code: 400, Message: PHONE_NUMBER_INVALID
+[15:54:58.169] Submitting login verification code 69780 for +918950469287 (hash: ed927629f1b561e172)...
+[15:54:58.331] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:54:58.336] RPC Result for ReqMsgId: 7680881987590721312, Inner Constructor: 0x2144ca19
+[15:54:58.340] [RPC ERROR] Code: 400, Message: PHONE_NUMBER_INVALID
+[15:55:07.547] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:55:07.556] Heartbeat PONG received from Telegram (ping_id: 4771320294379959225)
+[15:55:14.729] Submitting login verification code 69780 for +918950469287 (hash: ed927629f1b561e172)...
+[15:55:14.937] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:55:14.954] RPC Result for ReqMsgId: 7680882056312438048, Inner Constructor: 0x2144ca19
+[15:55:14.961] [RPC ERROR] Code: 400, Message: PHONE_NUMBER_INVALID
+[15:55:15.473] Submitting login verification code 69780 for +918950469287 (hash: ed927629f1b561e172)...
+[15:55:15.618] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:55:15.636] RPC Result for ReqMsgId: 7680882060606465344, Inner Constructor: 0x2144ca19
+[15:55:15.658] [RPC ERROR] Code: 400, Message: PHONE_NUMBER_INVALID
+[15:55:16.157] Submitting login verification code 69780 for +918950469287 (hash: ed927629f1b561e172)...
+[15:55:16.368] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:55:16.375] RPC Result for ReqMsgId: 7680882064900136640, Inner Constructor: 0x2144ca19
+[15:55:16.385] [RPC ERROR] Code: 400, Message: PHONE_NUMBER_INVALID
+[15:55:32.796] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:55:32.805] Heartbeat PONG received from Telegram (ping_id: 697160776368757573)
+[15:55:58.184] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:55:58.193] Heartbeat PONG received from Telegram (ping_id: 5809250304401386772)
+[15:56:22.562] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:56:22.576] Heartbeat PONG received from Telegram (ping_id: -8869158036320758812)
+[15:56:38.982] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[15:56:39.097] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[15:56:39.341] Server RSA Fingerprint [0]: 0xd09d1d85de64fd85
+[15:56:39.346] Server RSA Fingerprint [1]: 0xbc35f3509f7b7a5
+[15:56:39.348] Server RSA Fingerprint [2]: 0xc3b42b026ce86b21
+[15:56:39.350] resPQ received. Factoring PQ (size: 8 bytes, 3 RSA fingerprints)...
+[15:56:42.443] PQ factorized successfully: P=1266493001, Q=1858507517
+[15:56:42.446] Official PEM Key [0] parsed fingerprint: 0xd09d1d85de64fd85
+[15:56:42.448] Selected RSA Public Key Fingerprint: 0xd09d1d85de64fd85
+[15:56:42.454] RSA Encrypted req_DH_params payload ready (size: 256 bytes). Sending...
+[15:56:42.457] [CRITICAL ERROR] TCP Socket Error: The remote host closed the connection
+[15:56:42.460] [ERROR] TCP Socket: The remote host closed the connection
+[15:56:42.462] TCP Connection closed by host.
+[15:56:42.465] Connection dropped. Auto-reconnecting in 3 seconds...
+[15:56:45.468] Reconnecting to Telegram DC 91.108.56.165:443...
+[15:56:45.487] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[15:56:45.521] [CRITICAL ERROR] TCP Socket Error: Host unreachable
+[15:56:45.530] [ERROR] TCP Socket: Host unreachable
+[15:57:16.324] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[15:57:16.455] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[15:57:16.725] Server RSA Fingerprint [0]: 0xd09d1d85de64fd85
+[15:57:16.727] Server RSA Fingerprint [1]: 0xbc35f3509f7b7a5
+[15:57:16.729] Server RSA Fingerprint [2]: 0xc3b42b026ce86b21
+[15:57:16.733] resPQ received. Factoring PQ (size: 8 bytes, 3 RSA fingerprints)...
+[15:57:18.248] PQ factorized successfully: P=1818048437, Q=1864407557
+[15:57:18.252] Official PEM Key [0] parsed fingerprint: 0xd09d1d85de64fd85
+[15:57:18.254] Selected RSA Public Key Fingerprint: 0xd09d1d85de64fd85
+[15:57:18.260] RSA Encrypted req_DH_params payload ready (size: 256 bytes). Sending...
+[15:57:18.973] server_DH_params_ok received (encrypted size: 592 bytes). Decrypting with tmp_aes_key...
+[15:57:18.980] DH Parameters parsed: g=3, dh_prime=256 bytes, serverTime=1788344838 (timeOffset=0s)
+[15:57:19.989] Auth Key successfully computed (256 bytes). Constructing client_DH_inner_data...
+[15:57:20.637] ==================================================
+[15:57:20.641] SUCCESS: MTProto 2.0 Auth Key Created!
+[15:57:20.645] AuthKeyID: 0x7839d3fe2d91c1da
+[15:57:20.650] ServerSalt: 0xc158ce0bda0311f8, SessionID: 0xeb21356966e0579
+[15:57:20.656] ==================================================
+[15:57:20.661] Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...
+[15:57:20.764] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[15:57:20.768] Message container received containing 2 messages.
+[15:57:20.771] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[15:57:20.774] New MTProto Session confirmed. Server Salt updated: 0xc158ce0bda0311f8
+[15:57:20.776] Encrypted MTProto 2.0 Response received! Constructor: 0x62d6b459
+[15:57:20.778] Server acknowledged 1 messages.
+[15:57:20.782] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:57:20.786] RPC Result for ReqMsgId: 7680882601773012640, Inner Constructor: 0x8e1a1775
+[15:57:20.789] ==================================================
+[15:57:20.791] LIVE TELEGRAM RPC SUCCESS: nearestDc
+[15:57:20.794] Country: IN, Current DC: 5, Nearest Recommended DC: 5
+[15:57:20.797] ==================================================
+[15:57:24.899] Requesting Telegram login code for +918950469287...
+[15:57:25.428] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:57:25.438] RPC Result for ReqMsgId: 7680882618953849824, Inner Constructor: 0x5e002502
+[15:57:25.447] ==================================================
+[15:57:25.459] TELEGRAM LOGIN CODE SENT
+[15:57:25.468] Delivery Type: Telegram App, Timeout: 60s, Hash: f38625f1e4278c1025
+[15:57:25.477] ==================================================
+[15:57:38.126] Submitting login verification code 18784 for +918950469287 (hash: f38625f1e4278c1025)...
+[15:57:38.242] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:57:38.245] RPC Result for ReqMsgId: 7680882679080291968, Inner Constructor: 0x2144ca19
+[15:57:38.249] [RPC ERROR] Code: 400, Message: INPUT_REQUEST_TOO_LONG
+[15:57:39.968] Submitting login verification code 18784 for +918950469287 (hash: f38625f1e4278c1025)...
+[15:57:40.095] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:57:40.100] RPC Result for ReqMsgId: 7680882683378663264, Inner Constructor: 0x2144ca19
+[15:57:40.111] [RPC ERROR] Code: 400, Message: INPUT_REQUEST_TOO_LONG
+[15:57:45.773] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:57:45.782] Heartbeat PONG received from Telegram (ping_id: 2785673517752329762)
+[15:58:10.773] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:58:10.786] Heartbeat PONG received from Telegram (ping_id: 3842236608902459446)
+[15:58:14.577] Submitting login verification code 18784 for +918950469287 (hash: f38625f1e4278c1025)...
+[15:58:14.796] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:58:14.803] RPC Result for ReqMsgId: 7680882833700910624, Inner Constructor: 0x2144ca19
+[15:58:14.810] [RPC ERROR] Code: 400, Message: INPUT_REQUEST_TOO_LONG
+[15:58:15.292] Submitting login verification code 18784 for +918950469287 (hash: f38625f1e4278c1025)...
+[15:58:15.440] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:58:15.443] RPC Result for ReqMsgId: 7680882837994741920, Inner Constructor: 0x2144ca19
+[15:58:15.445] [RPC ERROR] Code: 400, Message: INPUT_REQUEST_TOO_LONG
+[15:58:15.612] Submitting login verification code 18784 for +918950469287 (hash: f38625f1e4278c1025)...
+[15:58:15.718] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:58:15.721] RPC Result for ReqMsgId: 7680882837996013920, Inner Constructor: 0x2144ca19
+[15:58:15.723] [RPC ERROR] Code: 400, Message: INPUT_REQUEST_TOO_LONG
+[15:58:15.895] Submitting login verification code 18784 for +918950469287 (hash: f38625f1e4278c1025)...
+[15:58:16.002] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:58:16.004] RPC Result for ReqMsgId: 7680882837997145920, Inner Constructor: 0x2144ca19
+[15:58:16.006] [RPC ERROR] Code: 400, Message: INPUT_REQUEST_TOO_LONG
+[15:58:35.773] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:58:35.782] Heartbeat PONG received from Telegram (ping_id: 9088597631430088122)
+[15:59:00.772] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:59:00.783] Heartbeat PONG received from Telegram (ping_id: 4784997481117344193)
+[15:59:24.347] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[15:59:24.459] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[15:59:24.798] Server RSA Fingerprint [0]: 0xd09d1d85de64fd85
+[15:59:24.800] Server RSA Fingerprint [1]: 0xbc35f3509f7b7a5
+[15:59:24.802] Server RSA Fingerprint [2]: 0xc3b42b026ce86b21
+[15:59:24.806] resPQ received. Factoring PQ (size: 8 bytes, 3 RSA fingerprints)...
+[15:59:26.811] PQ factorized successfully: P=1373840443, Q=1514706241
+[15:59:26.814] Official PEM Key [0] parsed fingerprint: 0xd09d1d85de64fd85
+[15:59:26.816] Selected RSA Public Key Fingerprint: 0xd09d1d85de64fd85
+[15:59:26.822] RSA Encrypted req_DH_params payload ready (size: 256 bytes). Sending...
+[15:59:30.052] server_DH_params_ok received (encrypted size: 592 bytes). Decrypting with tmp_aes_key...
+[15:59:30.131] DH Parameters parsed: g=3, dh_prime=256 bytes, serverTime=1788344966 (timeOffset=-4s)
+[15:59:30.754] Auth Key successfully computed (256 bytes). Constructing client_DH_inner_data...
+[15:59:31.402] ==================================================
+[15:59:31.413] SUCCESS: MTProto 2.0 Auth Key Created!
+[15:59:31.419] AuthKeyID: 0xbacb3bdd600d191e
+[15:59:31.423] ServerSalt: 0x61b0e82b8e49ca02, SessionID: 0x3589e0fcf8c74c79
+[15:59:31.432] ==================================================
+[15:59:31.436] Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...
+[15:59:31.532] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[15:59:31.535] Message container received containing 2 messages.
+[15:59:31.537] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[15:59:31.540] New MTProto Session confirmed. Server Salt updated: 0x61b0e82b8e49ca02
+[15:59:31.543] Encrypted MTProto 2.0 Response received! Constructor: 0x62d6b459
+[15:59:31.545] Server acknowledged 1 messages.
+[15:59:31.562] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[15:59:31.565] RPC Result for ReqMsgId: 7680883147232963232, Inner Constructor: 0x8e1a1775
+[15:59:31.569] ==================================================
+[15:59:31.571] LIVE TELEGRAM RPC SUCCESS: nearestDc
+[15:59:31.577] Country: IN, Current DC: 5, Nearest Recommended DC: 5
+[15:59:31.580] ==================================================
+[15:59:58.050] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[15:59:58.059] Heartbeat PONG received from Telegram (ping_id: 2571690517480796189)
+[16:00:21.541] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:00:21.550] Heartbeat PONG received from Telegram (ping_id: -4547378977702509141)
+[16:00:22.060] Requesting Telegram login code for +918950469287...
+[16:00:22.383] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:00:22.393] RPC Result for ReqMsgId: 7680883366274795328, Inner Constructor: 0x5e002502
+[16:00:22.404] ==================================================
+[16:00:22.413] TELEGRAM LOGIN CODE SENT
+[16:00:22.425] Delivery Type: Telegram App, Timeout: 60s, Hash: 1f3f232f666ba5366d
+[16:00:22.435] ==================================================
+[16:00:35.249] Submitting login verification code 80220 for +918950469287 (hash: 1f3f232f666ba5366d)...
+[16:00:35.367] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:00:35.369] RPC Result for ReqMsgId: 7680883422110110176, Inner Constructor: 0x2144ca19
+[16:00:35.371] [RPC ERROR] Code: 400, Message: PHONE_NUMBER_INVALID
+[16:00:37.471] Submitting login verification code 80220 for +918950469287 (hash: 1f3f232f666ba5366d)...
+[16:00:37.661] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:00:37.664] RPC Result for ReqMsgId: 7680883430700940768, Inner Constructor: 0x2144ca19
+[16:00:37.676] [RPC ERROR] Code: 400, Message: PHONE_NUMBER_INVALID
+[16:00:46.549] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:00:46.565] Heartbeat PONG received from Telegram (ping_id: 4492177595199356489)
+[16:01:11.544] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:01:11.553] Heartbeat PONG received from Telegram (ping_id: 2806791867719358356)
+[16:01:36.540] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:01:36.549] Heartbeat PONG received from Telegram (ping_id: 3102076352818076800)
+[16:02:01.557] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:02:01.572] Heartbeat PONG received from Telegram (ping_id: -8558217201982248322)
+[16:02:18.422] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[16:02:18.531] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[16:02:18.763] Server RSA Fingerprint [0]: 0xd09d1d85de64fd85
+[16:02:18.766] Server RSA Fingerprint [1]: 0xbc35f3509f7b7a5
+[16:02:18.768] Server RSA Fingerprint [2]: 0xc3b42b026ce86b21
+[16:02:18.769] resPQ received. Factoring PQ (size: 8 bytes, 3 RSA fingerprints)...
+[16:02:20.188] PQ factorized successfully: P=1547539979, Q=1578408397
+[16:02:20.191] Official PEM Key [0] parsed fingerprint: 0xd09d1d85de64fd85
+[16:02:20.193] Selected RSA Public Key Fingerprint: 0xd09d1d85de64fd85
+[16:02:20.199] RSA Encrypted req_DH_params payload ready (size: 256 bytes). Sending...
+[16:02:20.965] server_DH_params_ok received (encrypted size: 592 bytes). Decrypting with tmp_aes_key...
+[16:02:20.983] DH Parameters parsed: g=3, dh_prime=256 bytes, serverTime=1788345140 (timeOffset=0s)
+[16:02:21.983] Auth Key successfully computed (256 bytes). Constructing client_DH_inner_data...
+[16:02:22.924] ==================================================
+[16:02:22.928] SUCCESS: MTProto 2.0 Auth Key Created!
+[16:02:22.932] AuthKeyID: 0x49c32335ec576059
+[16:02:22.935] ServerSalt: 0xc3cc9061ad14c44e, SessionID: 0xd49e3fe2f804dee5
+[16:02:22.941] ==================================================
+[16:02:22.944] Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...
+[16:02:23.047] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[16:02:23.050] Message container received containing 2 messages.
+[16:02:23.052] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[16:02:23.058] New MTProto Session confirmed. Server Salt updated: 0xc3cc9061ad14c44e
+[16:02:23.061] Encrypted MTProto 2.0 Response received! Constructor: 0x62d6b459
+[16:02:23.065] Server acknowledged 1 messages.
+[16:02:23.075] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:02:23.079] RPC Result for ReqMsgId: 7680883898854276032, Inner Constructor: 0x8e1a1775
+[16:02:23.083] ==================================================
+[16:02:23.085] LIVE TELEGRAM RPC SUCCESS: nearestDc
+[16:02:23.087] Country: IN, Current DC: 5, Nearest Recommended DC: 5
+[16:02:23.093] ==================================================
+[16:02:29.685] Requesting Telegram login code for +918950469287...
+[16:02:30.011] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:02:30.017] RPC Result for ReqMsgId: 7680883928917999104, Inner Constructor: 0x5e002502
+[16:02:30.025] ==================================================
+[16:02:30.030] TELEGRAM LOGIN CODE SENT
+[16:02:30.036] Delivery Type: Telegram App, Timeout: 60s, Hash: b4d868bc0188de9655
+[16:02:30.041] ==================================================
+[16:02:43.489] Requesting Telegram login code for +918950469287...
+[16:02:44.034] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:02:44.036] RPC Result for ReqMsgId: 7680883989046757248, Inner Constructor: 0x5e002502
+[16:02:44.038] ==================================================
+[16:02:44.041] TELEGRAM LOGIN CODE SENT
+[16:02:44.043] Delivery Type: Telegram App, Timeout: 60s, Hash: b4d868bc0188de9655
+[16:02:44.045] ==================================================
+[16:02:48.122] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:02:48.131] Heartbeat PONG received from Telegram (ping_id: 5764404359277149127)
+[16:03:12.626] Requesting Telegram login code for +918950469287...
+[16:03:12.787] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:03:12.790] RPC Result for ReqMsgId: 7680884113601412832, Inner Constructor: 0x5e002502
+[16:03:12.792] ==================================================
+[16:03:12.794] TELEGRAM LOGIN CODE SENT
+[16:03:12.799] Delivery Type: Telegram App, Timeout: 60s, Hash: b4d868bc0188de9655
+[16:03:12.801] ==================================================
+[16:03:13.064] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:03:13.067] Heartbeat PONG received from Telegram (ping_id: 3398945264698300461)
+[16:03:38.063] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:03:38.075] Heartbeat PONG received from Telegram (ping_id: -3324470501424027380)
+[16:04:03.058] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:04:03.070] Heartbeat PONG received from Telegram (ping_id: -6197707817305054815)
+[16:04:18.817] Requesting Telegram login code for +918950469287...
+[16:04:18.961] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:04:18.964] RPC Result for ReqMsgId: 7680884397070018368, Inner Constructor: 0x5e002502
+[16:04:18.968] ==================================================
+[16:04:18.969] TELEGRAM LOGIN CODE SENT
+[16:04:18.971] Delivery Type: Telegram App, Timeout: 60s, Hash: b4d868bc0188de9655
+[16:04:18.973] ==================================================
+[16:04:28.047] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:04:28.061] Heartbeat PONG received from Telegram (ping_id: -2479465094368756478)
+[16:04:53.106] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:04:53.113] Heartbeat PONG received from Telegram (ping_id: 4994320007215886398)
+[16:05:18.047] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:05:18.056] Heartbeat PONG received from Telegram (ping_id: -1037718457929957259)
+[16:05:43.056] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:05:43.065] Heartbeat PONG received from Telegram (ping_id: -5214672365906754645)
+[16:06:05.549] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[16:06:05.684] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[16:06:05.983] Server RSA Fingerprint [0]: 0xd09d1d85de64fd85
+[16:06:05.985] Server RSA Fingerprint [1]: 0xbc35f3509f7b7a5
+[16:06:05.987] Server RSA Fingerprint [2]: 0xc3b42b026ce86b21
+[16:06:05.989] resPQ received. Factoring PQ (size: 8 bytes, 3 RSA fingerprints)...
+[16:06:06.253] PQ factorized successfully: P=1015799357, Q=1724446777
+[16:06:06.256] Official PEM Key [0] parsed fingerprint: 0xd09d1d85de64fd85
+[16:06:06.258] Selected RSA Public Key Fingerprint: 0xd09d1d85de64fd85
+[16:06:06.264] RSA Encrypted req_DH_params payload ready (size: 256 bytes). Sending...
+[16:06:06.860] server_DH_params_ok received (encrypted size: 592 bytes). Decrypting with tmp_aes_key...
+[16:06:06.875] DH Parameters parsed: g=3, dh_prime=256 bytes, serverTime=1788345366 (timeOffset=0s)
+[16:06:08.035] Auth Key successfully computed (256 bytes). Constructing client_DH_inner_data...
+[16:06:09.151] ==================================================
+[16:06:09.158] SUCCESS: MTProto 2.0 Auth Key Created!
+[16:06:09.168] AuthKeyID: 0xe58254aa956b043c
+[16:06:09.176] ServerSalt: 0xc808004293689ca7, SessionID: 0x5ca4b33ac38a6932
+[16:06:09.184] ==================================================
+[16:06:09.193] Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...
+[16:06:09.306] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[16:06:09.309] Message container received containing 2 messages.
+[16:06:09.339] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[16:06:09.358] New MTProto Session confirmed. Server Salt updated: 0xc808004293689ca7
+[16:06:09.361] Encrypted MTProto 2.0 Response received! Constructor: 0x62d6b459
+[16:06:09.365] Server acknowledged 1 messages.
+[16:06:09.370] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:06:09.373] RPC Result for ReqMsgId: 7680884873808864224, Inner Constructor: 0x8e1a1775
+[16:06:09.376] ==================================================
+[16:06:09.383] LIVE TELEGRAM RPC SUCCESS: nearestDc
+[16:06:09.387] Country: IN, Current DC: 5, Nearest Recommended DC: 5
+[16:06:09.389] ==================================================
+[16:06:13.006] Requesting Telegram login code for +918950469287...
+[16:06:13.407] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:06:13.419] RPC Result for ReqMsgId: 7680884890987965408, Inner Constructor: 0x5e002502
+[16:06:13.428] ==================================================
+[16:06:13.437] TELEGRAM LOGIN CODE SENT
+[16:06:13.448] Delivery Type: Telegram App, Timeout: 60s, Hash: cf41d343014be573bb
+[16:06:13.458] ==================================================
+[16:06:34.302] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:06:34.308] Heartbeat PONG received from Telegram (ping_id: -4166029416445963128)
+[16:06:55.517] Requesting Telegram code resend (SMS) for +918950469287 (hash: cf41d343014be573bb)...
+[16:06:55.631] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:06:55.634] RPC Result for ReqMsgId: 7680885071378627840, Inner Constructor: 0x2144ca19
+[16:06:55.636] [RPC ERROR] Code: 400, Message: INPUT_METHOD_INVALID_1056024604_877829
+[16:06:58.467] Requesting Telegram code resend (SMS) for +918950469287 (hash: cf41d343014be573bb)...
+[16:06:58.597] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:06:58.601] RPC Result for ReqMsgId: 7680885084263357728, Inner Constructor: 0x2144ca19
+[16:06:58.604] [RPC ERROR] Code: 400, Message: INPUT_METHOD_INVALID_1056024604_5137424
+[16:06:59.313] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:06:59.318] Heartbeat PONG received from Telegram (ping_id: 8731903389030107109)
+[16:07:00.307] Requesting Telegram code resend (SMS) for +918950469287 (hash: cf41d343014be573bb)...
+[16:07:00.435] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:07:00.448] RPC Result for ReqMsgId: 7680885092852636320, Inner Constructor: 0x2144ca19
+[16:07:00.452] [RPC ERROR] Code: 400, Message: INPUT_METHOD_INVALID_1056024604_878807
+[16:07:24.303] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:07:24.308] Heartbeat PONG received from Telegram (ping_id: -2054177099209413827)
+[16:07:49.310] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:07:49.323] Heartbeat PONG received from Telegram (ping_id: -6539388014845191447)
+[16:08:02.545] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[16:08:02.663] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[16:08:02.915] Server RSA Fingerprint [0]: 0xd09d1d85de64fd85
+[16:08:02.921] Server RSA Fingerprint [1]: 0xbc35f3509f7b7a5
+[16:08:02.923] Server RSA Fingerprint [2]: 0xc3b42b026ce86b21
+[16:08:02.925] resPQ received. Factoring PQ (size: 8 bytes, 3 RSA fingerprints)...
+[16:08:04.392] PQ factorized successfully: P=1126300349, Q=1569304091
+[16:08:04.395] Official PEM Key [0] parsed fingerprint: 0xd09d1d85de64fd85
+[16:08:04.397] Selected RSA Public Key Fingerprint: 0xd09d1d85de64fd85
+[16:08:04.403] RSA Encrypted req_DH_params payload ready (size: 256 bytes). Sending...
+[16:08:05.085] server_DH_params_ok received (encrypted size: 592 bytes). Decrypting with tmp_aes_key...
+[16:08:05.094] DH Parameters parsed: g=3, dh_prime=256 bytes, serverTime=1788345484 (timeOffset=-1s)
+[16:08:05.716] Auth Key successfully computed (256 bytes). Constructing client_DH_inner_data...
+[16:08:06.387] ==================================================
+[16:08:06.392] SUCCESS: MTProto 2.0 Auth Key Created!
+[16:08:06.397] AuthKeyID: 0xb0e51d7621c8b0e7
+[16:08:06.403] ServerSalt: 0x3c0a3bd8090f4fb8, SessionID: 0x3af1d1cb52cd4240
+[16:08:06.406] ==================================================
+[16:08:06.411] Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...
+[16:08:06.540] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[16:08:06.542] Message container received containing 2 messages.
+[16:08:06.545] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[16:08:06.547] New MTProto Session confirmed. Server Salt updated: 0x3c0a3bd8090f4fb8
+[16:08:06.554] Encrypted MTProto 2.0 Response received! Constructor: 0x62d6b459
+[16:08:06.558] Server acknowledged 1 messages.
+[16:08:06.562] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:08:06.564] RPC Result for ReqMsgId: 7680885372025922560, Inner Constructor: 0x8e1a1775
+[16:08:06.566] ==================================================
+[16:08:06.572] LIVE TELEGRAM RPC SUCCESS: nearestDc
+[16:08:06.575] Country: IN, Current DC: 5, Nearest Recommended DC: 5
+[16:08:06.578] ==================================================
+[16:08:10.412] Requesting Telegram login code for +918950469287...
+[16:08:10.768] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:08:10.770] RPC Result for ReqMsgId: 7680885389205791744, Inner Constructor: 0x5e002502
+[16:08:10.773] ==================================================
+[16:08:10.775] TELEGRAM LOGIN CODE SENT
+[16:08:10.778] Delivery Type: Telegram App, Timeout: 60s, Hash: 4ab4df7c6f42f590bc
+[16:08:10.780] ==================================================
+[16:08:20.896] Requesting Telegram code resend (SMS) for +918950469287 (hash: 4ab4df7c6f42f590bc)...
+[16:08:21.044] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[16:08:21.048] Message container received containing 2 messages.
+[16:08:21.053] Encrypted MTProto 2.0 Response received! Constructor: 0x78d4dec1
+[16:08:21.063] Encrypted MTProto 2.0 Response received! Constructor: 0x504f544b
+[16:08:21.078] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:08:21.083] RPC Result for ReqMsgId: 7680885432157420704, Inner Constructor: 0x2144ca19
+[16:08:21.094] [RPC ERROR] Code: 406, Message: SEND_CODE_UNAVAILABLE
+[16:08:23.411] Requesting Telegram code resend (SMS) for +918950469287 (hash: 4ab4df7c6f42f590bc)...
+[16:08:23.568] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:08:23.580] RPC Result for ReqMsgId: 7680885445040446592, Inner Constructor: 0x2144ca19
+[16:08:23.585] [RPC ERROR] Code: 406, Message: SEND_CODE_UNAVAILABLE
+[16:08:23.600] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[16:08:23.613] Message container received containing 2 messages.
+[16:08:23.618] Encrypted MTProto 2.0 Response received! Constructor: 0x78d4dec1
+[16:08:23.623] Encrypted MTProto 2.0 Response received! Constructor: 0x504f544b
+[16:08:29.430] Requesting Telegram code resend (SMS) for +918950469287 (hash: 4ab4df7c6f42f590bc)...
+[16:08:29.618] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[16:08:29.624] Message container received containing 2 messages.
+[16:08:29.628] Encrypted MTProto 2.0 Response received! Constructor: 0x78d4dec1
+[16:08:29.632] Encrypted MTProto 2.0 Response received! Constructor: 0x504f544b
+[16:08:29.636] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:08:29.640] RPC Result for ReqMsgId: 7680885470810242368, Inner Constructor: 0x2144ca19
+[16:08:29.644] [RPC ERROR] Code: 406, Message: SEND_CODE_UNAVAILABLE
+[16:08:30.428] Requesting Telegram code resend (SMS) for +918950469287 (hash: 4ab4df7c6f42f590bc)...
+[16:08:30.581] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:08:30.585] RPC Result for ReqMsgId: 7680885475105197664, Inner Constructor: 0x2144ca19
+[16:08:30.595] [RPC ERROR] Code: 406, Message: SEND_CODE_UNAVAILABLE
+[16:08:30.601] Encrypted MTProto 2.0 Response received! Constructor: 0x78d4dec1
+[16:08:31.538] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:08:31.553] Heartbeat PONG received from Telegram (ping_id: -7879179327855492222)
+[16:08:56.529] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:08:56.538] Heartbeat PONG received from Telegram (ping_id: 4342093091022770598)
+[16:09:21.636] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:09:21.646] Heartbeat PONG received from Telegram (ping_id: -4272078687643436609)
+[16:09:46.544] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:09:46.559] Heartbeat PONG received from Telegram (ping_id: -412891076234204054)
+[16:10:09.575] Requesting Telegram code resend (SMS) for +918950469287 (hash: 4ab4df7c6f42f590bc)...
+[16:10:10.457] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:10:10.471] RPC Result for ReqMsgId: 7680885900307559968, Inner Constructor: 0x2144ca19
+[16:10:10.486] [RPC ERROR] Code: 406, Message: SEND_CODE_UNAVAILABLE
+[16:10:10.505] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[16:10:10.514] Message container received containing 2 messages.
+[16:10:10.523] Encrypted MTProto 2.0 Response received! Constructor: 0x78d4dec1
+[16:10:10.531] Encrypted MTProto 2.0 Response received! Constructor: 0x504f544b
+[16:10:11.531] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:10:11.546] Heartbeat PONG received from Telegram (ping_id: 3923785681974347784)
+[16:10:12.357] Requesting Telegram code resend (SMS) for +918950469287 (hash: 4ab4df7c6f42f590bc)...
+[16:10:12.503] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:10:12.514] RPC Result for ReqMsgId: 7680885913191585856, Inner Constructor: 0x2144ca19
+[16:10:12.518] [RPC ERROR] Code: 406, Message: SEND_CODE_UNAVAILABLE
+[16:10:12.531] Encrypted MTProto 2.0 Response received! Constructor: 0x78d4dec1
+[16:10:13.231] Requesting Telegram code resend (SMS) for +918950469287 (hash: 4ab4df7c6f42f590bc)...
+[16:10:13.389] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[16:10:13.400] Message container received containing 2 messages.
+[16:10:13.404] Encrypted MTProto 2.0 Response received! Constructor: 0x78d4dec1
+[16:10:13.409] Encrypted MTProto 2.0 Response received! Constructor: 0x504f544b
+[16:10:13.414] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:10:13.419] RPC Result for ReqMsgId: 7680885917486089152, Inner Constructor: 0x2144ca19
+[16:10:13.424] [RPC ERROR] Code: 406, Message: SEND_CODE_UNAVAILABLE
+[16:10:36.530] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:10:36.540] Heartbeat PONG received from Telegram (ping_id: -4615565987504313582)
+[16:10:53.225] Requesting Telegram code resend (SMS) for +918950469287 (hash: 4ab4df7c6f42f590bc)...
+[16:10:53.380] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:10:53.387] RPC Result for ReqMsgId: 7680886089284772992, Inner Constructor: 0x2144ca19
+[16:10:53.391] [RPC ERROR] Code: 406, Message: SEND_CODE_UNAVAILABLE
+[16:10:53.395] Encrypted MTProto 2.0 Response received! Constructor: 0x78d4dec1
+[16:10:53.659] Submitting login verification code 55555 for +918950469287 (hash: 4ab4df7c6f42f590bc)...
+[16:10:53.788] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:10:53.793] RPC Result for ReqMsgId: 7680886089286452992, Inner Constructor: 0x2144ca19
+[16:10:53.796] [RPC ERROR] Code: 400, Message: PHONE_CODE_INVALID
+[16:10:54.203] Submitting login verification code 55555 for +918950469287 (hash: 4ab4df7c6f42f590bc)...
+[16:10:54.362] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:10:54.394] RPC Result for ReqMsgId: 7680886093579616288, Inner Constructor: 0x2144ca19
+[16:10:54.406] [RPC ERROR] Code: 400, Message: PHONE_CODE_INVALID
+[16:11:01.534] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:11:01.547] Heartbeat PONG received from Telegram (ping_id: -5702006437879387582)
+[16:11:26.531] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:11:26.539] Heartbeat PONG received from Telegram (ping_id: 5529696797165756992)
+[16:11:51.532] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:11:51.546] Heartbeat PONG received from Telegram (ping_id: 4239890139986033374)
+[16:12:16.547] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:12:16.559] Heartbeat PONG received from Telegram (ping_id: 8818000159136822824)
+[16:12:35.664] Initiating direct MTProto 2.0 connection to DC 2 (149.154.167.50:443)...
+[16:12:35.669] Connecting to Telegram DC at 149.154.167.50:443 via MTProto TCP...
+[16:12:35.889] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[16:12:36.475] Server RSA Fingerprint [0]: 0xd09d1d85de64fd85
+[16:12:36.478] Server RSA Fingerprint [1]: 0xbc35f3509f7b7a5
+[16:12:36.481] Server RSA Fingerprint [2]: 0xc3b42b026ce86b21
+[16:12:36.484] resPQ received. Factoring PQ (size: 8 bytes, 3 RSA fingerprints)...
+[16:12:38.230] PQ factorized successfully: P=1298909219, Q=1931710919
+[16:12:38.234] Official PEM Key [0] parsed fingerprint: 0xd09d1d85de64fd85
+[16:12:38.238] Selected RSA Public Key Fingerprint: 0xd09d1d85de64fd85
+[16:12:38.243] RSA Encrypted req_DH_params payload ready (size: 256 bytes). Sending...
+[16:12:38.869] server_DH_params_ok received (encrypted size: 592 bytes). Decrypting with tmp_aes_key...
+[16:12:38.873] DH Parameters parsed: g=3, dh_prime=256 bytes, serverTime=1788345758 (timeOffset=0s)
+[16:12:39.287] Auth Key successfully computed (256 bytes). Constructing client_DH_inner_data...
+[16:12:41.308] ==================================================
+[16:12:41.316] SUCCESS: MTProto 2.0 Auth Key Created!
+[16:12:41.328] AuthKeyID: 0xcbc2d5ddaa943b86
+[16:12:41.338] ServerSalt: 0x46751b8b255da154, SessionID: 0xbbd86b7e690aa28d
+[16:12:41.349] ==================================================
+[16:12:41.362] Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...
+[16:12:41.575] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[16:12:41.581] Message container received containing 2 messages.
+[16:12:41.592] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[16:12:41.599] New MTProto Session confirmed. Server Salt updated: 0x46751b8b255da154
+[16:12:41.611] Encrypted MTProto 2.0 Response received! Constructor: 0x62d6b459
+[16:12:41.624] Server acknowledged 1 messages.
+[16:12:41.631] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:12:41.640] RPC Result for ReqMsgId: 7680886557436728256, Inner Constructor: 0x8e1a1775
+[16:12:41.648] ==================================================
+[16:12:41.658] LIVE TELEGRAM RPC SUCCESS: nearestDc
+[16:12:41.666] Country: IN, Current DC: 2, Nearest Recommended DC: 5
+[16:12:41.674] ==================================================
+[16:13:06.700] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:13:06.728] Heartbeat PONG received from Telegram (ping_id: -6334270078577203277)
+[16:13:31.582] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:13:31.616] Heartbeat PONG received from Telegram (ping_id: 2589188456978515057)
+[16:13:56.578] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:13:56.605] Heartbeat PONG received from Telegram (ping_id: -7079822620580147086)
+[16:14:21.587] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:14:21.657] Heartbeat PONG received from Telegram (ping_id: 5787075878648179051)
+[16:14:46.567] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:14:46.596] Heartbeat PONG received from Telegram (ping_id: 2661699613887361313)
+[16:15:11.579] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:15:11.610] Heartbeat PONG received from Telegram (ping_id: -2666813345873439975)
+[16:15:36.562] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:15:36.579] Heartbeat PONG received from Telegram (ping_id: 9173271414649978813)
+[16:16:01.575] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:16:01.621] Heartbeat PONG received from Telegram (ping_id: -2022419479043943638)
+[16:16:26.575] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:16:26.608] Heartbeat PONG received from Telegram (ping_id: 8100936356980715572)
+[16:16:51.577] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:16:51.610] Heartbeat PONG received from Telegram (ping_id: -8200190604650330329)
+[16:17:16.575] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:17:16.614] Heartbeat PONG received from Telegram (ping_id: 2850844342893657615)
+[16:17:41.570] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:17:41.606] Heartbeat PONG received from Telegram (ping_id: -6306487452890146539)
+[16:18:06.579] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:18:06.615] Heartbeat PONG received from Telegram (ping_id: 5653242525825218985)
+[16:18:31.580] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:18:31.618] Heartbeat PONG received from Telegram (ping_id: 59727699764805800)
+[16:18:56.705] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:18:56.742] Heartbeat PONG received from Telegram (ping_id: -985324106476101508)
+[16:19:19.069] TCP Connection closed by host.
+[16:19:19.087] Initiating direct MTProto 2.0 connection to DC 2 (149.154.167.50:443)...
+[16:19:19.110] Connecting to Telegram DC at 149.154.167.50:443 via MTProto TCP...
+[16:19:19.300] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[16:19:19.313] Reconnected to Telegram DC with active Auth Key. Resuming session.
+[16:19:19.823] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[16:19:19.865] Message container received containing 2 messages.
+[16:19:19.897] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[16:19:19.917] New MTProto Session confirmed. Server Salt updated: 0x46751b8b255da154
+[16:19:19.936] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:19:19.953] Heartbeat PONG received from Telegram (ping_id: -9051572764381610176)
+[16:19:44.525] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:19:44.570] Heartbeat PONG received from Telegram (ping_id: -5143946586565804127)
+[16:20:09.526] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:20:09.586] Heartbeat PONG received from Telegram (ping_id: 3842621643490593516)
+[16:20:34.583] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:20:34.647] Heartbeat PONG received from Telegram (ping_id: -6840521418627600719)
+[16:20:59.509] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:20:59.556] Heartbeat PONG received from Telegram (ping_id: -4432573557456951910)
+[16:21:24.676] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:21:24.740] Heartbeat PONG received from Telegram (ping_id: -8129945421348865296)
+[16:21:49.527] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:21:49.566] Heartbeat PONG received from Telegram (ping_id: -5232990969507927582)
+[16:22:14.515] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:22:14.575] Heartbeat PONG received from Telegram (ping_id: -1223838952281339823)
+[16:22:39.550] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:22:39.604] Heartbeat PONG received from Telegram (ping_id: -8224809014834595891)
+[16:23:04.538] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:23:04.593] Heartbeat PONG received from Telegram (ping_id: 5168924856744385745)
+[16:23:29.533] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:23:29.590] Heartbeat PONG received from Telegram (ping_id: -4193288518004065413)
+[16:23:54.521] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:23:54.596] Heartbeat PONG received from Telegram (ping_id: 3094070780742013148)
+[16:24:19.530] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:24:19.601] Heartbeat PONG received from Telegram (ping_id: 8666443117911231382)
+[16:24:44.528] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:24:44.590] Heartbeat PONG received from Telegram (ping_id: -1226668386298221946)
+[16:25:09.524] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:25:09.583] Heartbeat PONG received from Telegram (ping_id: 2783829389452694922)
+[16:25:34.840] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:25:34.897] Heartbeat PONG received from Telegram (ping_id: 9190501035487262036)
+[16:25:59.622] Encrypted MTProto 2.0 Response received! Constructor: 0x347773c5
+[16:25:59.690] Heartbeat PONG received from Telegram (ping_id: 8685896783411488662)
+[16:26:12.228] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[16:26:12.725] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[16:26:12.731] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[16:26:13.552] Server RSA Fingerprint [0]: 0xd09d1d85de64fd85
+[16:26:13.570] Server RSA Fingerprint [1]: 0xbc35f3509f7b7a5
+[16:26:13.586] Server RSA Fingerprint [2]: 0xc3b42b026ce86b21
+[16:26:13.605] resPQ received. Factoring PQ (size: 8 bytes, 3 RSA fingerprints)...
+[16:26:14.881] PQ factorized successfully: P=1299112769, Q=1536962149
+[16:26:14.887] Official PEM Key [0] parsed fingerprint: 0xd09d1d85de64fd85
+[16:26:14.893] Selected RSA Public Key Fingerprint: 0xd09d1d85de64fd85
+[16:26:14.903] RSA Encrypted req_DH_params payload ready (size: 256 bytes). Sending...
+[16:26:15.677] server_DH_params_ok received (encrypted size: 592 bytes). Decrypting with tmp_aes_key...
+[16:26:15.697] DH Parameters parsed: g=3, dh_prime=256 bytes, serverTime=1788346575 (timeOffset=0s)
+[16:26:16.671] Auth Key successfully computed (256 bytes). Constructing client_DH_inner_data...
+[16:26:17.439] ==================================================
+[16:26:17.444] SUCCESS: MTProto 2.0 Auth Key Created!
+[16:26:17.450] AuthKeyID: 0xc4336a1b42ebdb20
+[16:26:17.455] ServerSalt: 0x8b61ea31293eb480, SessionID: 0x38234a6d7a0e2e50
+[16:26:17.460] ==================================================
+[16:26:17.466] Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...
+[16:26:17.880] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[16:26:17.967] Message container received containing 2 messages.
+[16:26:17.987] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[16:26:17.993] New MTProto Session confirmed. Server Salt updated: 0x8b61ea31293eb480
+[16:26:17.999] Encrypted MTProto 2.0 Response received! Constructor: 0x62d6b459
+[16:26:18.007] Server acknowledged 1 messages.
+[16:26:18.013] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:26:18.022] RPC Result for ReqMsgId: 7680890062130573016, Inner Constructor: 0x8e1a1775
+[16:26:18.029] ==================================================
+[16:26:18.037] LIVE TELEGRAM RPC SUCCESS: nearestDc
+[16:26:18.044] Country: IN, Current DC: 5, Nearest Recommended DC: 5
+[16:26:18.055] ==================================================
+[16:26:18.064] Requesting Telegram login code for +918950469287...
+[16:26:18.768] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:26:18.791] RPC Result for ReqMsgId: 7680890066423822324, Inner Constructor: 0x5e002502
+[16:26:18.811] ==================================================
+[16:26:18.833] TELEGRAM LOGIN CODE SENT
+[16:26:18.849] Delivery Type: Telegram App, Timeout: 60s, Hash: ff85acb9f089079873
+[16:26:18.867] ==================================================
+[16:26:42.983] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[16:26:42.993] [WARN] Bad Message Notification for MsgId 7680890169506512056, Error Code: 35
+[16:26:47.726] Requesting Telegram code resend (SMS) for +918950469287 (hash: ff85acb9f089079873)...
+[16:26:47.952] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[16:26:47.965] Message container received containing 2 messages.
+[16:26:47.978] Encrypted MTProto 2.0 Response received! Constructor: 0x78d4dec1
+[16:26:47.991] Encrypted MTProto 2.0 Response received! Constructor: 0x504f544b
+[16:26:47.999] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:26:48.010] RPC Result for ReqMsgId: 7680890190980790192, Inner Constructor: 0x2144ca19
+[16:26:48.019] [RPC ERROR] Code: 406, Message: SEND_CODE_UNAVAILABLE
+[16:27:07.996] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[16:27:08.048] [WARN] Bad Message Notification for MsgId 7680890276880694456, Error Code: 35
+[16:27:10.732] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[16:29:25.151] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[16:29:25.269] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[16:29:25.276] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[16:29:25.283] Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...
+[16:29:25.553] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[16:29:25.556] Message container received containing 2 messages.
+[16:29:25.561] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[16:29:25.565] New MTProto Session confirmed. Server Salt updated: 0x8b61ea31293eb480
+[16:29:25.569] Encrypted MTProto 2.0 Response received! Constructor: 0x62d6b459
+[16:29:25.574] Server acknowledged 1 messages.
+[16:29:25.586] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:29:25.593] RPC Result for ReqMsgId: 7680890869583634388, Inner Constructor: 0x8e1a1775
+[16:29:25.598] ==================================================
+[16:29:25.603] LIVE TELEGRAM RPC SUCCESS: nearestDc
+[16:29:25.607] Country: IN, Current DC: 5, Nearest Recommended DC: 5
+[16:29:25.612] ==================================================
+[16:29:28.497] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:29:28.641] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:29:28.647] RPC Result for ReqMsgId: 7680890882469584248, Inner Constructor: 0x629f1980
+[16:29:28.657] QR Login Token received (expires in 1788346798s)
+[16:29:32.545] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:29:32.676] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:29:32.683] RPC Result for ReqMsgId: 7680890899649586576, Inner Constructor: 0x629f1980
+[16:29:32.697] QR Login Token received (expires in 1788346798s)
+[16:29:35.075] Requesting Telegram login code for +918950469287...
+[16:29:35.226] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:29:35.245] RPC Result for ReqMsgId: 7680890912532491304, Inner Constructor: 0x5e002502
+[16:29:35.258] ==================================================
+[16:29:35.273] TELEGRAM LOGIN CODE SENT
+[16:29:35.282] Delivery Type: Telegram App, Timeout: 60s, Hash: ff85acb9f089079873
+[16:29:35.292] ==================================================
+[16:29:50.444] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:29:50.478] RPC Result for ReqMsgId: 7680890976957799608, Inner Constructor: 0x2144ca19
+[16:29:50.510] [RPC ERROR] Code: 400, Message: INPUT_METHOD_INVALID_4081218651_5131207
+[16:30:15.412] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:30:15.448] RPC Result for ReqMsgId: 7680891084331982008, Inner Constructor: 0x2144ca19
+[16:30:15.478] [RPC ERROR] Code: 400, Message: INPUT_METHOD_INVALID_4081218651_5122814
+[16:30:40.426] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:30:40.468] RPC Result for ReqMsgId: 7680891191706164408, Inner Constructor: 0x2144ca19
+[16:30:40.500] [RPC ERROR] Code: 400, Message: INPUT_METHOD_INVALID_4081218651_5110821
+[16:30:56.442] Requesting Telegram code resend (SMS) for +918950469287 (hash: ff85acb9f089079873)...
+[16:30:56.637] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[16:30:56.652] Message container received containing 2 messages.
+[16:30:56.660] Encrypted MTProto 2.0 Response received! Constructor: 0x78d4dec1
+[16:30:56.671] Encrypted MTProto 2.0 Response received! Constructor: 0x504f544b
+[16:30:56.679] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:30:56.688] RPC Result for ReqMsgId: 7680891260426560268, Inner Constructor: 0x2144ca19
+[16:30:56.697] [RPC ERROR] Code: 406, Message: SEND_CODE_UNAVAILABLE
+[16:31:05.396] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:31:05.432] RPC Result for ReqMsgId: 7680891299080346808, Inner Constructor: 0x2144ca19
+[16:31:05.469] [RPC ERROR] Code: 400, Message: INPUT_METHOD_INVALID_4081218651_5130521
+[16:31:20.788] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[16:31:20.902] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[16:31:20.912] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[16:31:20.922] Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...
+[16:31:21.145] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[16:31:21.150] Message container received containing 2 messages.
+[16:31:21.158] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[16:31:21.162] New MTProto Session confirmed. Server Salt updated: 0x8b61ea31293eb480
+[16:31:21.167] Encrypted MTProto 2.0 Response received! Constructor: 0x62d6b459
+[16:31:21.171] Server acknowledged 1 messages.
+[16:31:21.178] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:31:21.184] RPC Result for ReqMsgId: 7680891363507613616, Inner Constructor: 0x8e1a1775
+[16:31:21.190] ==================================================
+[16:31:21.193] LIVE TELEGRAM RPC SUCCESS: nearestDc
+[16:31:21.198] Country: IN, Current DC: 5, Nearest Recommended DC: 5
+[16:31:21.202] ==================================================
+[16:31:23.692] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:31:23.844] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:31:23.851] RPC Result for ReqMsgId: 7680891376391622152, Inner Constructor: 0x629f1980
+[16:31:23.862] QR Login Token received (expires in 1788346913s)
+[16:31:26.144] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:31:26.258] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:31:26.263] RPC Result for ReqMsgId: 7680891389274084500, Inner Constructor: 0x629f1980
+[16:31:26.269] QR Login Token received (expires in 1788346913s)
+[16:31:28.199] Requesting Telegram login code for +918950469287...
+[16:31:28.521] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:31:28.547] RPC Result for ReqMsgId: 7680891397864358392, Inner Constructor: 0x5e002502
+[16:31:28.565] ==================================================
+[16:31:28.579] TELEGRAM LOGIN CODE SENT
+[16:31:28.592] Delivery Type: Telegram App, Timeout: 60s, Hash: ff85acb9f089079873
+[16:31:28.603] ==================================================
+[16:31:46.035] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[16:31:46.063] [WARN] Bad Message Notification for MsgId 7680891470881783132, Error Code: 35
+[16:32:05.344] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[16:33:03.686] TCP Connection closed by host.
+[16:33:03.712] TCP Connection closed by host.
+[16:33:03.734] Initiating direct MTProto 2.0 connection to DC 5 (91.108.56.165:443)...
+[16:33:03.754] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[16:33:03.865] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[16:33:03.896] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[16:33:03.910] Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...
+[16:33:04.130] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[16:33:04.139] Message container received containing 2 messages.
+[16:33:04.154] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[16:33:04.169] New MTProto Session confirmed. Server Salt updated: 0x8b61ea31293eb480
+[16:33:04.183] Encrypted MTProto 2.0 Response received! Constructor: 0x62d6b459
+[16:33:04.193] Server acknowledged 1 messages.
+[16:33:04.203] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:33:04.213] RPC Result for ReqMsgId: 7680891805889210744, Inner Constructor: 0x8e1a1775
+[16:33:04.224] ==================================================
+[16:33:04.233] LIVE TELEGRAM RPC SUCCESS: nearestDc
+[16:33:04.243] Country: IN, Current DC: 5, Nearest Recommended DC: 5
+[16:33:04.252] ==================================================
+[16:33:12.257] Requesting Telegram login code for +918950469287...
+[16:33:12.406] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:33:12.421] RPC Result for ReqMsgId: 7680891844541176220, Inner Constructor: 0x5e002502
+[16:33:12.448] ==================================================
+[16:33:12.464] TELEGRAM LOGIN CODE SENT
+[16:33:12.479] Delivery Type: Telegram App, Timeout: 60s, Hash: ff85acb9f089079873
+[16:33:12.494] ==================================================
+[16:33:29.055] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[16:33:29.101] [WARN] Bad Message Notification for MsgId 7680891913263363080, Error Code: 35
+[16:33:54.012] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[16:33:54.051] [WARN] Bad Message Notification for MsgId 7680892020637545480, Error Code: 35
+[16:34:19.020] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[16:34:19.060] [WARN] Bad Message Notification for MsgId 7680892128011723584, Error Code: 35
+[16:34:44.021] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[16:34:44.032] [WARN] Bad Message Notification for MsgId 7680892235385910280, Error Code: 35
+[16:35:09.302] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[16:35:09.344] [WARN] Bad Message Notification for MsgId 7680892342760092680, Error Code: 35
+[16:35:34.021] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[16:35:34.066] [WARN] Bad Message Notification for MsgId 7680892450134279376, Error Code: 35
+[16:35:59.487] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[16:35:59.533] [WARN] Bad Message Notification for MsgId 7680892557508461776, Error Code: 35
+[16:36:24.021] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[16:36:24.068] [WARN] Bad Message Notification for MsgId 7680892664882639880, Error Code: 35
+[16:36:49.022] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[16:36:49.086] [WARN] Bad Message Notification for MsgId 7680892772256826576, Error Code: 35
+[16:37:03.401] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[16:37:03.510] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[16:37:03.519] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[16:37:03.529] Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...
+[16:37:03.742] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[16:37:03.748] Message container received containing 2 messages.
+[16:37:03.754] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[16:37:03.757] New MTProto Session confirmed. Server Salt updated: 0x8b61ea31293eb480
+[16:37:03.761] Encrypted MTProto 2.0 Response received! Constructor: 0x62d6b459
+[16:37:03.766] Server acknowledged 1 messages.
+[16:37:03.773] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:37:03.777] RPC Result for ReqMsgId: 7680892836679712520, Inner Constructor: 0x8e1a1775
+[16:37:03.781] ==================================================
+[16:37:03.786] LIVE TELEGRAM RPC SUCCESS: nearestDc
+[16:37:03.792] Country: IN, Current DC: 5, Nearest Recommended DC: 5
+[16:37:03.798] ==================================================
+[16:37:06.854] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:37:06.992] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:37:06.999] RPC Result for ReqMsgId: 7680892849566104760, Inner Constructor: 0x629f1980
+[16:37:07.006] QR Login Token received (expires in 1788347256s)
+[16:37:10.680] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:37:10.828] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:37:10.861] RPC Result for ReqMsgId: 7680892866745256684, Inner Constructor: 0x629f1980
+[16:37:10.888] QR Login Token received (expires in 1788347256s)
+[16:37:14.180] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:37:14.336] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:37:14.370] RPC Result for ReqMsgId: 7680892883922965500, Inner Constructor: 0x629f1980
+[16:37:14.401] QR Login Token received (expires in 1788347256s)
+[16:37:17.680] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:37:17.963] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:37:17.989] RPC Result for ReqMsgId: 7680892896810225324, Inner Constructor: 0x629f1980
+[16:37:18.014] QR Login Token received (expires in 1788347256s)

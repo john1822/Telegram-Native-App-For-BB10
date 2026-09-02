@@ -52,6 +52,11 @@ public:
 
     static void computeMTProto2MsgKey(const uint8_t* authKey, const uint8_t* plaintext, size_t length,
                                       bool isClient, uint8_t* msgKeyOut);
+
+    // 2FA SRP-6A Computation
+    static bool computeSRP6A(const QString& password, const QByteArray& salt1, const QByteArray& salt2,
+                            int g, const QByteArray& pBytes, const QByteArray& srpB,
+                            QByteArray& srpAOut, QByteArray& srpM1Out);
 };
 
 } // namespace Crypto

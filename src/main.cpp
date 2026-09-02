@@ -4,25 +4,34 @@
 #include <QLocale>
 #include <QTranslator>
 
-#include "DiagnosticController.h"
+#include "core/MTProtoSession.h"
+#include "storage/SessionStorage.h"
+#include "controllers/DiagnosticController.h"
+#include "controllers/AuthController.h"
 
 using namespace bb::cascades;
 
 Q_DECL_EXPORT int main(int argc, char **argv) {
     Application app(argc, argv);
 
-    // Instantiate native diagnostic controller
-    Telegram::Controllers::DiagnosticController diagnosticController;
+    // Core session and persistent storage
+    Telegram::Core::MTProtoSession session;
+    Telegram::Storage::SessionStorage sessionStorage;
+
+    // Controllers
+    Telegram::Controllers::DiagnosticController diagnosticController(&session);
+    Telegram::Controllers::AuthController authController(&session, &sessionStorage);
 
     // Load QML Document
     QmlDocument *qml = QmlDocument::create("asset:///main.qml").parent(&app);
     qml->setContextProperty("diagnostic", &diagnosticController);
+    qml->setContextProperty("auth", &authController);
 
     AbstractPane *root = qml->createRootObject<AbstractPane>();
     app.setScene(root);
 
-    // Automatically initiate MTProto 2.0 connection
-    diagnosticController.startConnection();
+    // Start Authentication & MTProto Session Lifecycle
+    authController.start();
 
     return Application::exec();
 }

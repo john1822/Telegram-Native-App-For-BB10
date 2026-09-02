@@ -42,7 +42,39 @@ enum ConstructorId {
     ID_HELP_GET_NEAREST_DC    = 0x1fb33026,
     ID_NEAREST_DC             = 0x8e1a1775,
     ID_HELP_GET_CONFIG        = 0xc4f918e0,
-    ID_CONFIG                 = 0x330b4067
+    ID_CONFIG                 = 0x330b4067,
+
+    // Phase 2: Authentication RPC Methods and Types
+    ID_AUTH_SEND_CODE         = 0xa677244f,
+    ID_AUTH_SENT_CODE         = 0x5e002502,
+    ID_CODE_SETTINGS          = 0xad253d78,
+    ID_AUTH_RESEND_CODE       = 0xcae47523,
+
+    ID_AUTH_SENT_CODE_TYPE_APP         = 0x3dbb5986,
+    ID_AUTH_SENT_CODE_TYPE_SMS         = 0xc000b4c0,
+    ID_AUTH_SENT_CODE_TYPE_CALL        = 0x5353e5a7,
+    ID_AUTH_SENT_CODE_TYPE_FLASH_CALL  = 0xab03c6d9,
+    ID_AUTH_SENT_CODE_TYPE_MISSED_CALL = 0x820064e8,
+    ID_AUTH_SENT_CODE_TYPE_EMAIL_CODE  = 0xf450f59b,
+    ID_AUTH_SENT_CODE_TYPE_FIREBASE    = 0xe57b1432,
+
+    ID_AUTH_SIGN_IN           = 0x8d52a951,
+    ID_AUTH_LOG_OUT           = 0x3e72ba14,
+    ID_AUTH_AUTHORIZATION     = 0x2ea2c0d4,
+    ID_AUTH_AUTHORIZATION_CD  = 0xcd0509a6,
+    ID_AUTH_SIGN_UP_REQUIRED  = 0x44747e9a,
+
+    // QR Code Login
+    ID_AUTH_EXPORT_LOGIN_TOKEN = 0xb7e085fe,
+    ID_AUTH_LOGIN_TOKEN        = 0x629f1980,
+    ID_AUTH_LOGIN_TOKEN_MIGRATE_TO = 0x068e42d9,
+    ID_AUTH_LOGIN_TOKEN_SUCCESS    = 0x390d5c5e,
+
+    // 2FA Cloud Password
+    ID_ACCOUNT_GET_PASSWORD   = 0x548508de,
+    ID_ACCOUNT_PASSWORD       = 0x95d4b496,
+    ID_AUTH_CHECK_PASSWORD    = 0xd18b4d16,
+    ID_INPUT_CHECK_PASSWORD_SRP = 0xd27ff082
 };
 
 } // namespace TL

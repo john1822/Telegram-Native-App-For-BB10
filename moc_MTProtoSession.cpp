@@ -22,44 +22,62 @@ static const uint qt_meta_data_Telegram__Core__MTProtoSession[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-      11,   14, // methods
+      20,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       5,       // signalCount
+      13,       // signalCount
 
  // signals: signature, parameters, type, tag, flags
       51,   32,   31,   31, 0x05,
-     106,  102,   31,   31, 0x05,
-     139,  126,   31,   31, 0x05,
-     190,  165,   31,   31, 0x05,
-     231,  225,   31,   31, 0x05,
+      81,   77,   31,   31, 0x05,
+     114,  101,   31,   31, 0x05,
+     148,  140,   31,   31, 0x05,
+     189,  164,   31,   31, 0x05,
+     230,  224,   31,   31, 0x05,
+     280,  253,   31,   31, 0x05,
+     327,  322,   31,   31, 0x05,
+     407,  355,   31,   31, 0x05,
+     475,   31,   31,   31, 0x05,
+     518,  504,   31,   31, 0x05,
+     557,   31,   31,   31, 0x05,
+     607,  584,   31,   31, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-     254,   31,   31,   31, 0x08,
-     277,   31,   31,   31, 0x08,
-     310,  303,   31,   31, 0x08,
-     339,  225,   31,   31, 0x08,
-     365,   31,   31,   31, 0x08,
-     379,   31,   31,   31, 0x08,
+     637,   31,   31,   31, 0x08,
+     660,   31,   31,   31, 0x08,
+     693,  686,   31,   31, 0x08,
+     722,  224,   31,   31, 0x08,
+     748,   31,   31,   31, 0x08,
+     762,   31,   31,   31, 0x08,
+     781,   31,   31,   31, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_Telegram__Core__MTProtoSession[] = {
     "Telegram::Core::MTProtoSession\0\0"
-    "newState,stateText\0"
-    "stateChanged(Telegram::Core::SessionState,QString)\0"
+    "newState,stateText\0stateChanged(int,QString)\0"
     "log\0logMessage(QString)\0authKeyIdHex\0"
-    "authKeyGenerated(quint64)\0"
-    "country,thisDc,nearestDc\0"
+    "authKeyGenerated(quint64)\0newDcId\0"
+    "dcMigrated(int)\0country,thisDc,nearestDc\0"
     "nearestDcReceived(QString,int,int)\0"
     "error\0errorOccurred(QString)\0"
+    "phoneCodeHash,type,timeout\0"
+    "authSentCodeReceived(QString,QString,int)\0"
+    "hint\0authPasswordNeeded(QString)\0"
+    "userId,accessHash,firstName,lastName,username,phone\0"
+    "authSuccessReceived(qint64,quint64,QString,QString,QString,QString)\0"
+    "authSignUpRequiredReceived()\0token,expires\0"
+    "authLoginTokenReceived(QByteArray,int)\0"
+    "authLoginSuccessReceived()\0"
+    "errorCode,errorMessage\0"
+    "rpcErrorReceived(int,QString)\0"
     "onTransportConnected()\0onTransportDisconnected()\0"
     "packet\0onPacketReceived(QByteArray)\0"
     "onTransportError(QString)\0onPingTimer()\0"
-    "onReconnectTimer()\0"
+    "onReconnectTimer()\0onMigrateTimer()\0"
 };
 
 void Telegram::Core::MTProtoSession::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -68,17 +86,26 @@ void Telegram::Core::MTProtoSession::qt_static_metacall(QObject *_o, QMetaObject
         Q_ASSERT(staticMetaObject.cast(_o));
         MTProtoSession *_t = static_cast<MTProtoSession *>(_o);
         switch (_id) {
-        case 0: _t->stateChanged((*reinterpret_cast< Telegram::Core::SessionState(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
+        case 0: _t->stateChanged((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
         case 1: _t->logMessage((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 2: _t->authKeyGenerated((*reinterpret_cast< quint64(*)>(_a[1]))); break;
-        case 3: _t->nearestDcReceived((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< int(*)>(_a[3]))); break;
-        case 4: _t->errorOccurred((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 5: _t->onTransportConnected(); break;
-        case 6: _t->onTransportDisconnected(); break;
-        case 7: _t->onPacketReceived((*reinterpret_cast< const QByteArray(*)>(_a[1]))); break;
-        case 8: _t->onTransportError((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 9: _t->onPingTimer(); break;
-        case 10: _t->onReconnectTimer(); break;
+        case 3: _t->dcMigrated((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 4: _t->nearestDcReceived((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< int(*)>(_a[3]))); break;
+        case 5: _t->errorOccurred((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 6: _t->authSentCodeReceived((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< int(*)>(_a[3]))); break;
+        case 7: _t->authPasswordNeeded((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 8: _t->authSuccessReceived((*reinterpret_cast< qint64(*)>(_a[1])),(*reinterpret_cast< quint64(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3])),(*reinterpret_cast< const QString(*)>(_a[4])),(*reinterpret_cast< const QString(*)>(_a[5])),(*reinterpret_cast< const QString(*)>(_a[6]))); break;
+        case 9: _t->authSignUpRequiredReceived(); break;
+        case 10: _t->authLoginTokenReceived((*reinterpret_cast< const QByteArray(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
+        case 11: _t->authLoginSuccessReceived(); break;
+        case 12: _t->rpcErrorReceived((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
+        case 13: _t->onTransportConnected(); break;
+        case 14: _t->onTransportDisconnected(); break;
+        case 15: _t->onPacketReceived((*reinterpret_cast< const QByteArray(*)>(_a[1]))); break;
+        case 16: _t->onTransportError((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 17: _t->onPingTimer(); break;
+        case 18: _t->onReconnectTimer(); break;
+        case 19: _t->onMigrateTimer(); break;
         default: ;
         }
     }
@@ -116,15 +143,15 @@ int Telegram::Core::MTProtoSession::qt_metacall(QMetaObject::Call _c, int _id, v
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 11)
+        if (_id < 20)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 11;
+        _id -= 20;
     }
     return _id;
 }
 
 // SIGNAL 0
-void Telegram::Core::MTProtoSession::stateChanged(Telegram::Core::SessionState _t1, const QString & _t2)
+void Telegram::Core::MTProtoSession::stateChanged(int _t1, const QString & _t2)
 {
     void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
@@ -145,16 +172,70 @@ void Telegram::Core::MTProtoSession::authKeyGenerated(quint64 _t1)
 }
 
 // SIGNAL 3
-void Telegram::Core::MTProtoSession::nearestDcReceived(const QString & _t1, int _t2, int _t3)
+void Telegram::Core::MTProtoSession::dcMigrated(int _t1)
 {
-    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 3, _a);
 }
 
 // SIGNAL 4
+void Telegram::Core::MTProtoSession::nearestDcReceived(const QString & _t1, int _t2, int _t3)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
+    QMetaObject::activate(this, &staticMetaObject, 4, _a);
+}
+
+// SIGNAL 5
 void Telegram::Core::MTProtoSession::errorOccurred(const QString & _t1)
 {
     void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
-    QMetaObject::activate(this, &staticMetaObject, 4, _a);
+    QMetaObject::activate(this, &staticMetaObject, 5, _a);
+}
+
+// SIGNAL 6
+void Telegram::Core::MTProtoSession::authSentCodeReceived(const QString & _t1, const QString & _t2, int _t3)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
+    QMetaObject::activate(this, &staticMetaObject, 6, _a);
+}
+
+// SIGNAL 7
+void Telegram::Core::MTProtoSession::authPasswordNeeded(const QString & _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 7, _a);
+}
+
+// SIGNAL 8
+void Telegram::Core::MTProtoSession::authSuccessReceived(qint64 _t1, quint64 _t2, const QString & _t3, const QString & _t4, const QString & _t5, const QString & _t6)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)), const_cast<void*>(reinterpret_cast<const void*>(&_t4)), const_cast<void*>(reinterpret_cast<const void*>(&_t5)), const_cast<void*>(reinterpret_cast<const void*>(&_t6)) };
+    QMetaObject::activate(this, &staticMetaObject, 8, _a);
+}
+
+// SIGNAL 9
+void Telegram::Core::MTProtoSession::authSignUpRequiredReceived()
+{
+    QMetaObject::activate(this, &staticMetaObject, 9, 0);
+}
+
+// SIGNAL 10
+void Telegram::Core::MTProtoSession::authLoginTokenReceived(const QByteArray & _t1, int _t2)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    QMetaObject::activate(this, &staticMetaObject, 10, _a);
+}
+
+// SIGNAL 11
+void Telegram::Core::MTProtoSession::authLoginSuccessReceived()
+{
+    QMetaObject::activate(this, &staticMetaObject, 11, 0);
+}
+
+// SIGNAL 12
+void Telegram::Core::MTProtoSession::rpcErrorReceived(int _t1, const QString & _t2)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    QMetaObject::activate(this, &staticMetaObject, 12, _a);
 }
 QT_END_MOC_NAMESPACE

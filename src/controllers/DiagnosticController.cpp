@@ -3,14 +3,15 @@
 #include "Config.h"
 #include <QDateTime>
 #include <QFile>
+#include <QDir>
 #include <QTextStream>
 
 namespace Telegram {
 namespace Controllers {
 
-DiagnosticController::DiagnosticController(QObject* parent)
+DiagnosticController::DiagnosticController(Core::MTProtoSession* session, QObject* parent)
     : QObject(parent),
-      m_session(new Core::MTProtoSession(this)),
+      m_session(session ? session : new Core::MTProtoSession(this)),
       m_statusText("Ready to connect"),
       m_authKeyId("None (Not Generated)"),
       m_dcInfo(QString("DC %1 (%2:%3)").arg(Config::DEFAULT_DC_ID).arg(Config::DEFAULT_DC_IP).arg(Config::DEFAULT_DC_PORT)),
@@ -18,7 +19,7 @@ DiagnosticController::DiagnosticController(QObject* parent)
       m_connected(false),
       m_encrypted(false) {
 
-    connect(m_session, SIGNAL(stateChanged(Telegram::Core::SessionState, QString)),
+    connect(m_session, SIGNAL(stateChanged(int, QString)),
             this, SLOT(onStateChanged(int, QString)));
     connect(m_session, SIGNAL(logMessage(QString)), this, SLOT(onLogMessage(QString)));
     connect(m_session, SIGNAL(authKeyGenerated(quint64)), this, SLOT(onAuthKeyGenerated(quint64)));
@@ -96,10 +97,12 @@ void DiagnosticController::onLogMessage(const QString& log) {
     emit logsChanged();
 
     // Write to persistent text log file in sandbox
+    QDir().mkpath("data");
     QFile file("data/app_log.txt");
     if (file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text)) {
         QTextStream stream(&file);
         stream << entry << "\n";
+        stream.flush();
         file.close();
     }
 }
