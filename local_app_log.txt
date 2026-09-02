@@ -4513,3 +4513,948 @@
 [23:11:00.643] Dialog [28]: YouTube on Symbian/J2ME (Unread: 0, Pinned: NO)
 [23:11:00.673] Dialog [29]: ChatGPT AI Photo Prompts (Unread: 0, Pinned: NO)
 [23:11:00.705] Dialog [30]: Java/Symbian/BREW Hub (Unread: 0, Pinned: NO)
+[23:11:21.655] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[23:11:21.744] [WARN] Bad Message Notification for MsgId 7680994447014008420, Error Code: 35
+[23:11:41.292] Requesting live Telegram dialogs (limit: 40, offset_id: 0)...
+[23:11:41.683] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[23:11:41.716] RPC Result for ReqMsgId: 7680994532914629948, Inner Constructor: 0x3072cfa1
+[23:11:41.755] Decompressed RPC GZIP packed payload for ReqMsgId 7680994532914629948 (18032 -> 33676 bytes)
+[23:11:41.790] Unpacked GZIP Inner Constructor: 0x71e094f3
+[23:11:41.826] ==================================================
+[23:11:41.863] LIVE TELEGRAM DIALOGS RECEIVED (constructor: 0x71e094f3)
+[23:11:41.901] ==================================================
+[23:11:41.937] Dialogs slice count: 75
+[23:11:41.974] Total valid dialogs scanned: 40
+[23:11:42.013] [CHANNEL] 1162903891: 'Symbian World' (@symbian_world)
+[23:11:42.052] [CHANNEL] 1507138400: 'nnproject MIDlets Chat' (@nnmidletschat)
+[23:11:42.094] [CHANNEL] 3072355572: 'Чат LegacyProjects' (@)
+[23:11:42.133] [CHANNEL] 1414082918: 'BerryFarm' (@berryfarm_org)
+[23:11:42.169] [CHANNEL] 3983877693: 'Blackberry New World' (@blackberry_new_world)
+[23:11:42.203] [CHANNEL] 1645467927: 'Linux Mobile World' (@linuxmobile_world)
+[23:11:42.237] [CHANNEL] 1443214007: 'Retro Nokia Collectors' (@nokiacollection)
+[23:11:42.272] [CHANNEL] 2828629830: 'JAVA GAME UPLOADER' (@javagameuploader240_320)
+[23:11:42.308] [CHANNEL] 1554022295: 'Symbian S80/S90 World' (@series80world)
+[23:11:42.345] [CHANNEL] 1493460258: 'Nokia 🤝 S40 Apps (Connecting Fans)' (@nokiapps40)
+[23:11:42.381] [CHANNEL] 2049500142: 'Job Update with Foundthejob' (@foundthejob)
+[23:11:42.421] [CHANNEL] 2751183913: 'Mr Symbian chat' (@mr_symbian2)
+[23:11:42.457] [CHANNEL] 3505033421: '30 Days DA ENG Challenge B48- 04.05.2026' (@)
+[23:11:42.493] [CHANNEL] 1512585198: 'CCS University, Meerut' (@CCSUniversityMRT)
+[23:11:42.529] [CHANNEL] 3483330286: 'byNara AI' (@bynara_ai)
+[23:11:42.566] [CHANNEL] 1701024585: 'Linux and DevOps' (@LinuxMastery)
+[23:11:42.604] [CHANNEL] 2004009975: 'QA Engineers' (@qa_engineers_team)
+[23:11:42.639] [CHANNEL] 2336436581: 'cmp>>log;' (@cmplog)
+[23:11:42.674] [CHANNEL] 2994545350: 'LegacyProjects News' (@legacyprojectsnews)
+[23:11:42.710] [CHANNEL] 2815321724: 'PageNest' (@pagenest9)
+[23:11:42.751] [CHANNEL] 3972052147: 'Feature Phone Freaks' (@)
+[23:11:42.790] [CHANNEL] 3500850458: 'Tech Army' (@mishraCoderArmy)
+[23:11:42.830] [CHANNEL] 1322592301: 'BlackBerry 10 OS' (@BlackBerry10OS)
+[23:11:42.873] [CHANNEL] 1170132219: 'Symbian OS International' (@symbianos)
+[23:11:42.912] [CHANNEL] 3544678371: 'YouTube on Symbian/J2ME' (@SymbianYouTube)
+[23:11:42.951] [CHANNEL] 1260624063: 'ChatGPT AI Photo Prompts' (@ChatGPT_AI_Photo_Prompts)
+[23:11:42.990] [CHANNEL] 1191902746: 'Java/Symbian/BREW Hub' (@j2me_sys_hub)
+[23:11:43.029] [CHANNEL] 2615275412: 'Blackberry Phoenix Chat' (@)
+[23:11:43.073] [CHANNEL] 2925806707: 'Cloudncoding Chat Room 👨‍💻' (@)
+[23:11:43.111] [CHANNEL] 3863042787: 'Blackberry OS 10 App's' (@BB10App)
+[23:11:43.152] [CHANNEL] 1322172467: 'SecuriXy.kz' (@securixy_kz)
+[23:11:43.193] [CHANNEL] 1751869243: 'BlackBerry World 🌍' (@blackberryosint)
+[23:11:43.234] [CHANNEL] 1489591994: 'Java Uz Games| J2ME Loader | Nokia Games | Sony Ericsson | Motorola | Java Games | Top Java Games|' (@JavaUzGames)
+[23:11:43.276] [CHANNEL] 2525088680: 'C4Coding Club by Ananya' (@ananyaC4coding)
+[23:11:43.321] [CHANNEL] 2874481043: 'Mr Symbian' (@mr_symbian1)
+[23:11:43.367] [CHANNEL] 3310904966: 'JAVA GAME UPLOADER CHAT' (@javagameuploderchat)
+[23:11:43.410] [CHANNEL] 1706472507: 'CCS University, Meerut' (@CCSUMeerut1)
+[23:11:43.453] [CHANNEL] 3947095765: 'byNara Chat' (@bynara_ai_chat)
+[23:11:43.494] [CHANNEL] 4338854564: 'PageNest -Job Discussion group' (@jobInterviewPrepration)
+[23:11:43.537] [CHANNEL] 1484916438: 'Java/Symbian/BREW Hub (Chat)' (@)
+[23:11:43.577] [CHANNEL] 1900616052: 'Java Uz Games Chat' (@JavaUzGames_chat)
+[23:11:43.621] [USER] 777000: 'Telegram' (@)
+[23:11:43.662] [USER] 7114093138: 'John' (@John_the_don_420)
+[23:11:43.708] [USER] 7216423067: 'rgh' (@gusrio97)
+[23:11:43.751] [USER] 6478395197: 'Trumpet Tiger' (@)
+[23:11:43.795] [USER] 5534099637: 'ChatGPT Advanced Bot' (@chatgpt_advanced_bot)
+[23:11:43.839] [USER] 8689657246: 'Cầm Lương Tiêu' (@)
+[23:11:43.885] [USER] 8618785107: 'Karen' (@Karen92762)
+[23:11:43.929] [USER] 5568467243: 'Vlad' (@Vladdffff)
+[23:11:43.972] [USER] 5022381723: 'Billy' (@Billyboysfrombbme)
+[23:11:44.016] [USER] 1087968824: 'Group' (@GroupAnonymousBot)
+[23:11:44.059] [USER] 5345739802: 'Ric9k' (@eric_electric)
+[23:11:44.101] [USER] 7025376842: 'OPPO FANS' (@)
+[23:11:44.145] [USER] 6853541089: 'Deepak' (@hyperionrover)
+[23:11:44.186] [USER] 136817688: 'Channel' (@Channel_Bot)
+[23:11:44.226] [USER] 1673543634: 'Marco Biondo' (@marcobiondo78)
+[23:11:44.268] [USER] 284403259: 'RSS bot' (@rss2tg_bot)
+[23:11:44.309] [USER] 609517172: 'Rose' (@MissRose_bot)
+[23:11:44.350] [USER] 5322234791: 'SABURU' (@)
+[23:11:44.410] [USER] 834307436: 'Khoirul' (@)
+[23:11:44.458] [USER] 8877436412: 'Ardiansyah Maulana' (@)
+[23:11:44.501] [USER] 5149271402: 'Maks Liakhov ' (@)
+[23:11:44.545] [USER] 6233584668: 'sᴠᴄᴀʏᴏɴ4ɪᴋ' (@)
+[23:11:44.588] [USER] 8007236608: 'Никита Фамилия' (@)
+[23:11:44.632] [USER] 5151163915: 'Alternative Prespective' (@vixxkigoli)
+[23:11:44.677] [USER] 6548059189: 'SK' (@sya_msra)
+[23:11:44.724] [USER] 1284240947: 'Konohamaru' (@)
+[23:11:44.768] [USER] 8151655234: 'Mcg' (@)
+[23:11:44.813] [USER] 8656522446: 'Nguyen Le' (@haohanvn)
+[23:11:44.860] [USER] 5672338323: 'J P' (@)
+[23:11:44.906] [USER] 2068299837: 'chinnu' (@satyaprakash0817)
+[23:11:44.952] [USER] 84709772: 'Ola Hughson 🏳‍⚧🇵🇸' (@)
+[23:11:44.996] [USER] 7612972866: 'rezisita' (@)
+[23:11:45.040] [USER] 7066294624: 'M.' (@)
+[23:11:45.084] [USER] 910249977: 'Ananya' (@)
+[23:11:45.130] [USER] 5273500413: 'Nehru' (@)
+[23:11:45.173] [USER] 8700688446: 'ᴍxᴡ' (@)
+[23:11:45.216] [USER] 8947752600: 'Setya Situmorang' (@)
+[23:11:45.262] Dialog [1]: Symbian World (Unread: 2, Pinned: NO)
+[23:11:45.305] Dialog [2]: nnproject MIDlets Chat (Unread: 1, Pinned: NO)
+[23:11:45.350] Dialog [3]: Чат LegacyProjects (Unread: 13, Pinned: NO)
+[23:11:45.395] Dialog [4]: Telegram (Unread: 0, Pinned: NO)
+[23:11:45.492] Dialog [5]: BerryFarm (Unread: 1, Pinned: NO)
+[23:11:45.544] Dialog [6]: Blackberry New World (Unread: 0, Pinned: NO)
+[23:11:45.590] Dialog [7]: John (Unread: 0, Pinned: NO)
+[23:11:45.637] Dialog [8]: Linux Mobile World (Unread: 0, Pinned: NO)
+[23:11:45.683] Dialog [9]: Retro Nokia Collectors (Unread: 0, Pinned: NO)
+[23:11:45.728] Dialog [10]: JAVA GAME UPLOADER (Unread: 0, Pinned: NO)
+[23:11:45.772] Dialog [11]: Symbian S80/S90 World (Unread: 0, Pinned: NO)
+[23:11:45.818] Dialog [12]: Nokia 🤝 S40 Apps (Connecting Fans) (Unread: 0, Pinned: NO)
+[23:11:45.865] Dialog [13]: Job Update with Foundthejob (Unread: 0, Pinned: NO)
+[23:11:45.912] Dialog [14]: Mr Symbian chat (Unread: 0, Pinned: NO)
+[23:11:45.959] Dialog [15]: 30 Days DA ENG Challenge B48- 04.05.2026 (Unread: 0, Pinned: NO)
+[23:11:46.005] Dialog [16]: CCS University, Meerut (Unread: 5, Pinned: NO)
+[23:11:46.052] Dialog [17]: byNara AI (Unread: 0, Pinned: NO)
+[23:11:46.100] Dialog [18]: Linux and DevOps (Unread: 0, Pinned: NO)
+[23:11:46.146] Dialog [19]: QA Engineers (Unread: 0, Pinned: NO)
+[23:11:46.192] Dialog [20]: cmp>>log; (Unread: 0, Pinned: NO)
+[23:11:46.239] Dialog [21]: LegacyProjects News (Unread: 0, Pinned: NO)
+[23:11:46.286] Dialog [22]: PageNest (Unread: 0, Pinned: NO)
+[23:11:46.333] Dialog [23]: Feature Phone Freaks (Unread: 0, Pinned: NO)
+[23:11:46.381] Dialog [24]: Tech Army (Unread: 0, Pinned: NO)
+[23:11:46.428] Dialog [25]: BlackBerry 10 OS (Unread: 2, Pinned: NO)
+[23:11:46.477] Dialog [26]: rgh (Unread: 0, Pinned: NO)
+[23:11:46.537] Dialog [27]: Symbian OS International (Unread: 0, Pinned: NO)
+[23:11:46.587] Dialog [28]: YouTube on Symbian/J2ME (Unread: 0, Pinned: NO)
+[23:11:46.637] Dialog [29]: ChatGPT AI Photo Prompts (Unread: 0, Pinned: NO)
+[23:11:46.688] Dialog [30]: Java/Symbian/BREW Hub (Unread: 0, Pinned: NO)
+[23:11:46.740] Dialog [31]: Trumpet Tiger (Unread: 0, Pinned: NO)
+[23:11:46.791] Dialog [32]: Blackberry Phoenix Chat (Unread: 0, Pinned: NO)
+[23:11:46.841] Dialog [33]: Cloudncoding Chat Room 👨‍💻 (Unread: 0, Pinned: NO)
+[23:11:46.893] Dialog [34]: Blackberry OS 10 App's (Unread: 0, Pinned: NO)
+[23:11:46.946] Dialog [35]: SecuriXy.kz (Unread: 0, Pinned: NO)
+[23:11:46.995] Dialog [36]: BlackBerry World 🌍 (Unread: 0, Pinned: NO)
+[23:11:47.044] Dialog [37]: Java Uz Games| J2ME Loader | Nokia Games | Sony Ericsson | Motorola | Java Games | Top Java Games| (Unread: 0, Pinned: NO)
+[23:11:47.094] Dialog [38]: C4Coding Club by Ananya (Unread: 0, Pinned: NO)
+[23:11:47.145] Dialog [39]: Mr Symbian (Unread: 0, Pinned: NO)
+[23:11:47.194] Dialog [40]: ChatGPT Advanced Bot (Unread: 0, Pinned: NO)
+[23:11:47.376] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[23:11:47.440] [WARN] Bad Message Notification for MsgId 7680994558683931212, Error Code: 35
+[23:12:11.175] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[23:12:11.393] [WARN] Bad Message Notification for MsgId 7680994661762377516, Error Code: 35
+[23:12:36.181] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[23:12:36.387] [WARN] Bad Message Notification for MsgId 7680994769136555620, Error Code: 35
+[23:13:01.177] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[23:13:01.384] [WARN] Bad Message Notification for MsgId 7680994876510738020, Error Code: 35
+[23:13:26.178] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[23:13:26.335] [WARN] Bad Message Notification for MsgId 7680994983884920420, Error Code: 35
+[23:13:51.171] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[23:13:51.286] [WARN] Bad Message Notification for MsgId 7680995091259098528, Error Code: 35
+[23:14:16.176] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[23:14:16.386] [WARN] Bad Message Notification for MsgId 7680995198633285220, Error Code: 35
+[23:14:41.181] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[23:14:41.396] [WARN] Bad Message Notification for MsgId 7680995306007467620, Error Code: 35
+[23:15:06.178] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[23:15:06.406] [WARN] Bad Message Notification for MsgId 7680995413381650020, Error Code: 35
+[23:15:31.179] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[23:15:31.383] [WARN] Bad Message Notification for MsgId 7680995520755832420, Error Code: 35
+[23:15:56.193] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[23:15:56.347] [WARN] Bad Message Notification for MsgId 7680995628130010528, Error Code: 35
+[23:16:21.181] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[23:16:21.397] [WARN] Bad Message Notification for MsgId 7680995735504197220, Error Code: 35
+[23:16:28.973] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:16:29.092] Decompressed outer GZIP packed message (402 -> 448 bytes)
+[23:16:29.173] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:16:29.234] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:16:46.182] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[23:16:46.330] [WARN] Bad Message Notification for MsgId 7680995842878379620, Error Code: 35
+[23:17:03.574] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:17:03.783] Decompressed outer GZIP packed message (744 -> 820 bytes)
+[23:17:03.990] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:17:04.205] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:17:04.806] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:17:04.970] Decompressed outer GZIP packed message (412 -> 460 bytes)
+[23:17:05.090] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:17:05.205] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:17:11.176] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[23:17:11.401] [WARN] Bad Message Notification for MsgId 7680995950252562020, Error Code: 35
+[23:17:14.637] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:17:14.857] Decompressed outer GZIP packed message (426 -> 496 bytes)
+[23:17:15.019] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:17:15.177] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:17:24.149] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:17:24.400] Decompressed outer GZIP packed message (348 -> 388 bytes)
+[23:17:24.629] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:17:24.853] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:17:49.181] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[23:17:49.283] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[23:17:49.294] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[23:17:49.305] Requesting live Telegram dialogs (limit: 30, offset_id: 0)...
+[23:17:49.311] Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...
+[23:17:49.505] Encrypted MTProto 2.0 Response received! Constructor: 0xedab447b
+[23:17:49.509] Server salt refreshed: 0x6908da7460efb96d. Re-transmitting live dialogs request...
+[23:17:49.514] Requesting live Telegram dialogs (limit: 30, offset_id: 0)...
+[23:17:49.524] Encrypted MTProto 2.0 Response received! Constructor: 0xedab447b
+[23:17:49.529] Server salt refreshed: 0x6908da7460efb96d. Re-transmitting live dialogs request...
+[23:17:49.534] Requesting live Telegram dialogs (limit: 30, offset_id: 0)...
+[23:17:49.612] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[23:17:49.616] Message container received containing 2 messages.
+[23:17:49.620] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[23:17:49.625] New MTProto Session confirmed. Server Salt updated: 0x6908da7460efb96d
+[23:17:49.631] Encrypted MTProto 2.0 Response received! Constructor: 0x62d6b459
+[23:17:49.635] Server acknowledged 1 messages.
+[23:17:49.747] Encrypted MTProto 2.0 Response received! Constructor: 0x62d6b459
+[23:17:49.755] Server acknowledged 1 messages.
+[23:17:49.835] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[23:17:49.841] RPC Result for ReqMsgId: 7680996113463264888, Inner Constructor: 0x3072cfa1
+[23:17:49.849] Decompressed RPC GZIP packed payload for ReqMsgId 7680996113463264888 (13074 -> 24276 bytes)
+[23:17:49.856] Unpacked GZIP Inner Constructor: 0x71e094f3
+[23:17:49.863] ==================================================
+[23:17:49.871] LIVE TELEGRAM DIALOGS RECEIVED (constructor: 0x71e094f3)
+[23:17:49.877] ==================================================
+[23:17:49.883] Dialogs slice count: 75
+[23:17:49.890] Total valid dialogs scanned: 30
+[23:17:49.897] [CHANNEL] 1554022295: 'Symbian S80/S90 World' (@series80world)
+[23:17:49.904] [CHANNEL] 3072355572: 'Чат LegacyProjects' (@)
+[23:17:49.911] [CHANNEL] 1162903891: 'Symbian World' (@symbian_world)
+[23:17:49.917] [CHANNEL] 1507138400: 'nnproject MIDlets Chat' (@nnmidletschat)
+[23:17:49.924] [CHANNEL] 1414082918: 'BerryFarm' (@berryfarm_org)
+[23:17:49.931] [CHANNEL] 3983877693: 'Blackberry New World' (@blackberry_new_world)
+[23:17:49.938] [CHANNEL] 1645467927: 'Linux Mobile World' (@linuxmobile_world)
+[23:17:49.945] [CHANNEL] 1443214007: 'Retro Nokia Collectors' (@nokiacollection)
+[23:17:49.953] [CHANNEL] 2828629830: 'JAVA GAME UPLOADER' (@javagameuploader240_320)
+[23:17:49.960] [CHANNEL] 1493460258: 'Nokia 🤝 S40 Apps (Connecting Fans)' (@nokiapps40)
+[23:17:49.968] [CHANNEL] 2049500142: 'Job Update with Foundthejob' (@foundthejob)
+[23:17:49.976] [CHANNEL] 2751183913: 'Mr Symbian chat' (@mr_symbian2)
+[23:17:49.983] [CHANNEL] 3505033421: '30 Days DA ENG Challenge B48- 04.05.2026' (@)
+[23:17:49.991] [CHANNEL] 1512585198: 'CCS University, Meerut' (@CCSUniversityMRT)
+[23:17:49.999] [CHANNEL] 3483330286: 'byNara AI' (@bynara_ai)
+[23:17:50.008] [CHANNEL] 1701024585: 'Linux and DevOps' (@LinuxMastery)
+[23:17:50.017] [CHANNEL] 2004009975: 'QA Engineers' (@qa_engineers_team)
+[23:17:50.026] [CHANNEL] 2336436581: 'cmp>>log;' (@cmplog)
+[23:17:50.035] [CHANNEL] 2994545350: 'LegacyProjects News' (@legacyprojectsnews)
+[23:17:50.044] [CHANNEL] 2815321724: 'PageNest' (@pagenest9)
+[23:17:50.053] [CHANNEL] 3972052147: 'Feature Phone Freaks' (@)
+[23:17:50.063] [CHANNEL] 3500850458: 'Tech Army' (@mishraCoderArmy)
+[23:17:50.073] [CHANNEL] 1322592301: 'BlackBerry 10 OS' (@BlackBerry10OS)
+[23:17:50.083] [CHANNEL] 1170132219: 'Symbian OS International' (@symbianos)
+[23:17:50.093] [CHANNEL] 3544678371: 'YouTube on Symbian/J2ME' (@SymbianYouTube)
+[23:17:50.102] [CHANNEL] 1260624063: 'ChatGPT AI Photo Prompts' (@ChatGPT_AI_Photo_Prompts)
+[23:17:50.112] [CHANNEL] 1191902746: 'Java/Symbian/BREW Hub' (@j2me_sys_hub)
+[23:17:50.123] [CHANNEL] 3310904966: 'JAVA GAME UPLOADER CHAT' (@javagameuploderchat)
+[23:17:50.135] [CHANNEL] 1706472507: 'CCS University, Meerut' (@CCSUMeerut1)
+[23:17:50.146] [CHANNEL] 3947095765: 'byNara Chat' (@bynara_ai_chat)
+[23:17:50.157] [CHANNEL] 4338854564: 'PageNest -Job Discussion group' (@jobInterviewPrepration)
+[23:17:50.170] [CHANNEL] 1484916438: 'Java/Symbian/BREW Hub (Chat)' (@)
+[23:17:50.182] [USER] 777000: 'Telegram' (@)
+[23:17:50.194] [USER] 7114093138: 'John' (@John_the_don_420)
+[23:17:50.206] [USER] 7216423067: 'rgh' (@gusrio97)
+[23:17:50.218] [USER] 1673543634: 'Marco Biondo' (@marcobiondo78)
+[23:17:50.230] [USER] 917543381: 'Миша' (@nyrvy)
+[23:17:50.241] [USER] 940193302: 'Hack Diaz' (@)
+[23:17:50.252] [USER] 1291190460: 'emmgee' (@)
+[23:17:50.264] [USER] 8618785107: 'Karen' (@Karen92762)
+[23:17:50.276] [USER] 5022381723: 'Billy' (@Billyboysfrombbme)
+[23:17:50.287] [USER] 1087968824: 'Group' (@GroupAnonymousBot)
+[23:17:50.299] [USER] 5345739802: 'Ric9k' (@eric_electric)
+[23:17:50.312] [USER] 7025376842: 'OPPO FANS' (@)
+[23:17:50.323] [USER] 6853541089: 'Deepak' (@hyperionrover)
+[23:17:50.336] [USER] 136817688: 'Channel' (@Channel_Bot)
+[23:17:50.348] [USER] 284403259: 'RSS bot' (@rss2tg_bot)
+[23:17:50.361] [USER] 609517172: 'Rose' (@MissRose_bot)
+[23:17:50.374] [USER] 5322234791: 'SABURU' (@)
+[23:17:50.388] [USER] 834307436: 'Khoirul' (@)
+[23:17:50.401] [USER] 8877436412: 'Ardiansyah Maulana' (@)
+[23:17:50.415] [USER] 5149271402: 'Maks Liakhov ' (@)
+[23:17:50.429] [USER] 6233584668: 'sᴠᴄᴀʏᴏɴ4ɪᴋ' (@)
+[23:17:50.445] [USER] 8007236608: 'Никита Фамилия' (@)
+[23:17:50.486] [USER] 5151163915: 'Alternative Prespective' (@vixxkigoli)
+[23:17:50.503] [USER] 6548059189: 'SK' (@sya_msra)
+[23:17:50.520] [USER] 1284240947: 'Konohamaru' (@)
+[23:17:50.535] [USER] 8151655234: 'Mcg' (@)
+[23:17:50.549] [USER] 8689657246: 'Cầm Lương Tiêu' (@)
+[23:17:50.564] [USER] 8656522446: 'Nguyen Le' (@haohanvn)
+[23:17:50.578] [USER] 5672338323: 'J P' (@)
+[23:17:50.595] Dialog [1]: Symbian S80/S90 World (Unread: 2, Pinned: NO)
+[23:17:50.610] Dialog [2]: Чат LegacyProjects (Unread: 15, Pinned: NO)
+[23:17:50.625] Dialog [3]: Symbian World (Unread: 3, Pinned: NO)
+[23:17:50.640] Dialog [4]: nnproject MIDlets Chat (Unread: 1, Pinned: NO)
+[23:17:50.657] Dialog [5]: Telegram (Unread: 0, Pinned: NO)
+[23:17:50.673] Dialog [6]: BerryFarm (Unread: 0, Pinned: NO)
+[23:17:50.689] Dialog [7]: Blackberry New World (Unread: 0, Pinned: NO)
+[23:17:50.704] Dialog [8]: John (Unread: 0, Pinned: NO)
+[23:17:50.720] Dialog [9]: Linux Mobile World (Unread: 0, Pinned: NO)
+[23:17:50.737] Dialog [10]: Retro Nokia Collectors (Unread: 0, Pinned: NO)
+[23:17:50.752] Dialog [11]: JAVA GAME UPLOADER (Unread: 0, Pinned: NO)
+[23:17:50.768] Dialog [12]: Nokia 🤝 S40 Apps (Connecting Fans) (Unread: 0, Pinned: NO)
+[23:17:50.785] Dialog [13]: Job Update with Foundthejob (Unread: 0, Pinned: NO)
+[23:17:50.801] Dialog [14]: Mr Symbian chat (Unread: 0, Pinned: NO)
+[23:17:50.818] Dialog [15]: 30 Days DA ENG Challenge B48- 04.05.2026 (Unread: 0, Pinned: NO)
+[23:17:50.835] Dialog [16]: CCS University, Meerut (Unread: 5, Pinned: NO)
+[23:17:50.851] Dialog [17]: byNara AI (Unread: 0, Pinned: NO)
+[23:17:50.870] Dialog [18]: Linux and DevOps (Unread: 0, Pinned: NO)
+[23:17:50.887] Dialog [19]: QA Engineers (Unread: 0, Pinned: NO)
+[23:17:50.904] Dialog [20]: cmp>>log; (Unread: 0, Pinned: NO)
+[23:17:50.921] Dialog [21]: LegacyProjects News (Unread: 0, Pinned: NO)
+[23:17:50.938] Dialog [22]: PageNest (Unread: 0, Pinned: NO)
+[23:17:50.956] Dialog [23]: Feature Phone Freaks (Unread: 0, Pinned: NO)
+[23:17:50.974] Dialog [24]: Tech Army (Unread: 0, Pinned: NO)
+[23:17:50.991] Dialog [25]: BlackBerry 10 OS (Unread: 2, Pinned: NO)
+[23:17:51.011] Dialog [26]: rgh (Unread: 0, Pinned: NO)
+[23:17:51.029] Dialog [27]: Symbian OS International (Unread: 0, Pinned: NO)
+[23:17:51.048] Dialog [28]: YouTube on Symbian/J2ME (Unread: 0, Pinned: NO)
+[23:17:51.066] Dialog [29]: ChatGPT AI Photo Prompts (Unread: 0, Pinned: NO)
+[23:17:51.090] Dialog [30]: Java/Symbian/BREW Hub (Unread: 0, Pinned: NO)
+[23:17:51.118] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[23:17:51.139] RPC Result for ReqMsgId: 7680996113463329316, Inner Constructor: 0x3072cfa1
+[23:17:51.161] Decompressed RPC GZIP packed payload for ReqMsgId 7680996113463329316 (13074 -> 24276 bytes)
+[23:17:51.181] Unpacked GZIP Inner Constructor: 0x71e094f3
+[23:17:51.201] ==================================================
+[23:17:51.221] LIVE TELEGRAM DIALOGS RECEIVED (constructor: 0x71e094f3)
+[23:17:51.241] ==================================================
+[23:17:51.262] Dialogs slice count: 75
+[23:17:51.284] Total valid dialogs scanned: 30
+[23:17:51.307] [CHANNEL] 1554022295: 'Symbian S80/S90 World' (@series80world)
+[23:17:51.328] [CHANNEL] 3072355572: 'Чат LegacyProjects' (@)
+[23:17:51.349] [CHANNEL] 1162903891: 'Symbian World' (@symbian_world)
+[23:17:51.370] [CHANNEL] 1507138400: 'nnproject MIDlets Chat' (@nnmidletschat)
+[23:17:51.390] [CHANNEL] 1414082918: 'BerryFarm' (@berryfarm_org)
+[23:17:51.411] [CHANNEL] 3983877693: 'Blackberry New World' (@blackberry_new_world)
+[23:17:51.433] [CHANNEL] 1645467927: 'Linux Mobile World' (@linuxmobile_world)
+[23:17:51.456] [CHANNEL] 1443214007: 'Retro Nokia Collectors' (@nokiacollection)
+[23:17:51.477] [CHANNEL] 2828629830: 'JAVA GAME UPLOADER' (@javagameuploader240_320)
+[23:17:51.523] [CHANNEL] 1493460258: 'Nokia 🤝 S40 Apps (Connecting Fans)' (@nokiapps40)
+[23:17:51.546] [CHANNEL] 2049500142: 'Job Update with Foundthejob' (@foundthejob)
+[23:17:51.568] [CHANNEL] 2751183913: 'Mr Symbian chat' (@mr_symbian2)
+[23:17:51.592] [CHANNEL] 3505033421: '30 Days DA ENG Challenge B48- 04.05.2026' (@)
+[23:17:51.614] [CHANNEL] 1512585198: 'CCS University, Meerut' (@CCSUniversityMRT)
+[23:17:51.637] [CHANNEL] 3483330286: 'byNara AI' (@bynara_ai)
+[23:17:51.661] [CHANNEL] 1701024585: 'Linux and DevOps' (@LinuxMastery)
+[23:17:51.684] [CHANNEL] 2004009975: 'QA Engineers' (@qa_engineers_team)
+[23:17:51.706] [CHANNEL] 2336436581: 'cmp>>log;' (@cmplog)
+[23:17:51.730] [CHANNEL] 2994545350: 'LegacyProjects News' (@legacyprojectsnews)
+[23:17:51.756] [CHANNEL] 2815321724: 'PageNest' (@pagenest9)
+[23:17:51.780] [CHANNEL] 3972052147: 'Feature Phone Freaks' (@)
+[23:17:51.803] [CHANNEL] 3500850458: 'Tech Army' (@mishraCoderArmy)
+[23:17:51.827] [CHANNEL] 1322592301: 'BlackBerry 10 OS' (@BlackBerry10OS)
+[23:17:51.853] [CHANNEL] 1170132219: 'Symbian OS International' (@symbianos)
+[23:17:51.877] [CHANNEL] 3544678371: 'YouTube on Symbian/J2ME' (@SymbianYouTube)
+[23:17:51.903] [CHANNEL] 1260624063: 'ChatGPT AI Photo Prompts' (@ChatGPT_AI_Photo_Prompts)
+[23:17:51.926] [CHANNEL] 1191902746: 'Java/Symbian/BREW Hub' (@j2me_sys_hub)
+[23:17:51.951] [CHANNEL] 3310904966: 'JAVA GAME UPLOADER CHAT' (@javagameuploderchat)
+[23:17:51.975] [CHANNEL] 1706472507: 'CCS University, Meerut' (@CCSUMeerut1)
+[23:17:51.999] [CHANNEL] 3947095765: 'byNara Chat' (@bynara_ai_chat)
+[23:17:52.022] [CHANNEL] 4338854564: 'PageNest -Job Discussion group' (@jobInterviewPrepration)
+[23:17:52.047] [CHANNEL] 1484916438: 'Java/Symbian/BREW Hub (Chat)' (@)
+[23:17:52.070] [USER] 777000: 'Telegram' (@)
+[23:17:52.094] [USER] 7114093138: 'John' (@John_the_don_420)
+[23:17:52.120] [USER] 7216423067: 'rgh' (@gusrio97)
+[23:17:52.145] [USER] 1673543634: 'Marco Biondo' (@marcobiondo78)
+[23:17:52.171] [USER] 917543381: 'Миша' (@nyrvy)
+[23:17:52.195] [USER] 940193302: 'Hack Diaz' (@)
+[23:17:52.219] [USER] 1291190460: 'emmgee' (@)
+[23:17:52.244] [USER] 8618785107: 'Karen' (@Karen92762)
+[23:17:52.269] [USER] 5022381723: 'Billy' (@Billyboysfrombbme)
+[23:17:52.295] [USER] 1087968824: 'Group' (@GroupAnonymousBot)
+[23:17:52.321] [USER] 5345739802: 'Ric9k' (@eric_electric)
+[23:17:52.347] [USER] 7025376842: 'OPPO FANS' (@)
+[23:17:52.374] [USER] 6853541089: 'Deepak' (@hyperionrover)
+[23:17:52.401] [USER] 136817688: 'Channel' (@Channel_Bot)
+[23:17:52.428] [USER] 284403259: 'RSS bot' (@rss2tg_bot)
+[23:17:52.455] [USER] 609517172: 'Rose' (@MissRose_bot)
+[23:17:52.482] [USER] 5322234791: 'SABURU' (@)
+[23:17:52.508] [USER] 834307436: 'Khoirul' (@)
+[23:17:52.550] [USER] 8877436412: 'Ardiansyah Maulana' (@)
+[23:17:52.576] [USER] 5149271402: 'Maks Liakhov ' (@)
+[23:17:52.622] [USER] 6233584668: 'sᴠᴄᴀʏᴏɴ4ɪᴋ' (@)
+[23:17:52.653] [USER] 8007236608: 'Никита Фамилия' (@)
+[23:17:52.684] [USER] 5151163915: 'Alternative Prespective' (@vixxkigoli)
+[23:17:52.716] [USER] 6548059189: 'SK' (@sya_msra)
+[23:17:52.748] [USER] 1284240947: 'Konohamaru' (@)
+[23:17:52.779] [USER] 8151655234: 'Mcg' (@)
+[23:17:52.809] [USER] 8689657246: 'Cầm Lương Tiêu' (@)
+[23:17:52.839] [USER] 8656522446: 'Nguyen Le' (@haohanvn)
+[23:17:52.866] [USER] 5672338323: 'J P' (@)
+[23:17:52.896] Dialog [1]: Symbian S80/S90 World (Unread: 2, Pinned: NO)
+[23:17:52.925] Dialog [2]: Чат LegacyProjects (Unread: 15, Pinned: NO)
+[23:17:52.954] Dialog [3]: Symbian World (Unread: 3, Pinned: NO)
+[23:17:52.983] Dialog [4]: nnproject MIDlets Chat (Unread: 1, Pinned: NO)
+[23:17:53.013] Dialog [5]: Telegram (Unread: 0, Pinned: NO)
+[23:17:53.046] Dialog [6]: BerryFarm (Unread: 0, Pinned: NO)
+[23:17:53.076] Dialog [7]: Blackberry New World (Unread: 0, Pinned: NO)
+[23:17:53.107] Dialog [8]: John (Unread: 0, Pinned: NO)
+[23:17:53.138] Dialog [9]: Linux Mobile World (Unread: 0, Pinned: NO)
+[23:17:53.169] Dialog [10]: Retro Nokia Collectors (Unread: 0, Pinned: NO)
+[23:17:53.199] Dialog [11]: JAVA GAME UPLOADER (Unread: 0, Pinned: NO)
+[23:17:53.230] Dialog [12]: Nokia 🤝 S40 Apps (Connecting Fans) (Unread: 0, Pinned: NO)
+[23:17:53.261] Dialog [13]: Job Update with Foundthejob (Unread: 0, Pinned: NO)
+[23:17:53.292] Dialog [14]: Mr Symbian chat (Unread: 0, Pinned: NO)
+[23:17:53.321] Dialog [15]: 30 Days DA ENG Challenge B48- 04.05.2026 (Unread: 0, Pinned: NO)
+[23:17:53.354] Dialog [16]: CCS University, Meerut (Unread: 5, Pinned: NO)
+[23:17:53.398] Dialog [17]: byNara AI (Unread: 0, Pinned: NO)
+[23:17:53.427] Dialog [18]: Linux and DevOps (Unread: 0, Pinned: NO)
+[23:17:53.457] Dialog [19]: QA Engineers (Unread: 0, Pinned: NO)
+[23:17:53.487] Dialog [20]: cmp>>log; (Unread: 0, Pinned: NO)
+[23:17:53.516] Dialog [21]: LegacyProjects News (Unread: 0, Pinned: NO)
+[23:17:53.554] Dialog [22]: PageNest (Unread: 0, Pinned: NO)
+[23:17:53.599] Dialog [23]: Feature Phone Freaks (Unread: 0, Pinned: NO)
+[23:17:53.629] Dialog [24]: Tech Army (Unread: 0, Pinned: NO)
+[23:17:53.658] Dialog [25]: BlackBerry 10 OS (Unread: 2, Pinned: NO)
+[23:17:53.691] Dialog [26]: rgh (Unread: 0, Pinned: NO)
+[23:17:53.723] Dialog [27]: Symbian OS International (Unread: 0, Pinned: NO)
+[23:17:53.757] Dialog [28]: YouTube on Symbian/J2ME (Unread: 0, Pinned: NO)
+[23:17:53.790] Dialog [29]: ChatGPT AI Photo Prompts (Unread: 0, Pinned: NO)
+[23:17:53.824] Dialog [30]: Java/Symbian/BREW Hub (Unread: 0, Pinned: NO)
+[23:17:55.179] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:17:55.229] Decompressed outer GZIP packed message (418 -> 488 bytes)
+[23:17:55.278] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:17:55.336] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:17:55.605] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:17:55.698] Decompressed outer GZIP packed message (425 -> 500 bytes)
+[23:17:55.747] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:17:55.805] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:17:56.203] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:17:56.237] Decompressed outer GZIP packed message (429 -> 500 bytes)
+[23:17:56.269] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:17:56.301] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:18:03.790] Requesting message history for peer 0 (type: 0, limit: 50)...
+[23:18:04.036] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[23:18:04.156] RPC Result for ReqMsgId: 7680996173594512136, Inner Constructor: 0x2144ca19
+[23:18:04.221] [RPC ERROR] Code: 400, Message: PEER_ID_INVALID
+[23:18:11.445] Encrypted MTProto 2.0 Response received! Constructor: 0x78d4dec1
+[23:18:11.569] Incoming real-time MTProto updates stream (constructor: 0x78d4dec1)
+[23:18:14.418] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[23:18:14.552] [WARN] Bad Message Notification for MsgId 7680996220836545348, Error Code: 35
+[23:18:21.766] Requesting message history for peer 0 (type: 0, limit: 50)...
+[23:18:21.963] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[23:18:22.060] RPC Result for ReqMsgId: 7680996250903691536, Inner Constructor: 0x2144ca19
+[23:18:22.132] [RPC ERROR] Code: 400, Message: PEER_ID_INVALID
+[23:18:31.230] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:18:31.331] Decompressed outer GZIP packed message (304 -> 348 bytes)
+[23:18:31.382] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:18:31.432] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:18:33.879] Requesting message history for peer 0 (type: 0, limit: 50)...
+[23:18:34.021] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[23:18:34.066] RPC Result for ReqMsgId: 7680996302443556784, Inner Constructor: 0x2144ca19
+[23:18:34.104] [RPC ERROR] Code: 400, Message: PEER_ID_INVALID
+[23:18:39.413] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[23:18:39.578] [WARN] Bad Message Notification for MsgId 7680996328210723452, Error Code: 35
+[23:18:40.064] Requesting message history for peer 0 (type: 0, limit: 50)...
+[23:18:40.239] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[23:18:40.279] RPC Result for ReqMsgId: 7680996332504857524, Inner Constructor: 0x2144ca19
+[23:18:40.316] [RPC ERROR] Code: 400, Message: PEER_ID_INVALID
+[23:18:48.069] Requesting message history for peer 0 (type: 0, limit: 50)...
+[23:18:48.304] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[23:18:48.343] RPC Result for ReqMsgId: 7680996366864750512, Inner Constructor: 0x2144ca19
+[23:18:48.386] [RPC ERROR] Code: 400, Message: PEER_ID_INVALID
+[23:18:52.477] Requesting message history for peer 0 (type: 0, limit: 50)...
+[23:18:52.691] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[23:18:52.797] RPC Result for ReqMsgId: 7680996384046475120, Inner Constructor: 0x2144ca19
+[23:18:52.866] [RPC ERROR] Code: 400, Message: PEER_ID_INVALID
+[23:18:57.360] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:18:57.481] Decompressed outer GZIP packed message (320 -> 368 bytes)
+[23:18:57.550] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:18:57.604] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:18:59.847] Requesting message history for peer 0 (type: 0, limit: 50)...
+[23:18:59.996] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[23:19:00.048] RPC Result for ReqMsgId: 7680996414112556156, Inner Constructor: 0x2144ca19
+[23:19:00.087] [RPC ERROR] Code: 400, Message: PEER_ID_INVALID
+[23:19:04.425] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[23:19:04.534] [WARN] Bad Message Notification for MsgId 7680996435584957392, Error Code: 35
+[23:19:06.012] Requesting live Telegram dialogs (limit: 40, offset_id: 0)...
+[23:19:06.584] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[23:19:06.687] RPC Result for ReqMsgId: 7680996444174058760, Inner Constructor: 0x3072cfa1
+[23:19:06.789] Decompressed RPC GZIP packed payload for ReqMsgId 7680996444174058760 (18200 -> 33996 bytes)
+[23:19:06.886] Unpacked GZIP Inner Constructor: 0x71e094f3
+[23:19:06.984] ==================================================
+[23:19:07.090] LIVE TELEGRAM DIALOGS RECEIVED (constructor: 0x71e094f3)
+[23:19:07.189] ==================================================
+[23:19:07.287] Dialogs slice count: 75
+[23:19:07.384] Total valid dialogs scanned: 40
+[23:19:07.487] [CHANNEL] 3072355572: 'Чат LegacyProjects' (@)
+[23:19:07.586] [CHANNEL] 1554022295: 'Symbian S80/S90 World' (@series80world)
+[23:19:07.686] [CHANNEL] 1162903891: 'Symbian World' (@symbian_world)
+[23:19:07.786] [CHANNEL] 1507138400: 'nnproject MIDlets Chat' (@nnmidletschat)
+[23:19:07.887] [CHANNEL] 1414082918: 'BerryFarm' (@berryfarm_org)
+[23:19:07.986] [CHANNEL] 3983877693: 'Blackberry New World' (@blackberry_new_world)
+[23:19:08.087] [CHANNEL] 1645467927: 'Linux Mobile World' (@linuxmobile_world)
+[23:19:08.185] [CHANNEL] 1443214007: 'Retro Nokia Collectors' (@nokiacollection)
+[23:19:08.286] [CHANNEL] 2828629830: 'JAVA GAME UPLOADER' (@javagameuploader240_320)
+[23:19:08.388] [CHANNEL] 1493460258: 'Nokia 🤝 S40 Apps (Connecting Fans)' (@nokiapps40)
+[23:19:08.489] [CHANNEL] 2049500142: 'Job Update with Foundthejob' (@foundthejob)
+[23:19:08.594] [CHANNEL] 2751183913: 'Mr Symbian chat' (@mr_symbian2)
+[23:19:08.696] [CHANNEL] 3505033421: '30 Days DA ENG Challenge B48- 04.05.2026' (@)
+[23:19:08.802] [CHANNEL] 1512585198: 'CCS University, Meerut' (@CCSUniversityMRT)
+[23:19:08.904] [CHANNEL] 3483330286: 'byNara AI' (@bynara_ai)
+[23:19:09.010] [CHANNEL] 1701024585: 'Linux and DevOps' (@LinuxMastery)
+[23:19:09.122] [CHANNEL] 2004009975: 'QA Engineers' (@qa_engineers_team)
+[23:19:09.227] [CHANNEL] 2336436581: 'cmp>>log;' (@cmplog)
+[23:19:09.333] [CHANNEL] 2994545350: 'LegacyProjects News' (@legacyprojectsnews)
+[23:19:09.441] [CHANNEL] 2815321724: 'PageNest' (@pagenest9)
+[23:19:09.547] [CHANNEL] 3972052147: 'Feature Phone Freaks' (@)
+[23:19:09.654] [CHANNEL] 3500850458: 'Tech Army' (@mishraCoderArmy)
+[23:19:09.760] [CHANNEL] 1322592301: 'BlackBerry 10 OS' (@BlackBerry10OS)
+[23:19:09.872] [CHANNEL] 1170132219: 'Symbian OS International' (@symbianos)
+[23:19:09.980] [CHANNEL] 3544678371: 'YouTube on Symbian/J2ME' (@SymbianYouTube)
+[23:19:10.117] [CHANNEL] 1260624063: 'ChatGPT AI Photo Prompts' (@ChatGPT_AI_Photo_Prompts)
+[23:19:10.232] [CHANNEL] 1191902746: 'Java/Symbian/BREW Hub' (@j2me_sys_hub)
+[23:19:10.341] [CHANNEL] 2615275412: 'Blackberry Phoenix Chat' (@)
+[23:19:10.452] [CHANNEL] 2925806707: 'Cloudncoding Chat Room 👨‍💻' (@)
+[23:19:10.563] [CHANNEL] 3863042787: 'Blackberry OS 10 App's' (@BB10App)
+[23:19:10.675] [CHANNEL] 1322172467: 'SecuriXy.kz' (@securixy_kz)
+[23:19:10.785] [CHANNEL] 1751869243: 'BlackBerry World 🌍' (@blackberryosint)
+[23:19:10.899] [CHANNEL] 1489591994: 'Java Uz Games| J2ME Loader | Nokia Games | Sony Ericsson | Motorola | Java Games | Top Java Games|' (@JavaUzGames)
+[23:19:11.017] [CHANNEL] 2525088680: 'C4Coding Club by Ananya' (@ananyaC4coding)
+[23:19:11.160] [CHANNEL] 2874481043: 'Mr Symbian' (@mr_symbian1)
+[23:19:11.273] [CHANNEL] 3310904966: 'JAVA GAME UPLOADER CHAT' (@javagameuploderchat)
+[23:19:11.386] [CHANNEL] 1706472507: 'CCS University, Meerut' (@CCSUMeerut1)
+[23:19:11.499] [CHANNEL] 3947095765: 'byNara Chat' (@bynara_ai_chat)
+[23:19:11.616] [CHANNEL] 4338854564: 'PageNest -Job Discussion group' (@jobInterviewPrepration)
+[23:19:11.729] [CHANNEL] 1484916438: 'Java/Symbian/BREW Hub (Chat)' (@)
+[23:19:11.844] [CHANNEL] 1900616052: 'Java Uz Games Chat' (@JavaUzGames_chat)
+[23:19:11.962] [USER] 777000: 'Telegram' (@)
+[23:19:12.076] [USER] 7114093138: 'John' (@John_the_don_420)
+[23:19:12.199] [USER] 7216423067: 'rgh' (@gusrio97)
+[23:19:12.313] [USER] 6478395197: 'Trumpet Tiger' (@)
+[23:19:12.429] [USER] 5534099637: 'ChatGPT Advanced Bot' (@chatgpt_advanced_bot)
+[23:19:12.544] [USER] 6817827235: 'Steve Jobs' (@SteveJobs_4S)
+[23:19:12.661] [USER] 1673543634: 'Marco Biondo' (@marcobiondo78)
+[23:19:12.775] [USER] 1291190460: 'emmgee' (@)
+[23:19:12.891] [USER] 8618785107: 'Karen' (@Karen92762)
+[23:19:13.006] [USER] 5022381723: 'Billy' (@Billyboysfrombbme)
+[23:19:13.121] [USER] 1087968824: 'Group' (@GroupAnonymousBot)
+[23:19:13.247] [USER] 5345739802: 'Ric9k' (@eric_electric)
+[23:19:13.364] [USER] 7025376842: 'OPPO FANS' (@)
+[23:19:13.482] [USER] 6853541089: 'Deepak' (@hyperionrover)
+[23:19:13.600] [USER] 136817688: 'Channel' (@Channel_Bot)
+[23:19:13.723] [USER] 284403259: 'RSS bot' (@rss2tg_bot)
+[23:19:13.847] [USER] 609517172: 'Rose' (@MissRose_bot)
+[23:19:13.927] [USER] 5322234791: 'SABURU' (@)
+[23:19:13.987] [USER] 834307436: 'Khoirul' (@)
+[23:19:14.038] [USER] 8877436412: 'Ardiansyah Maulana' (@)
+[23:19:14.087] [USER] 5149271402: 'Maks Liakhov ' (@)
+[23:19:14.136] [USER] 6233584668: 'sᴠᴄᴀʏᴏɴ4ɪᴋ' (@)
+[23:19:14.185] [USER] 8007236608: 'Никита Фамилия' (@)
+[23:19:14.233] [USER] 5151163915: 'Alternative Prespective' (@vixxkigoli)
+[23:19:14.283] [USER] 6548059189: 'SK' (@sya_msra)
+[23:19:14.332] [USER] 1284240947: 'Konohamaru' (@)
+[23:19:14.382] [USER] 8151655234: 'Mcg' (@)
+[23:19:14.432] [USER] 8689657246: 'Cầm Lương Tiêu' (@)
+[23:19:14.481] [USER] 8656522446: 'Nguyen Le' (@haohanvn)
+[23:19:14.531] [USER] 5672338323: 'J P' (@)
+[23:19:14.581] [USER] 2068299837: 'chinnu' (@satyaprakash0817)
+[23:19:14.631] [USER] 84709772: 'Ola Hughson 🏳‍⚧🇵🇸' (@)
+[23:19:14.682] [USER] 7612972866: 'rezisita' (@)
+[23:19:14.732] [USER] 7066294624: 'M.' (@)
+[23:19:14.783] [USER] 910249977: 'Ananya' (@)
+[23:19:14.836] [USER] 5273500413: 'Nehru' (@)
+[23:19:14.886] [USER] 8700688446: 'ᴍxᴡ' (@)
+[23:19:14.939] [USER] 8947752600: 'Setya Situmorang' (@)
+[23:19:14.993] Dialog [1]: Чат LegacyProjects (Unread: 16, Pinned: NO)
+[23:19:15.044] Dialog [2]: Symbian S80/S90 World (Unread: 5, Pinned: NO)
+[23:19:15.097] Dialog [3]: Symbian World (Unread: 3, Pinned: NO)
+[23:19:15.149] Dialog [4]: nnproject MIDlets Chat (Unread: 1, Pinned: NO)
+[23:19:15.201] Dialog [5]: Telegram (Unread: 0, Pinned: NO)
+[23:19:15.257] Dialog [6]: BerryFarm (Unread: 0, Pinned: NO)
+[23:19:15.309] Dialog [7]: Blackberry New World (Unread: 0, Pinned: NO)
+[23:19:15.362] Dialog [8]: John (Unread: 0, Pinned: NO)
+[23:19:15.419] Dialog [9]: Linux Mobile World (Unread: 0, Pinned: NO)
+[23:19:15.474] Dialog [10]: Retro Nokia Collectors (Unread: 0, Pinned: NO)
+[23:19:15.526] Dialog [11]: JAVA GAME UPLOADER (Unread: 0, Pinned: NO)
+[23:19:15.579] Dialog [12]: Nokia 🤝 S40 Apps (Connecting Fans) (Unread: 0, Pinned: NO)
+[23:19:15.632] Dialog [13]: Job Update with Foundthejob (Unread: 0, Pinned: NO)
+[23:19:15.686] Dialog [14]: Mr Symbian chat (Unread: 0, Pinned: NO)
+[23:19:15.739] Dialog [15]: 30 Days DA ENG Challenge B48- 04.05.2026 (Unread: 0, Pinned: NO)
+[23:19:15.793] Dialog [16]: CCS University, Meerut (Unread: 5, Pinned: NO)
+[23:19:15.848] Dialog [17]: byNara AI (Unread: 0, Pinned: NO)
+[23:19:15.903] Dialog [18]: Linux and DevOps (Unread: 0, Pinned: NO)
+[23:19:15.958] Dialog [19]: QA Engineers (Unread: 0, Pinned: NO)
+[23:19:16.013] Dialog [20]: cmp>>log; (Unread: 0, Pinned: NO)
+[23:19:16.068] Dialog [21]: LegacyProjects News (Unread: 0, Pinned: NO)
+[23:19:16.124] Dialog [22]: PageNest (Unread: 0, Pinned: NO)
+[23:19:16.179] Dialog [23]: Feature Phone Freaks (Unread: 0, Pinned: NO)
+[23:19:16.235] Dialog [24]: Tech Army (Unread: 0, Pinned: NO)
+[23:19:16.294] Dialog [25]: BlackBerry 10 OS (Unread: 2, Pinned: NO)
+[23:19:16.349] Dialog [26]: rgh (Unread: 0, Pinned: NO)
+[23:19:16.405] Dialog [27]: Symbian OS International (Unread: 0, Pinned: NO)
+[23:19:16.460] Dialog [28]: YouTube on Symbian/J2ME (Unread: 0, Pinned: NO)
+[23:19:16.518] Dialog [29]: ChatGPT AI Photo Prompts (Unread: 0, Pinned: NO)
+[23:19:16.577] Dialog [30]: Java/Symbian/BREW Hub (Unread: 0, Pinned: NO)
+[23:19:16.637] Dialog [31]: Trumpet Tiger (Unread: 0, Pinned: NO)
+[23:19:16.696] Dialog [32]: Blackberry Phoenix Chat (Unread: 0, Pinned: NO)
+[23:19:16.757] Dialog [33]: Cloudncoding Chat Room 👨‍💻 (Unread: 0, Pinned: NO)
+[23:19:16.818] Dialog [34]: Blackberry OS 10 App's (Unread: 0, Pinned: NO)
+[23:19:16.876] Dialog [35]: SecuriXy.kz (Unread: 0, Pinned: NO)
+[23:19:16.938] Dialog [36]: BlackBerry World 🌍 (Unread: 0, Pinned: NO)
+[23:19:16.995] Dialog [37]: Java Uz Games| J2ME Loader | Nokia Games | Sony Ericsson | Motorola | Java Games | Top Java Games| (Unread: 0, Pinned: NO)
+[23:19:17.058] Dialog [38]: C4Coding Club by Ananya (Unread: 0, Pinned: NO)
+[23:19:17.119] Dialog [39]: Mr Symbian (Unread: 0, Pinned: NO)
+[23:19:17.183] Dialog [40]: ChatGPT Advanced Bot (Unread: 0, Pinned: NO)
+[23:19:20.377] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:19:20.445] Decompressed outer GZIP packed message (347 -> 388 bytes)
+[23:19:20.505] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:19:20.574] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:19:27.239] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:19:27.306] Decompressed outer GZIP packed message (364 -> 408 bytes)
+[23:19:27.368] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:19:27.437] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:19:29.411] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[23:19:29.492] [WARN] Bad Message Notification for MsgId 7680996542959092548, Error Code: 35
+[23:19:30.002] Encrypted MTProto 2.0 Response received! Constructor: 0x78d4dec1
+[23:19:30.067] Incoming real-time MTProto updates stream (constructor: 0x78d4dec1)
+[23:19:30.213] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:19:30.278] Decompressed outer GZIP packed message (313 -> 360 bytes)
+[23:19:30.336] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:19:30.395] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:19:33.836] Encrypted MTProto 2.0 Response received! Constructor: 0x78d4dec1
+[23:19:34.092] Incoming real-time MTProto updates stream (constructor: 0x78d4dec1)
+[23:19:43.482] Requesting message history for peer 0 (type: 0, limit: 50)...
+[23:19:43.665] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[23:19:43.749] RPC Result for ReqMsgId: 7680996603089635416, Inner Constructor: 0x2144ca19
+[23:19:43.811] [RPC ERROR] Code: 400, Message: PEER_ID_INVALID
+[23:19:54.423] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[23:19:54.657] [WARN] Bad Message Notification for MsgId 7680996650333274948, Error Code: 35
+[23:20:19.424] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[23:20:19.662] [WARN] Bad Message Notification for MsgId 7680996757707453052, Error Code: 35
+[23:20:44.416] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[23:20:44.668] [WARN] Bad Message Notification for MsgId 7680996865081635452, Error Code: 35
+[23:21:09.419] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[23:21:09.676] [WARN] Bad Message Notification for MsgId 7680996972455817852, Error Code: 35
+[23:21:34.409] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[23:21:34.676] [WARN] Bad Message Notification for MsgId 7680997079830000252, Error Code: 35
+[23:21:48.146] Encrypted MTProto 2.0 Response received! Constructor: 0x78d4dec1
+[23:21:48.397] Incoming real-time MTProto updates stream (constructor: 0x78d4dec1)
+[23:21:52.948] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:21:53.195] Decompressed outer GZIP packed message (425 -> 492 bytes)
+[23:21:53.440] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:21:53.694] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:21:53.956] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:21:54.155] Decompressed outer GZIP packed message (424 -> 492 bytes)
+[23:21:54.245] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:21:54.326] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:21:54.401] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:21:54.469] Decompressed outer GZIP packed message (425 -> 492 bytes)
+[23:21:54.543] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:21:54.613] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:21:54.682] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:21:54.758] Decompressed outer GZIP packed message (447 -> 516 bytes)
+[23:21:54.825] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:21:54.900] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:21:54.966] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:21:55.030] Decompressed outer GZIP packed message (433 -> 504 bytes)
+[23:21:55.128] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:21:55.246] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:21:55.371] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:21:55.494] Decompressed outer GZIP packed message (433 -> 504 bytes)
+[23:21:55.619] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:21:55.746] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:21:55.924] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:21:56.048] Decompressed outer GZIP packed message (440 -> 508 bytes)
+[23:21:56.175] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:21:56.312] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:21:56.445] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:21:56.570] Decompressed outer GZIP packed message (434 -> 504 bytes)
+[23:21:56.701] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:21:56.829] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:21:56.968] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:21:57.104] Decompressed outer GZIP packed message (436 -> 504 bytes)
+[23:21:57.236] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:21:57.363] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:21:58.483] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:21:58.561] Decompressed outer GZIP packed message (446 -> 516 bytes)
+[23:21:58.634] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:21:58.704] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:21:59.408] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[23:21:59.490] [WARN] Bad Message Notification for MsgId 7680997187204182652, Error Code: 35
+[23:22:05.039] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:22:05.209] Decompressed outer GZIP packed message (358 -> 392 bytes)
+[23:22:05.294] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:22:05.372] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:22:11.572] Requesting message history for peer 0 (type: 0, limit: 50)...
+[23:22:11.829] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[23:22:11.916] RPC Result for ReqMsgId: 7680997238745357868, Inner Constructor: 0x2144ca19
+[23:22:11.989] [RPC ERROR] Code: 400, Message: PEER_ID_INVALID
+[23:22:24.421] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[23:22:24.715] [WARN] Bad Message Notification for MsgId 7680997294578365052, Error Code: 35
+[23:22:38.621] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:22:38.896] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:22:43.852] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:22:44.035] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:22:49.424] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[23:22:49.702] [WARN] Bad Message Notification for MsgId 7680997401952547452, Error Code: 35
+[23:23:03.718] Encrypted MTProto 2.0 Response received! Constructor: 0x78d4dec1
+[23:23:04.000] Incoming real-time MTProto updates stream (constructor: 0x78d4dec1)
+[23:23:14.454] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[23:23:14.745] [WARN] Bad Message Notification for MsgId 7680997509326734148, Error Code: 35
+[23:23:39.417] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[23:23:39.694] [WARN] Bad Message Notification for MsgId 7680997616700916548, Error Code: 35
+[23:24:04.422] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[23:24:04.718] [WARN] Bad Message Notification for MsgId 7680997724075094652, Error Code: 35
+[23:24:15.503] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:24:15.796] Decompressed outer GZIP packed message (447 -> 516 bytes)
+[23:24:16.089] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:24:16.387] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:24:16.693] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:24:16.906] Decompressed outer GZIP packed message (444 -> 512 bytes)
+[23:24:17.001] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:24:17.085] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:24:17.166] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:24:17.251] Decompressed outer GZIP packed message (449 -> 516 bytes)
+[23:24:17.327] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:24:17.407] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:24:17.488] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:24:17.567] Decompressed outer GZIP packed message (424 -> 492 bytes)
+[23:24:17.643] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:24:17.720] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:24:17.799] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:24:17.877] Decompressed outer GZIP packed message (408 -> 480 bytes)
+[23:24:17.955] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:24:18.034] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:24:18.111] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:24:18.186] Decompressed outer GZIP packed message (432 -> 500 bytes)
+[23:24:18.268] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:24:18.342] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:24:18.415] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:24:18.489] Decompressed outer GZIP packed message (436 -> 504 bytes)
+[23:24:18.559] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:24:18.636] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:24:18.716] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:24:18.794] Decompressed outer GZIP packed message (433 -> 500 bytes)
+[23:24:18.873] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:24:18.952] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:24:19.182] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:24:19.267] Decompressed outer GZIP packed message (424 -> 492 bytes)
+[23:24:19.345] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:24:19.417] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:24:19.513] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:24:19.586] Decompressed outer GZIP packed message (429 -> 496 bytes)
+[23:24:19.678] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:24:19.809] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:24:21.029] Encrypted MTProto 2.0 Response received! Constructor: 0x3072cfa1
+[23:24:21.111] Decompressed outer GZIP packed message (428 -> 496 bytes)
+[23:24:21.184] Encrypted MTProto 2.0 Response received! Constructor: 0x74ae4240
+[23:24:21.258] Incoming real-time MTProto updates stream (constructor: 0x74ae4240)
+[23:24:29.414] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[23:24:29.711] [WARN] Bad Message Notification for MsgId 7680997831449281348, Error Code: 35
+[23:25:02.678] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[23:25:02.791] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[23:25:02.799] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[23:25:02.809] Requesting live Telegram dialogs (limit: 30, offset_id: 0)...
+[23:25:02.838] Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...
+[23:25:03.034] Encrypted MTProto 2.0 Response received! Constructor: 0xedab447b
+[23:25:03.039] Server salt refreshed: 0x6908da7460efb96d. Re-transmitting live dialogs request...
+[23:25:03.043] Requesting live Telegram dialogs (limit: 30, offset_id: 0)...
+[23:25:03.050] Encrypted MTProto 2.0 Response received! Constructor: 0xedab447b
+[23:25:03.054] Server salt refreshed: 0x6908da7460efb96d. Re-transmitting live dialogs request...
+[23:25:03.059] Requesting live Telegram dialogs (limit: 30, offset_id: 0)...
+[23:25:03.146] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[23:25:03.151] Message container received containing 2 messages.
+[23:25:03.156] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[23:25:03.161] New MTProto Session confirmed. Server Salt updated: 0x6908da7460efb96d
+[23:25:03.166] Encrypted MTProto 2.0 Response received! Constructor: 0x62d6b459
+[23:25:03.171] Server acknowledged 1 messages.
+[23:25:03.274] Encrypted MTProto 2.0 Response received! Constructor: 0x62d6b459
+[23:25:03.280] Server acknowledged 1 messages.
+[23:25:03.369] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[23:25:03.379] RPC Result for ReqMsgId: 7680997977477035540, Inner Constructor: 0x3072cfa1
+[23:25:03.387] Decompressed RPC GZIP packed payload for ReqMsgId 7680997977477035540 (12845 -> 23516 bytes)
+[23:25:03.397] Unpacked GZIP Inner Constructor: 0x71e094f3
+[23:25:03.403] ==================================================
+[23:25:03.409] LIVE TELEGRAM DIALOGS RECEIVED (constructor: 0x71e094f3)
+[23:25:03.415] ==================================================
+[23:25:03.421] Dialogs slice count: 75
+[23:25:03.428] Total valid dialogs scanned: 30
+[23:25:03.435] [CHANNEL] 1554022295: 'Symbian S80/S90 World' (@series80world)
+[23:25:03.441] [CHANNEL] 1443214007: 'Retro Nokia Collectors' (@nokiacollection)
+[23:25:03.448] [CHANNEL] 1493460258: 'Nokia 🤝 S40 Apps (Connecting Fans)' (@nokiapps40)
+[23:25:03.455] [CHANNEL] 3072355572: 'Чат LegacyProjects' (@)
+[23:25:03.462] [CHANNEL] 1162903891: 'Symbian World' (@symbian_world)
+[23:25:03.469] [CHANNEL] 1507138400: 'nnproject MIDlets Chat' (@nnmidletschat)
+[23:25:03.476] [CHANNEL] 1414082918: 'BerryFarm' (@berryfarm_org)
+[23:25:03.484] [CHANNEL] 3983877693: 'Blackberry New World' (@blackberry_new_world)
+[23:25:03.492] [CHANNEL] 1645467927: 'Linux Mobile World' (@linuxmobile_world)
+[23:25:03.499] [CHANNEL] 2828629830: 'JAVA GAME UPLOADER' (@javagameuploader240_320)
+[23:25:03.507] [CHANNEL] 2049500142: 'Job Update with Foundthejob' (@foundthejob)
+[23:25:03.515] [CHANNEL] 2751183913: 'Mr Symbian chat' (@mr_symbian2)
+[23:25:03.523] [CHANNEL] 3505033421: '30 Days DA ENG Challenge B48- 04.05.2026' (@)
+[23:25:03.531] [CHANNEL] 1512585198: 'CCS University, Meerut' (@CCSUniversityMRT)
+[23:25:03.540] [CHANNEL] 3483330286: 'byNara AI' (@bynara_ai)
+[23:25:03.548] [CHANNEL] 1701024585: 'Linux and DevOps' (@LinuxMastery)
+[23:25:03.556] [CHANNEL] 2004009975: 'QA Engineers' (@qa_engineers_team)
+[23:25:03.565] [CHANNEL] 2336436581: 'cmp>>log;' (@cmplog)
+[23:25:03.573] [CHANNEL] 2994545350: 'LegacyProjects News' (@legacyprojectsnews)
+[23:25:03.582] [CHANNEL] 2815321724: 'PageNest' (@pagenest9)
+[23:25:03.591] [CHANNEL] 3972052147: 'Feature Phone Freaks' (@)
+[23:25:03.600] [CHANNEL] 3500850458: 'Tech Army' (@mishraCoderArmy)
+[23:25:03.610] [CHANNEL] 1322592301: 'BlackBerry 10 OS' (@BlackBerry10OS)
+[23:25:03.619] [CHANNEL] 1170132219: 'Symbian OS International' (@symbianos)
+[23:25:03.630] [CHANNEL] 3544678371: 'YouTube on Symbian/J2ME' (@SymbianYouTube)
+[23:25:03.640] [CHANNEL] 1260624063: 'ChatGPT AI Photo Prompts' (@ChatGPT_AI_Photo_Prompts)
+[23:25:03.650] [CHANNEL] 1191902746: 'Java/Symbian/BREW Hub' (@j2me_sys_hub)
+[23:25:03.660] [CHANNEL] 3310904966: 'JAVA GAME UPLOADER CHAT' (@javagameuploderchat)
+[23:25:03.671] [CHANNEL] 1706472507: 'CCS University, Meerut' (@CCSUMeerut1)
+[23:25:03.681] [CHANNEL] 3947095765: 'byNara Chat' (@bynara_ai_chat)
+[23:25:03.692] [CHANNEL] 4338854564: 'PageNest -Job Discussion group' (@jobInterviewPrepration)
+[23:25:03.704] [CHANNEL] 1484916438: 'Java/Symbian/BREW Hub (Chat)' (@)
+[23:25:03.715] [USER] 777000: 'Telegram' (@)
+[23:25:03.726] [USER] 7114093138: 'John' (@John_the_don_420)
+[23:25:03.737] [USER] 7216423067: 'rgh' (@gusrio97)
+[23:25:03.748] [USER] 1673543634: 'Marco Biondo' (@marcobiondo78)
+[23:25:03.760] [USER] 8103252204: 'Navid' (@Ja_Navid)
+[23:25:03.772] [USER] 6001826613: 'Arek' (@ArekTennyson)
+[23:25:03.783] [USER] 6817827235: 'Steve Jobs' (@SteveJobs_4S)
+[23:25:03.794] [USER] 1291190460: 'emmgee' (@)
+[23:25:03.805] [USER] 8618785107: 'Karen' (@Karen92762)
+[23:25:03.817] [USER] 5022381723: 'Billy' (@Billyboysfrombbme)
+[23:25:03.829] [USER] 1087968824: 'Group' (@GroupAnonymousBot)
+[23:25:03.863] [USER] 5345739802: 'Ric9k' (@eric_electric)
+[23:25:03.876] [USER] 7025376842: 'OPPO FANS' (@)
+[23:25:03.889] [USER] 136817688: 'Channel' (@Channel_Bot)
+[23:25:03.904] [USER] 609517172: 'Rose' (@MissRose_bot)
+[23:25:03.921] [USER] 5322234791: 'SABURU' (@)
+[23:25:03.934] [USER] 834307436: 'Khoirul' (@)
+[23:25:03.948] [USER] 8877436412: 'Ardiansyah Maulana' (@)
+[23:25:03.961] [USER] 5149271402: 'Maks Liakhov ' (@)
+[23:25:03.975] [USER] 6233584668: 'sᴠᴄᴀʏᴏɴ4ɪᴋ' (@)
+[23:25:03.988] [USER] 8007236608: 'Никита Фамилия' (@)
+[23:25:04.002] [USER] 5151163915: 'Alternative Prespective' (@vixxkigoli)
+[23:25:04.016] [USER] 6548059189: 'SK' (@sya_msra)
+[23:25:04.030] [USER] 1284240947: 'Konohamaru' (@)
+[23:25:04.045] [USER] 8151655234: 'Mcg' (@)
+[23:25:04.059] [USER] 8689657246: 'Cầm Lương Tiêu' (@)
+[23:25:04.073] [USER] 8656522446: 'Nguyen Le' (@haohanvn)
+[23:25:04.087] [USER] 5672338323: 'J P' (@)
+[23:25:04.102] Dialog [1]: Symbian S80/S90 World (Unread: 25, Pinned: NO)
+[23:25:04.116] Dialog [2]: Retro Nokia Collectors (Unread: 1, Pinned: NO)
+[23:25:04.131] Dialog [3]: Nokia 🤝 S40 Apps (Connecting Fans) (Unread: 1, Pinned: NO)
+[23:25:04.146] Dialog [4]: Чат LegacyProjects (Unread: 18, Pinned: NO)
+[23:25:04.161] Dialog [5]: Symbian World (Unread: 3, Pinned: NO)
+[23:25:04.176] Dialog [6]: nnproject MIDlets Chat (Unread: 1, Pinned: NO)
+[23:25:04.192] Dialog [7]: Telegram (Unread: 0, Pinned: NO)
+[23:25:04.207] Dialog [8]: BerryFarm (Unread: 0, Pinned: NO)
+[23:25:04.223] Dialog [9]: Blackberry New World (Unread: 0, Pinned: NO)
+[23:25:04.238] Dialog [10]: John (Unread: 0, Pinned: NO)
+[23:25:04.254] Dialog [11]: Linux Mobile World (Unread: 0, Pinned: NO)
+[23:25:04.269] Dialog [12]: JAVA GAME UPLOADER (Unread: 0, Pinned: NO)
+[23:25:04.285] Dialog [13]: Job Update with Foundthejob (Unread: 0, Pinned: NO)
+[23:25:04.301] Dialog [14]: Mr Symbian chat (Unread: 0, Pinned: NO)
+[23:25:04.318] Dialog [15]: 30 Days DA ENG Challenge B48- 04.05.2026 (Unread: 0, Pinned: NO)
+[23:25:04.335] Dialog [16]: CCS University, Meerut (Unread: 5, Pinned: NO)
+[23:25:04.352] Dialog [17]: byNara AI (Unread: 0, Pinned: NO)
+[23:25:04.369] Dialog [18]: Linux and DevOps (Unread: 0, Pinned: NO)
+[23:25:04.385] Dialog [19]: QA Engineers (Unread: 0, Pinned: NO)
+[23:25:04.402] Dialog [20]: cmp>>log; (Unread: 0, Pinned: NO)
+[23:25:04.419] Dialog [21]: LegacyProjects News (Unread: 0, Pinned: NO)
+[23:25:04.436] Dialog [22]: PageNest (Unread: 0, Pinned: NO)
+[23:25:04.453] Dialog [23]: Feature Phone Freaks (Unread: 0, Pinned: NO)
+[23:25:04.472] Dialog [24]: Tech Army (Unread: 0, Pinned: NO)
+[23:25:04.489] Dialog [25]: BlackBerry 10 OS (Unread: 2, Pinned: NO)
+[23:25:04.507] Dialog [26]: rgh (Unread: 0, Pinned: NO)
+[23:25:04.524] Dialog [27]: Symbian OS International (Unread: 0, Pinned: NO)
+[23:25:04.542] Dialog [28]: YouTube on Symbian/J2ME (Unread: 0, Pinned: NO)
+[23:25:04.562] Dialog [29]: ChatGPT AI Photo Prompts (Unread: 0, Pinned: NO)
+[23:25:04.580] Dialog [30]: Java/Symbian/BREW Hub (Unread: 0, Pinned: NO)
+[23:25:04.609] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[23:25:04.628] RPC Result for ReqMsgId: 7680997977477104260, Inner Constructor: 0x3072cfa1
+[23:25:04.648] Decompressed RPC GZIP packed payload for ReqMsgId 7680997977477104260 (12845 -> 23516 bytes)
+[23:25:04.669] Unpacked GZIP Inner Constructor: 0x71e094f3
+[23:25:04.690] ==================================================
+[23:25:04.709] LIVE TELEGRAM DIALOGS RECEIVED (constructor: 0x71e094f3)
+[23:25:04.729] ==================================================
+[23:25:04.751] Dialogs slice count: 75
+[23:25:04.772] Total valid dialogs scanned: 30
+[23:25:04.793] [CHANNEL] 1554022295: 'Symbian S80/S90 World' (@series80world)
+[23:25:04.814] [CHANNEL] 1443214007: 'Retro Nokia Collectors' (@nokiacollection)
+[23:25:04.835] [CHANNEL] 1493460258: 'Nokia 🤝 S40 Apps (Connecting Fans)' (@nokiapps40)
+[23:25:04.854] [CHANNEL] 3072355572: 'Чат LegacyProjects' (@)
+[23:25:04.874] [CHANNEL] 1162903891: 'Symbian World' (@symbian_world)
+[23:25:04.895] [CHANNEL] 1507138400: 'nnproject MIDlets Chat' (@nnmidletschat)
+[23:25:04.915] [CHANNEL] 1414082918: 'BerryFarm' (@berryfarm_org)
+[23:25:04.937] [CHANNEL] 3983877693: 'Blackberry New World' (@blackberry_new_world)
+[23:25:04.958] [CHANNEL] 1645467927: 'Linux Mobile World' (@linuxmobile_world)
+[23:25:04.979] [CHANNEL] 2828629830: 'JAVA GAME UPLOADER' (@javagameuploader240_320)
+[23:25:05.004] [CHANNEL] 2049500142: 'Job Update with Foundthejob' (@foundthejob)
+[23:25:05.040] [CHANNEL] 2751183913: 'Mr Symbian chat' (@mr_symbian2)
+[23:25:05.075] [CHANNEL] 3505033421: '30 Days DA ENG Challenge B48- 04.05.2026' (@)
+[23:25:05.096] [CHANNEL] 1512585198: 'CCS University, Meerut' (@CCSUniversityMRT)
+[23:25:05.119] [CHANNEL] 3483330286: 'byNara AI' (@bynara_ai)
+[23:25:05.141] [CHANNEL] 1701024585: 'Linux and DevOps' (@LinuxMastery)
+[23:25:05.164] [CHANNEL] 2004009975: 'QA Engineers' (@qa_engineers_team)
+[23:25:05.188] [CHANNEL] 2336436581: 'cmp>>log;' (@cmplog)
+[23:25:05.212] [CHANNEL] 2994545350: 'LegacyProjects News' (@legacyprojectsnews)
+[23:25:05.234] [CHANNEL] 2815321724: 'PageNest' (@pagenest9)
+[23:25:05.257] [CHANNEL] 3972052147: 'Feature Phone Freaks' (@)
+[23:25:05.281] [CHANNEL] 3500850458: 'Tech Army' (@mishraCoderArmy)
+[23:25:05.305] [CHANNEL] 1322592301: 'BlackBerry 10 OS' (@BlackBerry10OS)
+[23:25:05.330] [CHANNEL] 1170132219: 'Symbian OS International' (@symbianos)
+[23:25:05.355] [CHANNEL] 3544678371: 'YouTube on Symbian/J2ME' (@SymbianYouTube)
+[23:25:05.381] [CHANNEL] 1260624063: 'ChatGPT AI Photo Prompts' (@ChatGPT_AI_Photo_Prompts)
+[23:25:05.405] [CHANNEL] 1191902746: 'Java/Symbian/BREW Hub' (@j2me_sys_hub)
+[23:25:05.432] [CHANNEL] 3310904966: 'JAVA GAME UPLOADER CHAT' (@javagameuploderchat)
+[23:25:05.458] [CHANNEL] 1706472507: 'CCS University, Meerut' (@CCSUMeerut1)
+[23:25:05.484] [CHANNEL] 3947095765: 'byNara Chat' (@bynara_ai_chat)
+[23:25:05.511] [CHANNEL] 4338854564: 'PageNest -Job Discussion group' (@jobInterviewPrepration)
+[23:25:05.536] [CHANNEL] 1484916438: 'Java/Symbian/BREW Hub (Chat)' (@)
+[23:25:05.560] [USER] 777000: 'Telegram' (@)
+[23:25:05.585] [USER] 7114093138: 'John' (@John_the_don_420)
+[23:25:05.613] [USER] 7216423067: 'rgh' (@gusrio97)
+[23:25:05.639] [USER] 1673543634: 'Marco Biondo' (@marcobiondo78)
+[23:25:05.664] [USER] 8103252204: 'Navid' (@Ja_Navid)
+[23:25:05.689] [USER] 6001826613: 'Arek' (@ArekTennyson)
+[23:25:05.715] [USER] 6817827235: 'Steve Jobs' (@SteveJobs_4S)
+[23:25:05.742] [USER] 1291190460: 'emmgee' (@)
+[23:25:05.767] [USER] 8618785107: 'Karen' (@Karen92762)
+[23:25:05.794] [USER] 5022381723: 'Billy' (@Billyboysfrombbme)
+[23:25:05.820] [USER] 1087968824: 'Group' (@GroupAnonymousBot)
+[23:25:05.850] [USER] 5345739802: 'Ric9k' (@eric_electric)
+[23:25:05.893] [USER] 7025376842: 'OPPO FANS' (@)
+[23:25:05.940] [USER] 136817688: 'Channel' (@Channel_Bot)
+[23:25:05.967] [USER] 609517172: 'Rose' (@MissRose_bot)
+[23:25:05.995] [USER] 5322234791: 'SABURU' (@)
+[23:25:06.022] [USER] 834307436: 'Khoirul' (@)
+[23:25:06.047] [USER] 8877436412: 'Ardiansyah Maulana' (@)
+[23:25:06.076] [USER] 5149271402: 'Maks Liakhov ' (@)
+[23:25:06.103] [USER] 6233584668: 'sᴠᴄᴀʏᴏɴ4ɪᴋ' (@)
+[23:25:06.131] [USER] 8007236608: 'Никита Фамилия' (@)
+[23:25:06.158] [USER] 5151163915: 'Alternative Prespective' (@vixxkigoli)
+[23:25:06.185] [USER] 6548059189: 'SK' (@sya_msra)
+[23:25:06.213] [USER] 1284240947: 'Konohamaru' (@)
+[23:25:06.238] [USER] 8151655234: 'Mcg' (@)
+[23:25:06.264] [USER] 8689657246: 'Cầm Lương Tiêu' (@)
+[23:25:06.292] [USER] 8656522446: 'Nguyen Le' (@haohanvn)
+[23:25:06.320] [USER] 5672338323: 'J P' (@)
+[23:25:06.347] Dialog [1]: Symbian S80/S90 World (Unread: 25, Pinned: NO)
+[23:25:06.374] Dialog [2]: Retro Nokia Collectors (Unread: 1, Pinned: NO)
+[23:25:06.399] Dialog [3]: Nokia 🤝 S40 Apps (Connecting Fans) (Unread: 1, Pinned: NO)
+[23:25:06.425] Dialog [4]: Чат LegacyProjects (Unread: 18, Pinned: NO)
+[23:25:06.452] Dialog [5]: Symbian World (Unread: 3, Pinned: NO)
+[23:25:06.477] Dialog [6]: nnproject MIDlets Chat (Unread: 1, Pinned: NO)
+[23:25:06.507] Dialog [7]: Telegram (Unread: 0, Pinned: NO)
+[23:25:06.535] Dialog [8]: BerryFarm (Unread: 0, Pinned: NO)
+[23:25:06.562] Dialog [9]: Blackberry New World (Unread: 0, Pinned: NO)
+[23:25:06.589] Dialog [10]: John (Unread: 0, Pinned: NO)
+[23:25:06.617] Dialog [11]: Linux Mobile World (Unread: 0, Pinned: NO)
+[23:25:06.644] Dialog [12]: JAVA GAME UPLOADER (Unread: 0, Pinned: NO)
+[23:25:06.672] Dialog [13]: Job Update with Foundthejob (Unread: 0, Pinned: NO)
+[23:25:06.701] Dialog [14]: Mr Symbian chat (Unread: 0, Pinned: NO)
+[23:25:06.735] Dialog [15]: 30 Days DA ENG Challenge B48- 04.05.2026 (Unread: 0, Pinned: NO)
+[23:25:06.773] Dialog [16]: CCS University, Meerut (Unread: 5, Pinned: NO)
+[23:25:06.802] Dialog [17]: byNara AI (Unread: 0, Pinned: NO)
+[23:25:06.831] Dialog [18]: Linux and DevOps (Unread: 0, Pinned: NO)
+[23:25:06.861] Dialog [19]: QA Engineers (Unread: 0, Pinned: NO)
+[23:25:06.889] Dialog [20]: cmp>>log; (Unread: 0, Pinned: NO)
+[23:25:06.917] Dialog [21]: LegacyProjects News (Unread: 0, Pinned: NO)
+[23:25:06.960] Dialog [22]: PageNest (Unread: 0, Pinned: NO)
+[23:25:06.990] Dialog [23]: Feature Phone Freaks (Unread: 0, Pinned: NO)
+[23:25:07.020] Dialog [24]: Tech Army (Unread: 0, Pinned: NO)
+[23:25:07.048] Dialog [25]: BlackBerry 10 OS (Unread: 2, Pinned: NO)
+[23:25:07.077] Dialog [26]: rgh (Unread: 0, Pinned: NO)
+[23:25:07.106] Dialog [27]: Symbian OS International (Unread: 0, Pinned: NO)
+[23:25:07.135] Dialog [28]: YouTube on Symbian/J2ME (Unread: 0, Pinned: NO)
+[23:25:07.164] Dialog [29]: ChatGPT AI Photo Prompts (Unread: 0, Pinned: NO)
+[23:25:07.193] Dialog [30]: Java/Symbian/BREW Hub (Unread: 0, Pinned: NO)

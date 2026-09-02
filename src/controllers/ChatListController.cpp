@@ -17,8 +17,13 @@ ChatListController::ChatListController(Core::MTProtoSession* session, Storage::S
     m_model = new bb::cascades::GroupDataModel(this);
     m_model->setGrouping(bb::cascades::ItemGrouping::None);
 
+    m_messagesModel = new bb::cascades::GroupDataModel(this);
+    m_messagesModel->setGrouping(bb::cascades::ItemGrouping::None);
+
     connect(m_session, SIGNAL(dialogsReceived(QList<QVariantMap>)),
             this, SLOT(onDialogsReceived(QList<QVariantMap>)));
+    connect(m_session, SIGNAL(historyReceived(qint64, QList<QVariantMap>)),
+            this, SLOT(onHistoryReceived(qint64, QList<QVariantMap>)));
 
     // Load initial cached dialogs from local disk immediately
     QList<QVariantMap> cached = m_storage->loadDialogs();
@@ -80,8 +85,21 @@ void ChatListController::selectDialog(const QVariantList& indexPath) {
     int peerType = map.value("peerType").toInt();
     QString title = map.value("title").toString();
     quint64 accessHash = map.value("accessHash").toULongLong();
+    QString lastMsg = map.value("lastMessage").toString();
+    QString time = map.value("formattedTime").toString();
+
+    m_messagesModel->clear();
+    if (!lastMsg.isEmpty()) {
+        QVariantMap m;
+        m["id"] = 0;
+        m["text"] = lastMsg;
+        m["isOutgoing"] = map.value("isOutgoing").toBool();
+        m["formattedTime"] = time;
+        m_messagesModel->insert(m);
+    }
 
     openChat(peerId, peerType, title, accessHash);
+    m_session->sendMessagesGetHistory(peerType, peerId, accessHash, 0, 50);
 }
 
 void ChatListController::openChat(qint64 peerId, int peerType, const QString& title, quint64 accessHash) {
@@ -104,6 +122,54 @@ void ChatListController::onDialogsReceived(const QList<QVariantMap>& dialogs) {
     m_isLoading = false;
     emit loadingChanged(false);
     emit countChanged(m_allDialogs.size());
+}
+
+void ChatListController::loadHistory(int peerType, const QString& peerIdStr, const QString& accessHashStr) {
+    qint64 peerId = peerIdStr.toLongLong();
+    quint64 accessHash = accessHashStr.toULongLong();
+    if (peerId == 0) {
+        peerId = m_selectedPeerId;
+    }
+    if (peerId == 0) return;
+    m_session->sendMessagesGetHistory(peerType, peerId, accessHash, 0, 50);
+}
+
+void ChatListController::sendMessage(int peerType, const QString& peerIdStr, const QString& accessHashStr, const QString& text) {
+    if (text.trimmed().isEmpty()) return;
+    qint64 peerId = peerIdStr.toLongLong();
+    quint64 accessHash = accessHashStr.toULongLong();
+    if (peerId == 0) peerId = m_selectedPeerId;
+
+    QVariantMap optMsg;
+    optMsg["id"] = 0;
+    optMsg["text"] = text;
+    optMsg["isOutgoing"] = true;
+    optMsg["formattedTime"] = QDateTime::currentDateTime().toString("hh:mm");
+    m_messagesModel->insert(optMsg);
+
+    m_session->sendMessagesSendMessage(peerType, peerId, accessHash, text);
+}
+
+void ChatListController::addInitialMessage(const QString& text, const QString& time) {
+    if (text.trimmed().isEmpty()) return;
+    if (m_messagesModel->size() == 0) {
+        QVariantMap m;
+        m["id"] = 0;
+        m["text"] = text;
+        m["isOutgoing"] = false;
+        m["formattedTime"] = time.isEmpty() ? QDateTime::currentDateTime().toString("hh:mm") : time;
+        m_messagesModel->insert(m);
+    }
+}
+
+void ChatListController::onHistoryReceived(qint64 peerId, const QList<QVariantMap>& messages) {
+    Q_UNUSED(peerId);
+    if (!messages.isEmpty()) {
+        m_messagesModel->clear();
+        for (int i = 0; i < messages.size(); ++i) {
+            m_messagesModel->insert(messages[i]);
+        }
+    }
 }
 
 void ChatListController::onSessionRestored() {

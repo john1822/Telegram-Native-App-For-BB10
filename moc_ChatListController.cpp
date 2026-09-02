@@ -22,8 +22,8 @@ static const uint qt_meta_data_Telegram__Controllers__ChatListController[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-      10,   14, // methods
-       6,   64, // properties
+      14,   14, // methods
+       7,   84, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
@@ -38,22 +38,28 @@ static const uint qt_meta_data_Telegram__Controllers__ChatListController[] = {
 
  // slots: signature, parameters, type, tag, flags
      232,  224,   42,   42, 0x0a,
-     270,   42,   42,   42, 0x0a,
+     286,  270,   42,   42, 0x0a,
+     331,   42,   42,   42, 0x0a,
 
  // methods: signature, parameters, type, tag, flags
-     290,   42,   42,   42, 0x02,
-     317,  307,   42,   42, 0x02,
-     344,  152,   42,   42, 0x02,
+     351,   42,   42,   42, 0x02,
+     378,  368,   42,   42, 0x02,
+     405,  152,   42,   42, 0x02,
+     475,  442,   42,   42, 0x02,
+     546,  508,   42,   42, 0x02,
+     597,  587,   42,   42, 0x02,
 
  // properties: name, type, flags
-     411,  381, 0x00095409,
-     422,  417, 0x01495001,
-     436,  432, 0x02495001,
-     457,  449, 0x0a495103,
-     469,  449, 0x0a495001,
-     494,  487, 0x04495001,
+     662,  632, 0x00095409,
+     668,  632, 0x00095409,
+     687,  682, 0x01495001,
+     701,  697, 0x02495001,
+     722,  714, 0x0a495103,
+     734,  714, 0x0a495001,
+     759,  752, 0x04495001,
 
  // properties: notify_signal_id
+       0,
        0,
        0,
        1,
@@ -73,13 +79,20 @@ static const char qt_meta_stringdata_Telegram__Controllers__ChatListController[]
     "peerId,peerType,title,accessHash\0"
     "chatOpened(qint64,int,QString,quint64)\0"
     "dialogs\0onDialogsReceived(QList<QVariantMap>)\0"
+    "peerId,messages\0"
+    "onHistoryReceived(qint64,QList<QVariantMap>)\0"
     "onSessionRestored()\0refreshDialogs()\0"
     "indexPath\0selectDialog(QVariantList)\0"
     "openChat(qint64,int,QString,quint64)\0"
+    "peerType,peerIdStr,accessHashStr\0"
+    "loadHistory(int,QString,QString)\0"
+    "peerType,peerIdStr,accessHashStr,text\0"
+    "sendMessage(int,QString,QString,QString)\0"
+    "text,time\0addInitialMessage(QString,QString)\0"
     "bb::cascades::GroupDataModel*\0model\0"
-    "bool\0isLoading\0int\0dialogsCount\0QString\0"
-    "searchQuery\0selectedPeerTitle\0qint64\0"
-    "selectedPeerId\0"
+    "messagesModel\0bool\0isLoading\0int\0"
+    "dialogsCount\0QString\0searchQuery\0"
+    "selectedPeerTitle\0qint64\0selectedPeerId\0"
 };
 
 void Telegram::Controllers::ChatListController::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -94,10 +107,14 @@ void Telegram::Controllers::ChatListController::qt_static_metacall(QObject *_o, 
         case 3: _t->selectedPeerChanged(); break;
         case 4: _t->chatOpened((*reinterpret_cast< qint64(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3])),(*reinterpret_cast< quint64(*)>(_a[4]))); break;
         case 5: _t->onDialogsReceived((*reinterpret_cast< const QList<QVariantMap>(*)>(_a[1]))); break;
-        case 6: _t->onSessionRestored(); break;
-        case 7: _t->refreshDialogs(); break;
-        case 8: _t->selectDialog((*reinterpret_cast< const QVariantList(*)>(_a[1]))); break;
-        case 9: _t->openChat((*reinterpret_cast< qint64(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3])),(*reinterpret_cast< quint64(*)>(_a[4]))); break;
+        case 6: _t->onHistoryReceived((*reinterpret_cast< qint64(*)>(_a[1])),(*reinterpret_cast< const QList<QVariantMap>(*)>(_a[2]))); break;
+        case 7: _t->onSessionRestored(); break;
+        case 8: _t->refreshDialogs(); break;
+        case 9: _t->selectDialog((*reinterpret_cast< const QVariantList(*)>(_a[1]))); break;
+        case 10: _t->openChat((*reinterpret_cast< qint64(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3])),(*reinterpret_cast< quint64(*)>(_a[4]))); break;
+        case 11: _t->loadHistory((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3]))); break;
+        case 12: _t->sendMessage((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3])),(*reinterpret_cast< const QString(*)>(_a[4]))); break;
+        case 13: _t->addInitialMessage((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
         default: ;
         }
     }
@@ -135,40 +152,41 @@ int Telegram::Controllers::ChatListController::qt_metacall(QMetaObject::Call _c,
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 10)
+        if (_id < 14)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 10;
+        _id -= 14;
     }
 #ifndef QT_NO_PROPERTIES
       else if (_c == QMetaObject::ReadProperty) {
         void *_v = _a[0];
         switch (_id) {
         case 0: *reinterpret_cast< bb::cascades::GroupDataModel**>(_v) = model(); break;
-        case 1: *reinterpret_cast< bool*>(_v) = isLoading(); break;
-        case 2: *reinterpret_cast< int*>(_v) = dialogsCount(); break;
-        case 3: *reinterpret_cast< QString*>(_v) = searchQuery(); break;
-        case 4: *reinterpret_cast< QString*>(_v) = selectedPeerTitle(); break;
-        case 5: *reinterpret_cast< qint64*>(_v) = selectedPeerId(); break;
+        case 1: *reinterpret_cast< bb::cascades::GroupDataModel**>(_v) = messagesModel(); break;
+        case 2: *reinterpret_cast< bool*>(_v) = isLoading(); break;
+        case 3: *reinterpret_cast< int*>(_v) = dialogsCount(); break;
+        case 4: *reinterpret_cast< QString*>(_v) = searchQuery(); break;
+        case 5: *reinterpret_cast< QString*>(_v) = selectedPeerTitle(); break;
+        case 6: *reinterpret_cast< qint64*>(_v) = selectedPeerId(); break;
         }
-        _id -= 6;
+        _id -= 7;
     } else if (_c == QMetaObject::WriteProperty) {
         void *_v = _a[0];
         switch (_id) {
-        case 3: setSearchQuery(*reinterpret_cast< QString*>(_v)); break;
+        case 4: setSearchQuery(*reinterpret_cast< QString*>(_v)); break;
         }
-        _id -= 6;
+        _id -= 7;
     } else if (_c == QMetaObject::ResetProperty) {
-        _id -= 6;
+        _id -= 7;
     } else if (_c == QMetaObject::QueryPropertyDesignable) {
-        _id -= 6;
+        _id -= 7;
     } else if (_c == QMetaObject::QueryPropertyScriptable) {
-        _id -= 6;
+        _id -= 7;
     } else if (_c == QMetaObject::QueryPropertyStored) {
-        _id -= 6;
+        _id -= 7;
     } else if (_c == QMetaObject::QueryPropertyEditable) {
-        _id -= 6;
+        _id -= 7;
     } else if (_c == QMetaObject::QueryPropertyUser) {
-        _id -= 6;
+        _id -= 7;
     }
 #endif // QT_NO_PROPERTIES
     return _id;

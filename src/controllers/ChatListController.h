@@ -21,6 +21,7 @@ class ChatListController : public QObject {
     Q_OBJECT
 
     Q_PROPERTY(bb::cascades::GroupDataModel* model READ model CONSTANT)
+    Q_PROPERTY(bb::cascades::GroupDataModel* messagesModel READ messagesModel CONSTANT)
     Q_PROPERTY(bool isLoading READ isLoading NOTIFY loadingChanged)
     Q_PROPERTY(int dialogsCount READ dialogsCount NOTIFY countChanged)
     Q_PROPERTY(QString searchQuery READ searchQuery WRITE setSearchQuery NOTIFY searchQueryChanged)
@@ -32,6 +33,7 @@ public:
     virtual ~ChatListController();
 
     bb::cascades::GroupDataModel* model() const { return m_model; }
+    bb::cascades::GroupDataModel* messagesModel() const { return m_messagesModel; }
     bool isLoading() const { return m_isLoading; }
     int dialogsCount() const { return m_allDialogs.size(); }
     QString searchQuery() const { return m_searchQuery; }
@@ -43,9 +45,13 @@ public:
     Q_INVOKABLE void refreshDialogs();
     Q_INVOKABLE void selectDialog(const QVariantList& indexPath);
     Q_INVOKABLE void openChat(qint64 peerId, int peerType, const QString& title, quint64 accessHash);
+    Q_INVOKABLE void loadHistory(int peerType, const QString& peerIdStr, const QString& accessHashStr);
+    Q_INVOKABLE void sendMessage(int peerType, const QString& peerIdStr, const QString& accessHashStr, const QString& text);
+    Q_INVOKABLE void addInitialMessage(const QString& text, const QString& time);
 
 public slots:
     void onDialogsReceived(const QList<QVariantMap>& dialogs);
+    void onHistoryReceived(qint64 peerId, const QList<QVariantMap>& messages);
     void onSessionRestored();
 
 signals:
@@ -62,6 +68,7 @@ private:
     Core::MTProtoSession* m_session;
     Storage::SessionStorage* m_storage;
     bb::cascades::GroupDataModel* m_model;
+    bb::cascades::GroupDataModel* m_messagesModel;
     QList<QVariantMap> m_allDialogs;
     bool m_isLoading;
     QString m_searchQuery;

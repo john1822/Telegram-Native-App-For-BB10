@@ -78,11 +78,16 @@ enum ConstructorId {
     ID_AUTH_CHECK_PASSWORD     = 0xd18b4d16,
     ID_INPUT_CHECK_PASSWORD_SRP = 0xd27ff082,
 
-    // Phase 3: Dialogs & Chat Sync
+    // Phase 3 & 4: Dialogs & Messaging
     ID_MESSAGES_GET_DIALOGS    = 0xa0f4cb4f,
     ID_MESSAGES_DIALOGS        = 0x15ba6c40,
     ID_MESSAGES_DIALOGS_SLICE  = 0x71e094f3,
     ID_MESSAGES_DIALOGS_NOT_MODIFIED = 0xf0e3e596,
+    ID_MESSAGES_GET_HISTORY    = 0x4423e6c5,
+    ID_MESSAGES_SEND_MESSAGE   = 0x0983f972,
+    ID_MESSAGES_MESSAGES       = 0x8c718e87,
+    ID_MESSAGES_MESSAGES_SLICE = 0x3a20ecb8,
+    ID_MESSAGES_CHANNEL_MESSAGES = 0xc776ba4e,
 
     ID_INPUT_PEER_EMPTY        = 0x7f3b18ea,
     ID_INPUT_PEER_SELF         = 0x7da07ec9,

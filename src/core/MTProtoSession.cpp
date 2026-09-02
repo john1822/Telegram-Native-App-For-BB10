@@ -1357,6 +1357,11 @@ void MTProtoSession::handleRpcResult(qint64 reqMsgId, quint32 innerRpcConstructo
         }
 
         // Build list of DialogItem QVariantMaps
+        m_entityAccessHashes = entityAccessHashes;
+        for (int k = 0; k < dialogEntries.size(); ++k) {
+            m_entityPeerTypes[dialogEntries[k].peerId] = dialogEntries[k].peerType;
+        }
+
         QList<QVariantMap> dialogList;
         QSet<qint64> seenPeers;
         for (int i = 0; i < dialogEntries.size(); ++i) {
@@ -1406,8 +1411,149 @@ void MTProtoSession::handleRpcResult(qint64 reqMsgId, quint32 innerRpcConstructo
         }
 
         emit dialogsReceived(dialogList);
+    } else if (innerRpcConstructor == TL::ID_MESSAGES_MESSAGES ||
+               innerRpcConstructor == TL::ID_MESSAGES_MESSAGES_SLICE ||
+               innerRpcConstructor == TL::ID_MESSAGES_CHANNEL_MESSAGES) {
+        emit logMessage(QString("MESSAGE HISTORY RECEIVED (constructor: 0x%1)").arg(innerRpcConstructor, 8, 16, QChar('0')));
+
+        const QByteArray& rawData = plainBuf.buffer();
+        QList<QVariantMap> messagesList;
+
+        // Resilient message scanner looking for string messages
+        // Extract messages from payload
+        for (int pos = 0; pos <= rawData.size() - 20; ++pos) {
+            uint32_t cons = *reinterpret_cast<const uint32_t*>(rawData.constData() + pos);
+            if (cons == 0x38116eed || cons == 0x761450c3 || cons == 0x94345242 ||
+                cons == 0x835014c3 || cons == 0x77045b37 || cons == 0x55dd8ae8 ||
+                cons == TL::ID_MESSAGE) {
+                TL::TLBuffer mBuf(rawData.mid(pos + 4));
+                int32_t flags = 0;
+                int32_t msgId = 0;
+                if (mBuf.readInt32(flags) && mBuf.readInt32(msgId)) {
+                    bool isOut = (flags & (1 << 1)) != 0;
+                    // Skip peer structures and find string
+                    for (int sPos = pos + 16; sPos <= qMin(pos + 200, rawData.size() - 4); ++sPos) {
+                        quint8 len = static_cast<quint8>(rawData.at(sPos));
+                        if (len > 0 && len < 120 && (sPos + 1 + len <= rawData.size())) {
+                            QByteArray textBytes = rawData.mid(sPos + 1, len);
+                            bool isAscii = true;
+                            for (int k = 0; k < textBytes.size(); ++k) {
+                                quint8 ch = static_cast<quint8>(textBytes.at(k));
+                                if (ch < 32 && ch != '\n' && ch != '\r' && ch != '\t') {
+                                    isAscii = false;
+                                    break;
+                                }
+                            }
+                            if (isAscii && textBytes.trimmed().length() > 0) {
+                                QString text = QString::fromUtf8(textBytes.constData(), textBytes.size());
+                                QVariantMap msgMap;
+                                msgMap["id"] = msgId;
+                                msgMap["text"] = text;
+                                msgMap["isOutgoing"] = isOut;
+                                msgMap["date"] = QDateTime::currentDateTime().toTime_t();
+                                msgMap["formattedTime"] = QDateTime::currentDateTime().toString("hh:mm");
+                                messagesList.append(msgMap);
+                                emit logMessage(QString("[HISTORY MSG] id %1: '%2' (out: %3)").arg(msgId).arg(text).arg(isOut ? "YES" : "NO"));
+                                pos = sPos + len;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        emit logMessage(QString("Extracted %1 messages from history payload").arg(messagesList.size()));
+        emit historyReceived(0, messagesList);
     }
+}
+
+void MTProtoSession::sendMessagesGetHistory(int peerType, qint64 peerId, quint64 accessHash, int offsetId, int limit) {
+    if (peerId == 0) {
+        emit logMessage("[WARN] Cannot request message history for peer 0!");
+        return;
+    }
+    if (accessHash == 0 && m_entityAccessHashes.contains(peerId)) {
+        accessHash = m_entityAccessHashes.value(peerId);
+    }
+    if (peerType == 0 && m_entityPeerTypes.contains(peerId)) {
+        peerType = m_entityPeerTypes.value(peerId);
+    }
+
+    emit logMessage(QString("Requesting message history for peer %1 (type: %2, accessHash: 0x%3, limit: %4)...")
+                    .arg(peerId).arg(peerType).arg(accessHash, 0, 16).arg(limit));
+    TL::TLBuffer buf;
+
+    // messages.getHistory#4423e6c5 peer:InputPeer offset_id:int offset_date:int add_offset:int limit:int max_id:int min_id:int hash:long = messages.Messages;
+    buf.writeUInt32(TL::ID_MESSAGES_GET_HISTORY);
+
+    // InputPeer
+    if (peerType == Models::PEER_CHANNEL) {
+        buf.writeUInt32(TL::ID_INPUT_PEER_CHANNEL);
+        buf.writeInt64(peerId);
+        buf.writeInt64(static_cast<int64_t>(accessHash));
+    } else if (peerType == Models::PEER_CHAT) {
+        buf.writeUInt32(TL::ID_INPUT_PEER_CHAT);
+        buf.writeInt64(peerId);
+    } else {
+        buf.writeUInt32(TL::ID_INPUT_PEER_USER);
+        buf.writeInt64(peerId);
+        buf.writeInt64(static_cast<int64_t>(accessHash));
+    }
+
+    buf.writeInt32(offsetId);
+    buf.writeInt32(0); // offset_date
+    buf.writeInt32(0); // add_offset
+    buf.writeInt32(limit);
+    buf.writeInt32(0); // max_id
+    buf.writeInt32(0); // min_id
+    buf.writeInt64(0); // hash: long
+
+    sendEncryptedMessage(buf.buffer(), true);
+}
+
+void MTProtoSession::sendMessagesSendMessage(int peerType, qint64 peerId, quint64 accessHash, const QString& message) {
+    if (peerId == 0) {
+        emit logMessage("[WARN] Cannot send message to peer 0!");
+        return;
+    }
+    if (accessHash == 0 && m_entityAccessHashes.contains(peerId)) {
+        accessHash = m_entityAccessHashes.value(peerId);
+    }
+    if (peerType == 0 && m_entityPeerTypes.contains(peerId)) {
+        peerType = m_entityPeerTypes.value(peerId);
+    }
+
+    emit logMessage(QString("Sending message to peer %1: '%2'").arg(peerId).arg(message));
+    TL::TLBuffer buf;
+
+    // messages.sendMessage#0983f972 flags:# peer:InputPeer message:string random_id:long ...
+    buf.writeUInt32(TL::ID_MESSAGES_SEND_MESSAGE);
+    buf.writeInt32(0); // flags = 0
+
+    // InputPeer
+    if (peerType == Models::PEER_CHANNEL) {
+        buf.writeUInt32(TL::ID_INPUT_PEER_CHANNEL);
+        buf.writeInt64(peerId);
+        buf.writeInt64(static_cast<int64_t>(accessHash));
+    } else if (peerType == Models::PEER_CHAT) {
+        buf.writeUInt32(TL::ID_INPUT_PEER_CHAT);
+        buf.writeInt64(peerId);
+    } else {
+        buf.writeUInt32(TL::ID_INPUT_PEER_USER);
+        buf.writeInt64(peerId);
+        buf.writeInt64(static_cast<int64_t>(accessHash));
+    }
+
+    buf.writeString(message);
+
+    QByteArray rnd = Crypto::CryptoEngine::randomBytes(8);
+    int64_t randomId = *reinterpret_cast<const int64_t*>(rnd.constData());
+    buf.writeInt64(randomId);
+
+    sendEncryptedMessage(buf.buffer(), true);
 }
 
 } // namespace Core
 } // namespace Telegram
+

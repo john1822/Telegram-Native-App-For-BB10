@@ -20,8 +20,11 @@ TabbedPane {
         title: "Chats"
         description: "Messages & Channels"
 
-        Page {
-            titleBar: TitleBar {
+        NavigationPane {
+            id: chatNavPane
+
+            Page {
+                titleBar: TitleBar {
                 title: "Chats"
                 visibility: ChromeVisibility.Visible
             }
@@ -226,13 +229,33 @@ TabbedPane {
                         ]
 
                         onTriggered: {
-                            chatList.selectDialog(indexPath);
+                            var data = chatList.model.data(indexPath);
+                            if (data) {
+                                chatList.selectDialog(indexPath);
+                                var page = chatScreenDef.createObject();
+                                if (page) {
+                                    page.loadChat(data.title, data.peerType, "" + data.peerId, "" + data.accessHash, data.initials, data.avatarColor);
+                                    chatNavPane.push(page);
+                                }
+                            }
                         }
                     }
                 }
             }
         }
+
+        onPopTransitionEnded: {
+            page.destroy();
+        }
+
+        attachedObjects: [
+            ComponentDefinition {
+                id: chatScreenDef
+                source: "ChatScreen.qml"
+            }
+        ]
     }
+}
 
     // =========================================================================
     // TAB 2: TELEGRAM AUTHENTICATION & PROFILE

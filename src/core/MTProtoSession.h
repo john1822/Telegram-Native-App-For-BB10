@@ -55,8 +55,10 @@ public:
     void sendAuthLogOut();
     void sendExportLoginToken();
 
-    // Phase 3: Dialogs & Chat Sync
+    // Phase 3 & 4: Dialogs & Messaging
     void sendMessagesGetDialogs(int offsetDate = 0, int offsetId = 0, int limit = 30);
+    void sendMessagesGetHistory(int peerType, qint64 peerId, quint64 accessHash, int offsetId = 0, int limit = 50);
+    void sendMessagesSendMessage(int peerType, qint64 peerId, quint64 accessHash, const QString& message);
 
     void migrateToDc(int dcId);
     void restoreSession(int dcId, const QString& dcIp, int dcPort, quint64 authKeyId, const QByteArray& authKey, quint64 serverSalt);
@@ -83,8 +85,10 @@ signals:
     void authLoginSuccessReceived();
     void rpcErrorReceived(int errorCode, const QString& errorMessage);
 
-    // Phase 3: Dialogs Signals
+    // Phase 3 & 4: Dialogs & Messaging Signals
     void dialogsReceived(const QList<QVariantMap>& dialogs);
+    void historyReceived(qint64 peerId, const QList<QVariantMap>& messages);
+    void messageSent(qint64 peerId, qint64 randomId, int messageId, int date);
 
 private slots:
     void onTransportConnected();
@@ -146,6 +150,10 @@ private:
     qint64 m_pwdSrpId;
     QString m_pwdHint;
     QString m_pendingPassword;
+
+    // Entity Metadata Cache
+    QMap<qint64, quint64> m_entityAccessHashes;
+    QMap<qint64, int> m_entityPeerTypes;
 };
 
 } // namespace Core
