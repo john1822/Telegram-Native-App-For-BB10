@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<qnx xmlns="http://www.qnx.com/schemas/application/1.0">
+    <id>com.telegram.bb10</id>
+    <name>Telegram</name>
+    <versionNumber>1.0.0</versionNumber>
+    <description>Native Telegram Client for BlackBerry 10</description>
+    
+    <initialWindow>
+        <systemChrome>none</systemChrome>
+        <transparent>false</transparent>
+        <autoOrients>true</autoOrients>
+    </initialWindow>
+    
+    <action system="true">run_native</action>
+    
+    <env var="LD_LIBRARY_PATH" value="app/native/lib:/usr/lib/qt4/lib"/>
+    <env var="CASCADES_THEME" value="dark"/>
+    
+    <asset path="assets">assets</asset>
+    <asset path="TelegramBB10" entry="true" type="Qnx/Elf">TelegramBB10</asset>
+    
+    <permission>access_internet</permission>
+    <permission>post_notification</permission>
+    <permission>access_shared</permission>
+    <permission>record_audio</permission>
+    <permission>read_device_identifying_information</permission>
+    
+    <configuration name="Device-Release">
+        <entryPointType>Qnx/Cascades</entryPointType>
+        <cascadesProfile>landscape;portrait;square</cascadesProfile>
+    </configuration>
+    <configuration name="Device-Debug">
+        <entryPointType>Qnx/Cascades</entryPointType>
+        <cascadesProfile>landscape;portrait;square</cascadesProfile>
+    </configuration>
+    <configuration name="Simulator-Debug">
+        <entryPointType>Qnx/Cascades</entryPointType>
+        <cascadesProfile>landscape;portrait;square</cascadesProfile>
+    </configuration>
+</qnx>
