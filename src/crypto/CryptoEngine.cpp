@@ -5,6 +5,7 @@
 #include <openssl/sha.h>
 #include <openssl/bn.h>
 #include <openssl/rand.h>
+#include <zlib.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -522,12 +523,22 @@ bool CryptoEngine::computeSRP6A(const QString& password, const QByteArray& salt1
     int aNumBytes = BN_num_bytes(A_bn);
     BN_bn2bin(A_bn, reinterpret_cast<uint8_t*>(srpAOut.data()) + (pLen - aNumBytes));
 
-    // u = H(A | B)
-    QByteArray uHash = sha256(srpAOut + srpB);
+    // Pad g to 2048-bit big-endian (matching pLen = 256)
+    QByteArray gBytes(pLen, 0);
+    gBytes[pLen - 1] = static_cast<char>(g);
+
+    // Pad B to 2048-bit big-endian (matching pLen = 256) exactly as in TDLib
+    QByteArray bPadded = srpB;
+    if (bPadded.size() < pLen) {
+        bPadded.prepend(QByteArray(pLen - bPadded.size(), 0));
+    }
+
+    // u = H(A | B_padded)
+    QByteArray uHash = sha256(srpAOut + bPadded);
     BIGNUM* u_bn = BN_bin2bn(reinterpret_cast<const uint8_t*>(uHash.constData()), uHash.size(), NULL);
 
     // k = H(p | g)
-    QByteArray kHash = sha256(pBytes + QByteArray(1, static_cast<char>(g)));
+    QByteArray kHash = sha256(pBytes + gBytes);
     BIGNUM* k_bn = BN_bin2bn(reinterpret_cast<const uint8_t*>(kHash.constData()), kHash.size(), NULL);
 
     // v = g^x mod p
@@ -538,7 +549,7 @@ bool CryptoEngine::computeSRP6A(const QString& password, const QByteArray& salt1
     BIGNUM* kv_bn = BN_new();
     BN_mod_mul(kv_bn, k_bn, v_bn, p_bn, ctx);
 
-    // b_minus_kv = (B - kv) mod p
+    // b_minus_kv = (B - kv) mod p (positive modulo, exactly matching TDLib)
     BIGNUM* b_minus_kv = BN_new();
     BN_mod_sub(b_minus_kv, b_bn, kv_bn, p_bn, ctx);
 
@@ -557,9 +568,9 @@ bool CryptoEngine::computeSRP6A(const QString& password, const QByteArray& salt1
     BN_bn2bin(S_bn, reinterpret_cast<uint8_t*>(sBytes.data()) + (pLen - sNumBytes));
     QByteArray k_session = sha256(sBytes);
 
-    // M1 = H(H(p) ^ H(g) | H(salt1) | H(salt2) | A | B | K)
+    // M1 = H(H(p) ^ H(g) | H(salt1) | H(salt2) | A | B_padded | K)
     QByteArray pHash = sha256(pBytes);
-    QByteArray gHash = sha256(QByteArray(1, static_cast<char>(g)));
+    QByteArray gHash = sha256(gBytes);
     QByteArray pgXor(32, 0);
     for (int i = 0; i < 32; ++i) {
         pgXor[i] = pHash[i] ^ gHash[i];
@@ -567,7 +578,7 @@ bool CryptoEngine::computeSRP6A(const QString& password, const QByteArray& salt1
     QByteArray salt1Hash = sha256(salt1);
     QByteArray salt2Hash = sha256(salt2);
 
-    QByteArray m1Data = pgXor + salt1Hash + salt2Hash + srpAOut + srpB + k_session;
+    QByteArray m1Data = pgXor + salt1Hash + salt2Hash + srpAOut + bPadded + k_session;
     srpM1Out = sha256(m1Data);
 
     BN_free(p_bn);
@@ -587,6 +598,38 @@ bool CryptoEngine::computeSRP6A(const QString& password, const QByteArray& salt1
     BN_CTX_free(ctx);
 
     return true;
+}
+
+bool CryptoEngine::gzipDecompress(const QByteArray& inData, QByteArray& outData) {
+    if (inData.isEmpty()) return false;
+
+    z_stream strm;
+    memset(&strm, 0, sizeof(strm));
+    strm.next_in = reinterpret_cast<Bytef*>(const_cast<char*>(inData.constData()));
+    strm.avail_in = static_cast<uInt>(inData.size());
+
+    // 16 + MAX_WBITS handles gzip format with gzip header/footer
+    if (inflateInit2(&strm, 16 + MAX_WBITS) != Z_OK) {
+        return false;
+    }
+
+    outData.clear();
+    char buffer[4096];
+    int ret = Z_OK;
+
+    while (ret == Z_OK) {
+        strm.next_out = reinterpret_cast<Bytef*>(buffer);
+        strm.avail_out = sizeof(buffer);
+
+        ret = inflate(&strm, Z_NO_FLUSH);
+        if (ret == Z_OK || ret == Z_STREAM_END) {
+            int have = sizeof(buffer) - strm.avail_out;
+            outData.append(buffer, have);
+        }
+    }
+
+    inflateEnd(&strm);
+    return (ret == Z_STREAM_END);
 }
 
 } // namespace Crypto

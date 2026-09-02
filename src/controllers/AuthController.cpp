@@ -52,7 +52,7 @@ AuthController::AuthController(Core::MTProtoSession* session, Storage::SessionSt
     connect(m_session, SIGNAL(errorOccurred(QString)),
             this, SLOT(onSessionError(QString)));
 
-    m_qrPollTimer->setInterval(3500);
+    m_qrPollTimer->setInterval(20000);
     connect(m_qrPollTimer, SIGNAL(timeout()), this, SLOT(onQrPollTimer()));
 }
 
@@ -319,7 +319,9 @@ void AuthController::onAuthLoginTokenReceived(const QByteArray& token, int expir
     emit qrTokenUrlChanged(m_qrTokenUrl);
 
     // Generate crisp QR code PNG image in sandbox data directory
-    QString qrFile = "data/qr.png";
+    static int qrCounter = 0;
+    qrCounter = (qrCounter + 1) % 10;
+    QString qrFile = QString("data/qr_%1.png").arg(qrCounter);
     Crypto::QrGenerator::generateQrPng(m_qrTokenUrl, qrFile, 320);
 
     m_qrImagePath = QString("file://%1/%2").arg(QDir::currentPath()).arg(qrFile);
@@ -351,6 +353,14 @@ void AuthController::onRpcErrorReceived(int errorCode, const QString& errorMessa
     Q_UNUSED(errorCode);
     setBusy(false);
 
+    if (errorMessage == "AUTH_RESTART") {
+        if (!m_phoneNumber.isEmpty()) {
+            setStatus("Restarting authorization session...");
+            QTimer::singleShot(600, this, SLOT(resendCode()));
+            return;
+        }
+    }
+
     QString userFriendlyMsg;
     if (errorMessage == "SEND_CODE_UNAVAILABLE") {
         userFriendlyMsg = "Code was sent to your official Telegram app (Chat 777000). Please check notifications on your other device.";
@@ -358,6 +368,10 @@ void AuthController::onRpcErrorReceived(int errorCode, const QString& errorMessa
         userFriendlyMsg = "Incorrect verification code. Please check Chat 777000 in your Telegram app and re-enter.";
     } else if (errorMessage == "PHONE_CODE_EXPIRED") {
         userFriendlyMsg = "Verification code has expired. Please request a new code.";
+    } else if (errorMessage == "PASSWORD_HASH_INVALID") {
+        userFriendlyMsg = "Incorrect 2FA password. Please check your password and re-enter.";
+    } else if (errorMessage == "SRP_ID_INVALID" || errorMessage == "SRP_PASSWORD_CHANGED") {
+        userFriendlyMsg = "2FA parameters refreshed. Please enter your password and submit again.";
     } else if (errorMessage.startsWith("FLOOD_WAIT_")) {
         int seconds = errorMessage.section('_', -1).toInt();
         userFriendlyMsg = QString("Too many attempts. Please wait %1 seconds before retrying.").arg(seconds);

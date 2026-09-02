@@ -1601,3 +1601,926 @@
 [16:37:17.963] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
 [16:37:17.989] RPC Result for ReqMsgId: 7680892896810225324, Inner Constructor: 0x629f1980
 [16:37:18.014] QR Login Token received (expires in 1788347256s)
+[16:37:21.180] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:37:21.325] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:37:21.363] RPC Result for ReqMsgId: 7680892913987740868, Inner Constructor: 0x629f1980
+[16:37:21.393] QR Login Token received (expires in 1788347256s)
+[16:37:24.681] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:37:24.806] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:37:24.823] RPC Result for ReqMsgId: 7680892926874730108, Inner Constructor: 0x629f1980
+[16:37:24.841] QR Login Token received (expires in 1788347256s)
+[16:37:28.180] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:37:28.337] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:37:28.355] RPC Result for ReqMsgId: 7680892944052524824, Inner Constructor: 0x629f1980
+[16:37:28.374] QR Login Token received (expires in 1788347256s)
+[16:37:28.633] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[16:37:28.643] [WARN] Bad Message Notification for MsgId 7680892944053877740, Error Code: 35
+[16:37:31.680] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:37:31.848] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:37:31.895] RPC Result for ReqMsgId: 7680892956939642916, Inner Constructor: 0x629f1980
+[16:37:31.934] QR Login Token received (expires in 1788347256s)
+[16:37:35.181] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:37:35.322] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:37:35.346] RPC Result for ReqMsgId: 7680892974117300192, Inner Constructor: 0x629f1980
+[16:37:35.374] QR Login Token received (expires in 1788347285s)
+[16:37:38.681] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:37:38.833] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:37:38.848] RPC Result for ReqMsgId: 7680892987004379628, Inner Constructor: 0x629f1980
+[16:37:38.863] QR Login Token received (expires in 1788347285s)
+[16:37:42.180] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:37:42.351] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:37:42.375] RPC Result for ReqMsgId: 7680893004182097032, Inner Constructor: 0x629f1980
+[16:37:42.399] QR Login Token received (expires in 1788347285s)
+[16:37:45.680] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:37:45.909] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:37:45.959] RPC Result for ReqMsgId: 7680893017069185060, Inner Constructor: 0x629f1980
+[16:37:46.004] QR Login Token received (expires in 1788347285s)
+[16:37:49.180] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:37:49.364] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:37:49.427] RPC Result for ReqMsgId: 7680893034246936824, Inner Constructor: 0x629f1980
+[16:37:49.474] QR Login Token received (expires in 1788347285s)
+[16:37:52.680] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:37:52.864] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:37:52.921] RPC Result for ReqMsgId: 7680893047134003376, Inner Constructor: 0x629f1980
+[16:37:52.976] QR Login Token received (expires in 1788347285s)
+[16:37:53.638] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[16:37:53.703] [WARN] Bad Message Notification for MsgId 7680893051428060140, Error Code: 35
+[16:37:56.180] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:37:56.382] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:37:56.454] RPC Result for ReqMsgId: 7680893064311682128, Inner Constructor: 0x629f1980
+[16:37:56.504] QR Login Token received (expires in 1788347285s)
+[16:37:59.681] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:38:00.047] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:38:00.115] RPC Result for ReqMsgId: 7680893077198834576, Inner Constructor: 0x629f1980
+[16:38:00.155] QR Login Token received (expires in 1788347285s)
+[16:38:03.180] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:38:03.394] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:38:03.454] RPC Result for ReqMsgId: 7680893094376637880, Inner Constructor: 0x629f1980
+[16:38:03.517] QR Login Token received (expires in 1788347313s)
+[16:38:06.680] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:38:06.893] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:38:06.937] RPC Result for ReqMsgId: 7680893107263601356, Inner Constructor: 0x629f1980
+[16:38:06.976] QR Login Token received (expires in 1788347313s)
+[16:38:09.100] Requesting Telegram login code for +918950469287...
+[16:38:09.535] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:38:09.550] RPC Result for ReqMsgId: 7680893120145780232, Inner Constructor: 0x5e002502
+[16:38:09.565] ==================================================
+[16:38:09.581] TELEGRAM LOGIN CODE SENT
+[16:38:09.597] Delivery Type: Telegram App, Timeout: 60s, Hash: ff85acb9f089079873
+[16:38:09.614] ==================================================
+[16:38:18.641] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[16:38:18.715] [WARN] Bad Message Notification for MsgId 7680893158802242540, Error Code: 35
+[16:38:43.667] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[16:38:43.742] [WARN] Bad Message Notification for MsgId 7680893266176429232, Error Code: 35
+[16:39:03.085] Requesting Telegram code resend (SMS) for +918950469287 (hash: ff85acb9f089079873)...
+[16:39:03.247] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[16:39:03.296] Message container received containing 2 messages.
+[16:39:03.313] Encrypted MTProto 2.0 Response received! Constructor: 0x78d4dec1
+[16:39:03.333] Encrypted MTProto 2.0 Response received! Constructor: 0x504f544b
+[16:39:03.351] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:39:03.371] RPC Result for ReqMsgId: 7680893352074057168, Inner Constructor: 0x2144ca19
+[16:39:03.389] [RPC ERROR] Code: 406, Message: SEND_CODE_UNAVAILABLE
+[16:39:08.931] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[16:39:09.011] [WARN] Bad Message Notification for MsgId 7680893373550607340, Error Code: 35
+[16:39:20.828] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:39:20.979] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:39:21.016] RPC Result for ReqMsgId: 7680893425091675180, Inner Constructor: 0x629f1980
+[16:39:21.049] QR Login Token received (expires in 1788347390s)
+[16:39:24.615] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:39:24.825] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:39:24.910] RPC Result for ReqMsgId: 7680893442270839988, Inner Constructor: 0x629f1980
+[16:39:24.989] QR Login Token received (expires in 1788347390s)
+[16:39:28.115] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:39:28.343] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:39:28.382] RPC Result for ReqMsgId: 7680893459448553100, Inner Constructor: 0x629f1980
+[16:39:28.412] QR Login Token received (expires in 1788347390s)
+[16:39:31.615] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:39:31.802] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:39:31.845] RPC Result for ReqMsgId: 7680893472335550932, Inner Constructor: 0x629f1980
+[16:39:31.877] QR Login Token received (expires in 1788347390s)
+[16:39:33.717] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[16:39:33.821] [WARN] Bad Message Notification for MsgId 7680893480924789740, Error Code: 35
+[16:39:35.115] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:39:35.349] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:39:35.390] RPC Result for ReqMsgId: 7680893489513384300, Inner Constructor: 0x629f1980
+[16:39:35.422] QR Login Token received (expires in 1788347390s)
+[16:39:38.615] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:39:38.827] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:39:38.871] RPC Result for ReqMsgId: 7680893502400425084, Inner Constructor: 0x629f1980
+[16:39:38.917] QR Login Token received (expires in 1788347390s)
+[16:39:42.117] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:39:42.336] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:39:42.401] RPC Result for ReqMsgId: 7680893519578163964, Inner Constructor: 0x629f1980
+[16:39:42.443] QR Login Token received (expires in 1788347390s)
+[16:39:45.615] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:39:45.833] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:39:45.864] RPC Result for ReqMsgId: 7680893532465217628, Inner Constructor: 0x629f1980
+[16:39:45.897] QR Login Token received (expires in 1788347390s)
+[16:39:49.117] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:39:49.354] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:39:49.421] RPC Result for ReqMsgId: 7680893549643012344, Inner Constructor: 0x629f1980
+[16:39:49.486] QR Login Token received (expires in 1788347419s)
+[16:39:52.615] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:39:53.469] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:39:53.606] RPC Result for ReqMsgId: 7680893562530005880, Inner Constructor: 0x629f1980
+[16:39:53.712] QR Login Token received (expires in 1788347419s)
+[16:39:56.115] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:39:56.394] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:39:56.493] RPC Result for ReqMsgId: 7680893579707697516, Inner Constructor: 0x629f1980
+[16:39:56.601] QR Login Token received (expires in 1788347419s)
+[16:39:58.648] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[16:39:58.769] [WARN] Bad Message Notification for MsgId 7680893588298972140, Error Code: 35
+[16:39:59.615] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:39:59.873] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:39:59.939] RPC Result for ReqMsgId: 7680893592594841376, Inner Constructor: 0x629f1980
+[16:39:59.984] QR Login Token received (expires in 1788347419s)
+[16:40:03.115] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:40:03.405] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:40:03.493] RPC Result for ReqMsgId: 7680893609772528720, Inner Constructor: 0x629f1980
+[16:40:03.557] QR Login Token received (expires in 1788347419s)
+[16:40:06.615] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:40:06.911] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:40:06.976] RPC Result for ReqMsgId: 7680893622659530844, Inner Constructor: 0x629f1980
+[16:40:07.042] QR Login Token received (expires in 1788347419s)
+[16:40:10.114] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:40:10.387] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:40:10.477] RPC Result for ReqMsgId: 7680893639837364216, Inner Constructor: 0x629f1980
+[16:40:10.543] QR Login Token received (expires in 1788347419s)
+[16:40:13.615] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:40:13.856] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:40:13.956] RPC Result for ReqMsgId: 7680893652724366340, Inner Constructor: 0x629f1980
+[16:40:14.023] QR Login Token received (expires in 1788347419s)
+[16:40:17.115] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:40:17.390] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:40:17.521] RPC Result for ReqMsgId: 7680893669902156760, Inner Constructor: 0x629f1980
+[16:40:17.572] QR Login Token received (expires in 1788347447s)
+[16:40:20.614] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:40:20.946] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:40:21.030] RPC Result for ReqMsgId: 7680893682789206132, Inner Constructor: 0x629f1980
+[16:40:21.081] QR Login Token received (expires in 1788347447s)
+[16:40:23.640] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[16:40:23.757] [WARN] Bad Message Notification for MsgId 7680893695673154540, Error Code: 35
+[16:40:24.115] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:40:24.317] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:40:24.351] RPC Result for ReqMsgId: 7680893699966674432, Inner Constructor: 0x629f1980
+[16:40:24.387] QR Login Token received (expires in 1788347447s)
+[16:40:27.615] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:40:27.926] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:40:28.021] RPC Result for ReqMsgId: 7680893712853882716, Inner Constructor: 0x629f1980
+[16:40:28.097] QR Login Token received (expires in 1788347447s)
+[16:40:31.114] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:40:31.353] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:40:31.440] RPC Result for ReqMsgId: 7680893730031621596, Inner Constructor: 0x629f1980
+[16:40:31.488] QR Login Token received (expires in 1788347447s)
+[16:40:34.615] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:40:34.866] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:40:34.962] RPC Result for ReqMsgId: 7680893742918735392, Inner Constructor: 0x629f1980
+[16:40:35.022] QR Login Token received (expires in 1788347447s)
+[16:40:38.115] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:40:38.458] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:40:38.566] RPC Result for ReqMsgId: 7680893760096555876, Inner Constructor: 0x629f1980
+[16:40:38.645] QR Login Token received (expires in 1788347447s)
+[16:40:41.614] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:40:41.877] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:40:41.968] RPC Result for ReqMsgId: 7680893772983515056, Inner Constructor: 0x629f1980
+[16:40:42.027] QR Login Token received (expires in 1788347447s)
+[16:40:45.114] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:40:45.331] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:40:45.384] RPC Result for ReqMsgId: 7680893790161146560, Inner Constructor: 0x629f1980
+[16:40:45.437] QR Login Token received (expires in 1788347475s)
+[16:40:48.615] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:40:48.783] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[16:40:48.972] [WARN] Bad Message Notification for MsgId 7680893803047341232, Error Code: 35
+[16:40:49.029] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:40:49.120] RPC Result for ReqMsgId: 7680893803048359140, Inner Constructor: 0x629f1980
+[16:40:49.183] QR Login Token received (expires in 1788347475s)
+[16:40:52.115] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:40:52.390] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:40:52.480] RPC Result for ReqMsgId: 7680893820226080840, Inner Constructor: 0x629f1980
+[16:40:52.532] QR Login Token received (expires in 1788347475s)
+[16:40:55.615] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:40:55.902] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:40:56.037] RPC Result for ReqMsgId: 7680893833113190344, Inner Constructor: 0x629f1980
+[16:40:56.114] QR Login Token received (expires in 1788347475s)
+[16:40:59.115] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:40:59.377] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:40:59.491] RPC Result for ReqMsgId: 7680893850290817552, Inner Constructor: 0x629f1980
+[16:40:59.542] QR Login Token received (expires in 1788347475s)
+[16:41:02.615] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:41:02.893] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:41:03.066] RPC Result for ReqMsgId: 7680893863177948528, Inner Constructor: 0x629f1980
+[16:41:03.130] QR Login Token received (expires in 1788347475s)
+[16:41:06.115] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:41:06.384] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:41:06.557] RPC Result for ReqMsgId: 7680893880355614396, Inner Constructor: 0x629f1980
+[16:41:06.623] QR Login Token received (expires in 1788347475s)
+[16:41:09.615] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:41:09.855] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:41:09.911] RPC Result for ReqMsgId: 7680893893242573572, Inner Constructor: 0x629f1980
+[16:41:09.954] QR Login Token received (expires in 1788347475s)
+[16:41:13.114] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:41:13.438] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:41:13.601] RPC Result for ReqMsgId: 7680893910420454188, Inner Constructor: 0x629f1980
+[16:41:13.668] QR Login Token received (expires in 1788347503s)
+[16:41:13.845] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[16:41:13.924] [WARN] Bad Message Notification for MsgId 7680893910422477116, Error Code: 35
+[16:41:16.615] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:41:16.902] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:41:17.049] RPC Result for ReqMsgId: 7680893923307550804, Inner Constructor: 0x629f1980
+[16:41:17.115] QR Login Token received (expires in 1788347503s)
+[16:41:20.115] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:41:20.457] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:41:20.568] RPC Result for ReqMsgId: 7680893940485306864, Inner Constructor: 0x629f1980
+[16:41:20.631] QR Login Token received (expires in 1788347503s)
+[16:41:23.616] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:41:23.942] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:41:24.093] RPC Result for ReqMsgId: 7680893953372416364, Inner Constructor: 0x629f1980
+[16:41:24.169] QR Login Token received (expires in 1788347503s)
+[16:41:27.115] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:41:27.403] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:41:27.501] RPC Result for ReqMsgId: 7680893970550022100, Inner Constructor: 0x629f1980
+[16:41:27.559] QR Login Token received (expires in 1788347503s)
+[16:41:30.615] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:41:30.974] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:41:31.017] RPC Result for ReqMsgId: 7680893983436916852, Inner Constructor: 0x629f1980
+[16:41:31.060] QR Login Token received (expires in 1788347503s)
+[16:41:34.115] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:41:34.720] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:41:34.782] RPC Result for ReqMsgId: 7680894000614810352, Inner Constructor: 0x629f1980
+[16:41:34.835] QR Login Token received (expires in 1788347503s)
+[16:41:37.615] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:41:37.915] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:41:38.064] RPC Result for ReqMsgId: 7680894013501894084, Inner Constructor: 0x629f1980
+[16:41:38.136] QR Login Token received (expires in 1788347503s)
+[16:41:38.623] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[16:41:38.683] [WARN] Bad Message Notification for MsgId 7680894017795697444, Error Code: 35
+[16:41:41.115] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:41:41.526] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:41:41.598] RPC Result for ReqMsgId: 7680894030679607196, Inner Constructor: 0x629f1980
+[16:41:41.656] QR Login Token received (expires in 1788347531s)
+[16:41:44.615] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:41:44.923] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:41:45.028] RPC Result for ReqMsgId: 7680894043566665156, Inner Constructor: 0x629f1980
+[16:41:45.081] QR Login Token received (expires in 1788347531s)
+[16:41:48.115] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:41:48.400] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:41:48.536] RPC Result for ReqMsgId: 7680894060744369676, Inner Constructor: 0x629f1980
+[16:41:48.614] QR Login Token received (expires in 1788347531s)
+[16:41:51.615] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:41:51.925] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:41:52.103] RPC Result for ReqMsgId: 7680894073631431932, Inner Constructor: 0x629f1980
+[16:41:52.178] QR Login Token received (expires in 1788347531s)
+[16:41:55.115] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:41:55.534] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:41:55.646] RPC Result for ReqMsgId: 7680894090809187992, Inner Constructor: 0x629f1980
+[16:41:55.713] QR Login Token received (expires in 1788347531s)
+[16:41:58.615] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:41:58.938] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:41:59.078] RPC Result for ReqMsgId: 7680894103696306084, Inner Constructor: 0x629f1980
+[16:41:59.142] QR Login Token received (expires in 1788347531s)
+[16:42:02.115] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:42:02.367] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:42:02.429] RPC Result for ReqMsgId: 7680894120873740020, Inner Constructor: 0x629f1980
+[16:42:02.480] QR Login Token received (expires in 1788347531s)
+[16:42:03.645] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[16:42:03.797] [WARN] Bad Message Notification for MsgId 7680894125169888432, Error Code: 35
+[16:42:05.615] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:42:05.925] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:42:06.063] RPC Result for ReqMsgId: 7680894133761021320, Inner Constructor: 0x629f1980
+[16:42:06.139] QR Login Token received (expires in 1788347531s)
+[16:42:09.115] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:42:09.433] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:42:09.600] RPC Result for ReqMsgId: 7680894150938768792, Inner Constructor: 0x629f1980
+[16:42:09.684] QR Login Token received (expires in 1788347559s)
+[16:42:12.615] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:42:12.925] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:42:13.075] RPC Result for ReqMsgId: 7680894163825835344, Inner Constructor: 0x629f1980
+[16:42:13.154] QR Login Token received (expires in 1788347559s)
+[16:42:16.115] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:42:16.449] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:42:16.500] RPC Result for ReqMsgId: 7680894181003359476, Inner Constructor: 0x629f1980
+[16:42:16.553] QR Login Token received (expires in 1788347559s)
+[16:42:19.615] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:42:19.946] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:42:20.093] RPC Result for ReqMsgId: 7680894193890632184, Inner Constructor: 0x629f1980
+[16:42:20.151] QR Login Token received (expires in 1788347559s)
+[16:42:23.114] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:42:23.452] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:42:23.614] RPC Result for ReqMsgId: 7680894211068388244, Inner Constructor: 0x629f1980
+[16:42:23.699] QR Login Token received (expires in 1788347559s)
+[16:42:26.614] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:42:26.947] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:42:27.115] RPC Result for ReqMsgId: 7680894223955411848, Inner Constructor: 0x629f1980
+[16:42:27.200] QR Login Token received (expires in 1788347559s)
+[16:42:28.632] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[16:42:28.868] [WARN] Bad Message Notification for MsgId 7680894232544066540, Error Code: 35
+[16:42:30.114] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:42:30.466] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:42:30.611] RPC Result for ReqMsgId: 7680894241133210856, Inner Constructor: 0x629f1980
+[16:42:30.667] QR Login Token received (expires in 1788347559s)
+[16:42:33.614] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:42:33.969] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:42:34.123] RPC Result for ReqMsgId: 7680894254020281704, Inner Constructor: 0x629f1980
+[16:42:34.206] QR Login Token received (expires in 1788347559s)
+[16:42:37.114] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:42:38.138] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:42:38.377] RPC Result for ReqMsgId: 7680894271197986224, Inner Constructor: 0x629f1980
+[16:42:38.602] QR Login Token received (expires in 1788347587s)
+[16:42:40.615] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:42:40.967] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:42:41.125] RPC Result for ReqMsgId: 7680894284085052776, Inner Constructor: 0x629f1980
+[16:42:41.209] QR Login Token received (expires in 1788347587s)
+[16:42:44.115] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:42:44.450] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:42:44.612] RPC Result for ReqMsgId: 7680894301262705756, Inner Constructor: 0x629f1980
+[16:42:44.688] QR Login Token received (expires in 1788347587s)
+[16:42:47.614] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:42:48.023] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:42:48.230] RPC Result for ReqMsgId: 7680894314149755128, Inner Constructor: 0x629f1980
+[16:42:48.304] QR Login Token received (expires in 1788347587s)
+[16:42:51.114] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:42:51.465] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:42:51.663] RPC Result for ReqMsgId: 7680894331327485416, Inner Constructor: 0x629f1980
+[16:42:51.752] QR Login Token received (expires in 1788347587s)
+[16:42:53.637] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[16:42:53.871] [WARN] Bad Message Notification for MsgId 7680894339918253232, Error Code: 35
+[16:42:54.615] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:42:54.793] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:42:54.852] RPC Result for ReqMsgId: 7680894344213873364, Inner Constructor: 0x629f1980
+[16:42:54.915] QR Login Token received (expires in 1788347587s)
+[16:42:58.114] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:42:58.475] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:42:58.659] RPC Result for ReqMsgId: 7680894361392359568, Inner Constructor: 0x629f1980
+[16:42:58.741] QR Login Token received (expires in 1788347587s)
+[16:43:01.615] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:43:01.973] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:43:02.129] RPC Result for ReqMsgId: 7680894374279447596, Inner Constructor: 0x629f1980
+[16:43:02.193] QR Login Token received (expires in 1788347587s)
+[16:43:05.114] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:43:05.482] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:43:05.665] RPC Result for ReqMsgId: 7680894391457100576, Inner Constructor: 0x629f1980
+[16:43:05.746] QR Login Token received (expires in 1788347615s)
+[16:43:08.615] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:43:08.995] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:43:09.165] RPC Result for ReqMsgId: 7680894404344171424, Inner Constructor: 0x629f1980
+[16:43:09.256] QR Login Token received (expires in 1788347615s)
+[16:43:12.117] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:43:12.476] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:43:12.631] RPC Result for ReqMsgId: 7680894421521893124, Inner Constructor: 0x629f1980
+[16:43:12.707] QR Login Token received (expires in 1788347615s)
+[16:43:15.614] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:43:15.901] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:43:15.990] RPC Result for ReqMsgId: 7680894434408637552, Inner Constructor: 0x629f1980
+[16:43:16.054] QR Login Token received (expires in 1788347615s)
+[16:43:18.712] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[16:43:18.976] [WARN] Bad Message Notification for MsgId 7680894447292435632, Error Code: 35
+[16:43:19.228] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:43:19.624] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:43:19.750] RPC Result for ReqMsgId: 7680894451587162412, Inner Constructor: 0x629f1980
+[16:43:19.867] QR Login Token received (expires in 1788347615s)
+[16:43:22.616] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:43:22.995] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:43:23.177] RPC Result for ReqMsgId: 7680894464473795172, Inner Constructor: 0x629f1980
+[16:43:23.263] QR Login Token received (expires in 1788347615s)
+[16:43:26.115] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:43:26.463] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:43:26.529] RPC Result for ReqMsgId: 7680894481651177568, Inner Constructor: 0x629f1980
+[16:43:26.594] QR Login Token received (expires in 1788347615s)
+[16:43:29.615] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:43:30.030] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:43:30.203] RPC Result for ReqMsgId: 7680894494538523292, Inner Constructor: 0x629f1980
+[16:43:30.277] QR Login Token received (expires in 1788347615s)
+[16:43:33.115] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:43:33.544] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:43:33.724] RPC Result for ReqMsgId: 7680894511716257880, Inner Constructor: 0x629f1980
+[16:43:33.810] QR Login Token received (expires in 1788347643s)
+[16:43:36.614] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:43:36.907] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:43:37.005] RPC Result for ReqMsgId: 7680894524603002308, Inner Constructor: 0x629f1980
+[16:43:37.078] QR Login Token received (expires in 1788347643s)
+[16:43:43.338] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[16:43:43.448] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[16:43:43.456] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[16:43:43.465] Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...
+[16:43:43.687] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[16:43:43.694] Message container received containing 2 messages.
+[16:43:43.699] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[16:43:43.704] New MTProto Session confirmed. Server Salt updated: 0x8b61ea31293eb480
+[16:43:43.709] Encrypted MTProto 2.0 Response received! Constructor: 0x62d6b459
+[16:43:43.713] Server acknowledged 1 messages.
+[16:43:43.718] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:43:43.722] RPC Result for ReqMsgId: 7680894554666373220, Inner Constructor: 0x8e1a1775
+[16:43:43.727] ==================================================
+[16:43:43.731] LIVE TELEGRAM RPC SUCCESS: nearestDc
+[16:43:43.736] Country: IN, Current DC: 5, Nearest Recommended DC: 5
+[16:43:43.741] ==================================================
+[16:43:54.049] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:43:54.164] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:43:54.171] RPC Result for ReqMsgId: 7680894601909239656, Inner Constructor: 0x629f1980
+[16:43:54.185] QR Login Token received (expires in 1788347643s)
+[16:44:08.581] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[16:44:08.605] [WARN] Bad Message Notification for MsgId 7680894662040516964, Error Code: 35
+[16:44:14.327] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:44:14.473] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:44:14.500] RPC Result for ReqMsgId: 7680894687809844000, Inner Constructor: 0x629f1980
+[16:44:14.526] QR Login Token received (expires in 1788347684s)
+[16:44:33.577] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[16:44:33.601] [WARN] Bad Message Notification for MsgId 7680894769414703660, Error Code: 35
+[16:44:34.327] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:44:34.445] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:44:34.453] RPC Result for ReqMsgId: 7680894773709104020, Inner Constructor: 0x629f1980
+[16:44:34.460] QR Login Token received (expires in 1788347684s)
+[16:44:54.326] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:44:54.501] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:44:54.536] RPC Result for ReqMsgId: 7680894859608570200, Inner Constructor: 0x629f1980
+[16:44:54.568] QR Login Token received (expires in 1788347724s)
+[16:44:58.577] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[16:44:58.606] [WARN] Bad Message Notification for MsgId 7680894876788894652, Error Code: 35
+[16:45:14.327] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:45:14.916] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[16:45:14.958] RPC Result for ReqMsgId: 7680894945507916120, Inner Constructor: 0x629f1980
+[16:45:14.993] QR Login Token received (expires in 1788347724s)
+[16:45:23.607] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[16:45:23.641] [WARN] Bad Message Notification for MsgId 7680894984163068460, Error Code: 35
+[16:45:34.326] Requesting QR Code Login Token (auth.exportLoginToken)...
+[16:45:40.435] [CRITICAL ERROR] TCP Socket: TCP Socket Error: Software caused connection abort
+[16:45:40.445] [ERROR] TCP Socket: Software caused connection abort
+[16:45:40.456] TCP Connection closed by host.
+[16:45:40.465] TCP Connection closed by host.
+[16:45:40.477] Connection dropped. Auto-reconnecting in 3 seconds...
+[16:45:43.488] Reconnecting to Telegram DC 91.108.56.165:443...
+[16:45:43.541] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[16:45:43.598] [CRITICAL ERROR] TCP Socket: TCP Socket Error: Unknown error
+[16:45:43.638] [ERROR] TCP Socket: Unknown error
+[21:46:44.113] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[21:47:29.093] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[21:47:29.108] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[21:47:29.129] Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...
+[21:47:29.358] Encrypted MTProto 2.0 Response received! Constructor: 0xedab447b
+[21:47:29.373] Server salt refreshed: 0x29a6d8977b7c2aa9.
+[21:47:36.446] Requesting Telegram login code for +918950469287...
+[21:47:36.556] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[21:47:36.567] Message container received containing 2 messages.
+[21:47:36.572] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[21:47:36.582] New MTProto Session confirmed. Server Salt updated: 0x29a6d8977b7c2aa9
+[21:47:36.588] Encrypted MTProto 2.0 Response received! Constructor: 0x62d6b459
+[21:47:36.598] Server acknowledged 1 messages.
+[21:47:36.788] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[21:47:36.794] RPC Result for ReqMsgId: 7680972864804999584, Inner Constructor: 0x5e002502
+[21:47:36.799] ==================================================
+[21:47:36.805] TELEGRAM LOGIN CODE SENT
+[21:47:36.810] Delivery Type: Telegram App, Timeout: 60s, Hash: 2e2e52f27aba4397e7
+[21:47:36.815] ==================================================
+[21:47:52.182] Submitting login verification code 90436 for +918950469287 (hash: 2e2e52f27aba4397e7)...
+[21:47:52.402] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[21:47:52.456] RPC Result for ReqMsgId: 7680972933523557196, Inner Constructor: 0x2144ca19
+[21:47:52.464] [RPC ERROR] Code: 401, Message: SESSION_PASSWORD_NEEDED
+[21:47:52.475] Requesting 2FA Cloud Password parameters (account.getPassword)...
+[21:47:52.628] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[21:47:52.639] RPC Result for ReqMsgId: 7680972933524596580, Inner Constructor: 0x2144ca19
+[21:47:52.646] [RPC ERROR] Code: 400, Message: INPUT_METHOD_INVALID_1418004702_852118
+[21:47:54.345] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[21:47:54.381] [WARN] Bad Message Notification for MsgId 7680972942113010752, Error Code: 35
+[21:48:19.230] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[21:48:19.236] [WARN] Bad Message Notification for MsgId 7680973049487193152, Error Code: 35
+[21:48:44.238] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[21:48:44.265] [WARN] Bad Message Notification for MsgId 7680973156861379848, Error Code: 35
+[21:49:09.235] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[21:49:09.263] [WARN] Bad Message Notification for MsgId 7680973264235557952, Error Code: 35
+[21:49:34.241] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[21:49:34.281] [WARN] Bad Message Notification for MsgId 7680973371609740352, Error Code: 35
+[21:49:59.236] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[21:49:59.266] [WARN] Bad Message Notification for MsgId 7680973478983922752, Error Code: 35
+[21:50:24.237] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[21:50:24.267] [WARN] Bad Message Notification for MsgId 7680973586358105152, Error Code: 35
+[21:50:49.245] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[21:50:49.279] [WARN] Bad Message Notification for MsgId 7680973693732291848, Error Code: 35
+[21:51:14.239] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[21:51:14.273] [WARN] Bad Message Notification for MsgId 7680973801106469952, Error Code: 35
+[21:51:39.252] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[21:51:39.301] [WARN] Bad Message Notification for MsgId 7680973908480652352, Error Code: 35
+[21:52:05.025] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[21:52:05.072] [WARN] Bad Message Notification for MsgId 7680974015854839048, Error Code: 35
+[21:52:29.235] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[21:52:29.292] [WARN] Bad Message Notification for MsgId 7680974123229017152, Error Code: 35
+[21:52:54.239] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[21:52:54.296] [WARN] Bad Message Notification for MsgId 7680974230603203848, Error Code: 35
+[21:53:19.233] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[21:53:19.256] [WARN] Bad Message Notification for MsgId 7680974337977386248, Error Code: 35
+[21:53:44.234] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[21:53:44.274] [WARN] Bad Message Notification for MsgId 7680974445351564352, Error Code: 35
+[21:53:59.043] Submitting login verification code 90436 for +918950469287 (hash: 2e2e52f27aba4397e7)...
+[21:53:59.204] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[21:53:59.232] RPC Result for ReqMsgId: 7680974509775880520, Inner Constructor: 0x2144ca19
+[21:53:59.247] [RPC ERROR] Code: 401, Message: SESSION_PASSWORD_NEEDED
+[21:53:59.262] Requesting 2FA Cloud Password parameters (account.getPassword)...
+[21:53:59.377] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[21:53:59.396] RPC Result for ReqMsgId: 7680974509776713744, Inner Constructor: 0x2144ca19
+[21:53:59.413] [RPC ERROR] Code: 400, Message: INPUT_METHOD_INVALID_1418004702_867217
+[21:54:09.229] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[21:54:09.287] [WARN] Bad Message Notification for MsgId 7680974552725751048, Error Code: 35
+[21:54:34.242] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[21:54:34.302] [WARN] Bad Message Notification for MsgId 7680974660099937744, Error Code: 35
+[21:54:59.240] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[21:54:59.292] [WARN] Bad Message Notification for MsgId 7680974767474115848, Error Code: 35
+[21:55:24.237] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[21:55:24.304] [WARN] Bad Message Notification for MsgId 7680974874848298248, Error Code: 35
+[21:55:46.248] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[21:55:46.355] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[21:55:46.366] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[21:55:46.377] Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...
+[21:55:46.628] Encrypted MTProto 2.0 Response received! Constructor: 0xedab447b
+[21:55:46.633] Server salt refreshed: 0x29a6d8977b7c2aa9.
+[21:55:50.635] Requesting Telegram login code for +918950469287...
+[21:55:51.129] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[21:55:51.148] Message container received containing 2 messages.
+[21:55:51.171] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[21:55:51.187] New MTProto Session confirmed. Server Salt updated: 0x29a6d8977b7c2aa9
+[21:55:51.207] Encrypted MTProto 2.0 Response received! Constructor: 0x62d6b459
+[21:55:51.223] Server acknowledged 1 messages.
+[21:55:51.243] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[21:55:51.276] RPC Result for ReqMsgId: 7680974986519651260, Inner Constructor: 0x2144ca19
+[21:55:51.293] [RPC ERROR] Code: 500, Message: AUTH_RESTART
+[21:55:57.425] Requesting Telegram login code for +918950469287...
+[21:55:57.760] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[21:55:57.773] RPC Result for ReqMsgId: 7680975016583541864, Inner Constructor: 0x5e002502
+[21:55:57.784] ==================================================
+[21:55:57.797] TELEGRAM LOGIN CODE SENT
+[21:55:57.810] Delivery Type: Telegram App, Timeout: 60s, Hash: 88064e35ca4364a43f
+[21:55:57.823] ==================================================
+[21:56:11.487] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[21:56:11.509] [WARN] Bad Message Notification for MsgId 7680975076712826312, Error Code: 35
+[21:56:26.071] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[21:56:26.302] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[21:56:26.309] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[21:56:26.315] Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...
+[21:56:26.820] Encrypted MTProto 2.0 Response received! Constructor: 0xedab447b
+[21:56:26.824] Server salt refreshed: 0x39ed1b09b1ff6fc5.
+[21:56:47.762] Requesting Telegram login code for +918950469287...
+[21:56:47.870] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[21:56:47.875] Message container received containing 2 messages.
+[21:56:47.880] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[21:56:47.885] New MTProto Session confirmed. Server Salt updated: 0x39ed1b09b1ff6fc5
+[21:56:47.889] Encrypted MTProto 2.0 Response received! Constructor: 0x62d6b459
+[21:56:47.894] Server acknowledged 1 messages.
+[21:56:47.900] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[21:56:47.904] RPC Result for ReqMsgId: 7680975231333319708, Inner Constructor: 0x5e002502
+[21:56:47.909] ==================================================
+[21:56:47.914] TELEGRAM LOGIN CODE SENT
+[21:56:47.927] Delivery Type: Telegram App, Timeout: 60s, Hash: 88064e35ca4364a43f
+[21:56:47.932] ==================================================
+[21:56:51.454] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[21:56:51.474] [WARN] Bad Message Notification for MsgId 7680975248511247568, Error Code: 35
+[21:57:13.708] Submitting login verification code 31805 for +918950469287 (hash: 88064e35ca4364a43f)...
+[21:57:13.891] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[21:57:13.927] RPC Result for ReqMsgId: 7680975343002387800, Inner Constructor: 0x2144ca19
+[21:57:13.939] [RPC ERROR] Code: 401, Message: SESSION_PASSWORD_NEEDED
+[21:57:13.946] Requesting 2FA Cloud Password parameters (account.getPassword)...
+[21:57:14.070] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[21:57:14.078] RPC Result for ReqMsgId: 7680975343003268268, Inner Constructor: 0x2144ca19
+[21:57:14.087] [RPC ERROR] Code: 400, Message: INPUT_METHOD_INVALID_1418004702_5130104
+[21:57:16.428] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[21:57:16.453] [WARN] Bad Message Notification for MsgId 7680975355885434264, Error Code: 35
+[21:57:25.284] Requesting Telegram code resend (SMS) for +918950469287 (hash: 88064e35ca4364a43f)...
+[21:57:25.428] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[21:57:25.435] RPC Result for ReqMsgId: 7680975394540041144, Inner Constructor: 0x2144ca19
+[21:57:25.442] [RPC ERROR] Code: 406, Message: SEND_CODE_UNAVAILABLE
+[21:57:25.450] Encrypted MTProto 2.0 Response received! Constructor: 0x78d4dec1
+[21:57:40.902] Encrypted MTProto 2.0 Response received! Constructor: 0xe317af7e
+[21:57:41.477] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[21:57:41.519] [WARN] Bad Message Notification for MsgId 7680975463259616664, Error Code: 35
+[21:57:46.461] Submitting login verification code 31805 for +918950469287 (hash: 88064e35ca4364a43f)...
+[21:57:46.612] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[21:57:46.632] RPC Result for ReqMsgId: 7680975484735178992, Inner Constructor: 0x2144ca19
+[21:57:46.653] [RPC ERROR] Code: 400, Message: PHONE_CODE_EXPIRED
+[21:57:51.974] Submitting login verification code 31805 for +918950469287 (hash: 88064e35ca4364a43f)...
+[21:57:52.777] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[21:57:52.787] RPC Result for ReqMsgId: 7680975510503007084, Inner Constructor: 0x2144ca19
+[21:57:52.798] [RPC ERROR] Code: 400, Message: PHONE_CODE_EXPIRED
+[21:57:56.427] Requesting Telegram code resend (SMS) for +918950469287 (hash: 88064e35ca4364a43f)...
+[21:57:56.745] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[21:57:56.778] RPC Result for ReqMsgId: 7680975527684675860, Inner Constructor: 0x2144ca19
+[21:57:56.809] [RPC ERROR] Code: 400, Message: PHONE_CODE_EXPIRED
+[21:58:06.710] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[21:58:06.752] [WARN] Bad Message Notification for MsgId 7680975570633794768, Error Code: 35
+[21:58:21.554] Requesting Telegram login code for +918607996993...
+[21:58:21.922] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[21:58:21.937] RPC Result for ReqMsgId: 7680975635059485324, Inner Constructor: 0x5e002502
+[21:58:21.949] ==================================================
+[21:58:21.959] TELEGRAM LOGIN CODE SENT
+[21:58:21.971] Delivery Type: Telegram App, Timeout: 60s, Hash: ae1c3e1a72db442044
+[21:58:21.981] ==================================================
+[21:58:31.424] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[21:58:31.467] [WARN] Bad Message Notification for MsgId 7680975678007981464, Error Code: 35
+[21:58:56.427] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[21:58:56.471] [WARN] Bad Message Notification for MsgId 7680975785382163864, Error Code: 35
+[21:59:21.427] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[21:59:21.484] [WARN] Bad Message Notification for MsgId 7680975892756346264, Error Code: 35
+[21:59:46.426] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[21:59:46.472] [WARN] Bad Message Notification for MsgId 7680976000130528664, Error Code: 35
+[21:59:51.102] Submitting login verification code 89572 for +918607996993 (hash: ae1c3e1a72db442044)...
+[21:59:51.293] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[21:59:51.334] RPC Result for ReqMsgId: 7680976021604690832, Inner Constructor: 0x2144ca19
+[21:59:51.352] [RPC ERROR] Code: 401, Message: SESSION_PASSWORD_NEEDED
+[21:59:51.367] Requesting 2FA Cloud Password parameters (account.getPassword)...
+[21:59:51.479] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[21:59:51.496] RPC Result for ReqMsgId: 7680976021605644316, Inner Constructor: 0x2144ca19
+[21:59:51.514] [RPC ERROR] Code: 400, Message: INPUT_METHOD_INVALID_1418004702_5122908
+[22:00:04.678] Submitting login verification code 26321 for +918607996993 (hash: ae1c3e1a72db442044)...
+[22:00:04.842] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[22:00:04.892] RPC Result for ReqMsgId: 7680976077441640800, Inner Constructor: 0x2144ca19
+[22:00:04.912] [RPC ERROR] Code: 401, Message: SESSION_PASSWORD_NEEDED
+[22:00:04.927] Requesting 2FA Cloud Password parameters (account.getPassword)...
+[22:00:05.059] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[22:00:05.075] RPC Result for ReqMsgId: 7680976077442637232, Inner Constructor: 0x2144ca19
+[22:00:05.092] [RPC ERROR] Code: 400, Message: INPUT_METHOD_INVALID_1418004702_5113714
+[22:00:07.740] Requesting Telegram code resend (SMS) for +918607996993 (hash: ae1c3e1a72db442044)...
+[22:00:07.931] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[22:00:07.964] RPC Result for ReqMsgId: 7680976090326886284, Inner Constructor: 0x2144ca19
+[22:00:07.996] [RPC ERROR] Code: 406, Message: SEND_CODE_UNAVAILABLE
+[22:00:08.031] Encrypted MTProto 2.0 Response received! Constructor: 0x78d4dec1
+[22:00:11.426] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:00:11.489] [WARN] Bad Message Notification for MsgId 7680976107504706768, Error Code: 35
+[22:00:36.421] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:00:36.499] [WARN] Bad Message Notification for MsgId 7680976214878897760, Error Code: 35
+[22:01:01.427] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:01:01.536] [WARN] Bad Message Notification for MsgId 7680976322253075864, Error Code: 35
+[22:01:26.426] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:01:26.497] [WARN] Bad Message Notification for MsgId 7680976429627253968, Error Code: 35
+[22:01:51.423] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:01:51.491] [WARN] Bad Message Notification for MsgId 7680976537001440664, Error Code: 35
+[22:02:17.285] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:02:17.361] [WARN] Bad Message Notification for MsgId 7680976644375618768, Error Code: 35
+[22:02:41.435] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:02:41.517] [WARN] Bad Message Notification for MsgId 7680976751749805464, Error Code: 35
+[22:03:06.445] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:03:06.539] [WARN] Bad Message Notification for MsgId 7680976859123987864, Error Code: 35
+[22:03:31.430] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:03:31.529] [WARN] Bad Message Notification for MsgId 7680976966498170264, Error Code: 35
+[22:03:56.717] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:03:56.803] [WARN] Bad Message Notification for MsgId 7680977073872352664, Error Code: 35
+[22:04:21.425] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:04:21.511] [WARN] Bad Message Notification for MsgId 7680977181246530768, Error Code: 35
+[22:04:46.423] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:04:46.502] [WARN] Bad Message Notification for MsgId 7680977288620717464, Error Code: 35
+[22:05:11.443] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:05:11.535] [WARN] Bad Message Notification for MsgId 7680977395994899864, Error Code: 35
+[22:05:36.425] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:05:36.524] [WARN] Bad Message Notification for MsgId 7680977503369077968, Error Code: 35
+[22:06:06.947] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[22:06:07.051] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[22:06:07.058] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[22:06:07.071] Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...
+[22:06:07.276] Encrypted MTProto 2.0 Response received! Constructor: 0xedab447b
+[22:06:07.283] Server salt refreshed: 0x39ed1b09b1ff6fc5.
+[22:06:32.178] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[22:06:32.193] Message container received containing 2 messages.
+[22:06:32.209] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[22:06:32.224] New MTProto Session confirmed. Server Salt updated: 0x39ed1b09b1ff6fc5
+[22:06:32.239] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:06:32.257] [WARN] Bad Message Notification for MsgId 7680977743886202868, Error Code: 35
+[22:06:57.329] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:06:57.355] [WARN] Bad Message Notification for MsgId 7680977851260389564, Error Code: 35
+[22:07:22.166] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:07:22.184] [WARN] Bad Message Notification for MsgId 7680977958634516128, Error Code: 35
+[22:07:47.167] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:07:47.199] [WARN] Bad Message Notification for MsgId 7680978066008702824, Error Code: 35
+[22:08:12.183] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:08:12.203] [WARN] Bad Message Notification for MsgId 7680978173382885224, Error Code: 35
+[22:08:37.167] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:08:37.191] [WARN] Bad Message Notification for MsgId 7680978280757067624, Error Code: 35
+[22:09:02.167] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:09:02.194] [WARN] Bad Message Notification for MsgId 7680978388131245728, Error Code: 35
+[22:09:27.163] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:09:27.198] [WARN] Bad Message Notification for MsgId 7680978495505432424, Error Code: 35
+[22:09:52.168] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:09:52.193] [WARN] Bad Message Notification for MsgId 7680978602879614824, Error Code: 35
+[22:10:17.162] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:10:17.199] [WARN] Bad Message Notification for MsgId 7680978710253797224, Error Code: 35
+[22:10:42.166] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:10:42.193] [WARN] Bad Message Notification for MsgId 7680978817627975328, Error Code: 35
+[22:10:53.950] Requesting Telegram login code for +918950469287...
+[22:10:54.103] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[22:10:54.116] RPC Result for ReqMsgId: 7680978864876498236, Inner Constructor: 0x2144ca19
+[22:10:54.130] [RPC ERROR] Code: 500, Message: AUTH_RESTART
+[22:10:54.749] Requesting Telegram login code for +918950469287...
+[22:10:55.415] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[22:10:55.461] RPC Result for ReqMsgId: 7680978869170705320, Inner Constructor: 0x5e002502
+[22:10:55.497] ==================================================
+[22:10:55.525] TELEGRAM LOGIN CODE SENT
+[22:10:55.546] Delivery Type: Telegram App, Timeout: 60s, Hash: 416a2f227704c41fef
+[22:10:55.567] ==================================================
+[22:11:07.167] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:11:07.216] [WARN] Bad Message Notification for MsgId 7680978925002162024, Error Code: 35
+[22:11:09.088] Submitting login verification code 85451 for +918950469287 (hash: 416a2f227704c41fef)...
+[22:11:09.289] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[22:11:09.321] RPC Result for ReqMsgId: 7680978933592521816, Inner Constructor: 0x2144ca19
+[22:11:09.334] [RPC ERROR] Code: 401, Message: SESSION_PASSWORD_NEEDED
+[22:11:09.347] Requesting 2FA Cloud Password parameters (account.getPassword)...
+[22:11:09.529] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[22:11:09.545] RPC Result for ReqMsgId: 7680978933593376516, Inner Constructor: 0x3072cfa1
+[22:11:32.155] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:11:32.202] [WARN] Bad Message Notification for MsgId 7680979032376344424, Error Code: 35
+[22:11:57.174] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:11:57.234] [WARN] Bad Message Notification for MsgId 7680979139750522528, Error Code: 35
+[22:12:22.161] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:12:22.207] [WARN] Bad Message Notification for MsgId 7680979247124709224, Error Code: 35
+[22:12:47.167] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:12:47.212] [WARN] Bad Message Notification for MsgId 7680979354498887328, Error Code: 35
+[22:13:12.169] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:13:12.218] [WARN] Bad Message Notification for MsgId 7680979461873074024, Error Code: 35
+[22:13:37.167] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:13:37.213] [WARN] Bad Message Notification for MsgId 7680979569247256424, Error Code: 35
+[22:14:02.170] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:14:02.231] [WARN] Bad Message Notification for MsgId 7680979676621438824, Error Code: 35
+[22:14:27.167] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:14:27.230] [WARN] Bad Message Notification for MsgId 7680979783995621224, Error Code: 35
+[22:14:52.162] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:14:52.214] [WARN] Bad Message Notification for MsgId 7680979891369803624, Error Code: 35
+[22:15:17.170] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:15:17.241] [WARN] Bad Message Notification for MsgId 7680979998743986024, Error Code: 35
+[22:15:31.145] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[22:15:31.246] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[22:15:31.254] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[22:15:31.267] Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...
+[22:15:31.469] Encrypted MTProto 2.0 Response received! Constructor: 0xedab447b
+[22:15:31.476] Server salt refreshed: 0x39ed1b09b1ff6fc5.
+[22:15:56.895] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[22:15:56.917] Message container received containing 2 messages.
+[22:15:56.937] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[22:15:56.955] New MTProto Session confirmed. Server Salt updated: 0x39ed1b09b1ff6fc5
+[22:15:56.971] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:15:56.987] [WARN] Bad Message Notification for MsgId 7680980166248599624, Error Code: 35
+[22:16:21.378] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:16:21.408] [WARN] Bad Message Notification for MsgId 7680980273622782024, Error Code: 35
+[22:16:46.412] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:16:46.436] [WARN] Bad Message Notification for MsgId 7680980380996964424, Error Code: 35
+[22:17:11.373] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:17:11.408] [WARN] Bad Message Notification for MsgId 7680980488371146824, Error Code: 35
+[22:17:18.145] Requesting Telegram login code for +918950469287...
+[22:17:18.711] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[22:17:18.745] RPC Result for ReqMsgId: 7680980518435475516, Inner Constructor: 0x5e002502
+[22:17:18.773] ==================================================
+[22:17:18.797] TELEGRAM LOGIN CODE SENT
+[22:17:18.820] Delivery Type: Telegram App, Timeout: 60s, Hash: 771b7692e3cca9d54b
+[22:17:18.843] ==================================================
+[22:17:36.379] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:17:36.404] [WARN] Bad Message Notification for MsgId 7680980595745329224, Error Code: 35
+[22:17:42.034] Submitting login verification code 82728 for +918950469287 (hash: 771b7692e3cca9d54b)...
+[22:17:42.356] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[22:17:42.368] RPC Result for ReqMsgId: 7680980621514445808, Inner Constructor: 0x2144ca19
+[22:17:42.383] [RPC ERROR] Code: 401, Message: SESSION_PASSWORD_NEEDED
+[22:17:42.393] Requesting 2FA Cloud Password parameters (account.getPassword)...
+[22:17:42.573] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[22:17:42.584] RPC Result for ReqMsgId: 7680980621515734296, Inner Constructor: 0x3072cfa1
+[22:17:42.594] Decompressed RPC GZIP packed payload for ReqMsgId 7680980621515734296 (979 -> 1216 bytes)
+[22:17:42.602] Unpacked GZIP Inner Constructor: 0x957b50fb
+[22:17:42.610] 2FA Cloud Password Needed. Hint: 'Rohtak '
+[22:17:59.309] Computing SRP-6A cryptographic proof for 2FA Cloud Password...
+[22:18:04.144] Submitting auth.checkPassword with SRP-6A proof...
+[22:18:04.341] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[22:18:04.355] Message container received containing 2 messages.
+[22:18:04.369] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:18:04.379] [WARN] Bad Message Notification for MsgId 7680980716003928180, Error Code: 35
+[22:18:04.393] Encrypted MTProto 2.0 Response received! Constructor: 0x62d6b459
+[22:18:04.404] Server acknowledged 1 messages.
+[22:18:04.453] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[22:18:04.465] RPC Result for ReqMsgId: 7680980716003915296, Inner Constructor: 0x2144ca19
+[22:18:04.477] [RPC ERROR] Code: 400, Message: PASSWORD_HASH_INVALID
+[22:18:13.090] Computing SRP-6A cryptographic proof for 2FA Cloud Password...
+[22:18:18.046] Submitting auth.checkPassword with SRP-6A proof...
+[22:18:18.251] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[22:18:18.261] RPC Result for ReqMsgId: 7680980776133040828, Inner Constructor: 0x2144ca19
+[22:18:18.270] [RPC ERROR] Code: 400, Message: SRP_ID_INVALID
+[22:18:22.816] Computing SRP-6A cryptographic proof for 2FA Cloud Password...
+[22:18:27.801] Submitting auth.checkPassword with SRP-6A proof...
+[22:18:27.926] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[22:18:27.940] RPC Result for ReqMsgId: 7680980814791006372, Inner Constructor: 0x2144ca19
+[22:18:27.956] [RPC ERROR] Code: 400, Message: SRP_ID_INVALID
+[22:18:27.985] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:18:27.999] [WARN] Bad Message Notification for MsgId 7680980814791014964, Error Code: 35
+[22:18:29.084] Computing SRP-6A cryptographic proof for 2FA Cloud Password...
+[22:18:34.615] Submitting auth.checkPassword with SRP-6A proof...
+[22:18:34.847] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[22:18:34.858] RPC Result for ReqMsgId: 7680980844854969992, Inner Constructor: 0x2144ca19
+[22:18:34.871] [RPC ERROR] Code: 400, Message: SRP_ID_INVALID
+[22:18:38.288] Computing SRP-6A cryptographic proof for 2FA Cloud Password...
+[22:18:44.294] Submitting auth.checkPassword with SRP-6A proof...
+[22:18:44.576] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[22:18:44.584] RPC Result for ReqMsgId: 7680980887803229908, Inner Constructor: 0x2144ca19
+[22:18:44.592] [RPC ERROR] Code: 400, Message: SRP_ID_INVALID
+[22:18:51.376] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:18:51.389] [WARN] Bad Message Notification for MsgId 7680980917867876424, Error Code: 35
+[22:19:16.362] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:19:16.376] [WARN] Bad Message Notification for MsgId 7680981025242054532, Error Code: 35
+[22:19:41.373] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:19:41.389] [WARN] Bad Message Notification for MsgId 7680981132616241224, Error Code: 35
+[22:20:06.376] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:20:06.409] [WARN] Bad Message Notification for MsgId 7680981239990423624, Error Code: 35
+[22:20:31.403] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:20:31.423] [WARN] Bad Message Notification for MsgId 7680981347364601732, Error Code: 35
+[22:20:56.401] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:20:56.420] [WARN] Bad Message Notification for MsgId 7680981454738788424, Error Code: 35
+[22:21:21.374] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:21:21.403] [WARN] Bad Message Notification for MsgId 7680981562112966532, Error Code: 35
+[22:21:46.389] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:21:46.409] [WARN] Bad Message Notification for MsgId 7680981669487153224, Error Code: 35
+[22:22:11.373] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:22:11.394] [WARN] Bad Message Notification for MsgId 7680981776861331332, Error Code: 35
+[22:22:36.372] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:22:36.405] [WARN] Bad Message Notification for MsgId 7680981884235518024, Error Code: 35
+[22:23:01.377] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:23:01.411] [WARN] Bad Message Notification for MsgId 7680981991609700424, Error Code: 35
+[22:23:14.800] Computing SRP-6A cryptographic proof for 2FA Cloud Password...
+[22:23:19.838] Submitting auth.checkPassword with SRP-6A proof...
+[22:23:20.066] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[22:23:20.075] RPC Result for ReqMsgId: 7680982068921594244, Inner Constructor: 0x2144ca19
+[22:23:20.085] [RPC ERROR] Code: 400, Message: SRP_ID_INVALID
+[22:23:20.164] TCP Connection closed by host.
+[22:23:20.171] TCP Connection closed by host.
+[22:23:20.180] Initiating direct MTProto 2.0 connection to DC 5 (91.108.56.165:443)...
+[22:23:20.188] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[22:23:20.594] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[22:23:20.621] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[22:23:20.652] Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...
+[22:23:21.106] Encrypted MTProto 2.0 Response received! Constructor: 0x73f1f8dc
+[22:23:21.151] Message container received containing 2 messages.
+[22:23:21.189] Encrypted MTProto 2.0 Response received! Constructor: 0x9ec20908
+[22:23:21.224] New MTProto Session confirmed. Server Salt updated: 0x39ed1b09b1ff6fc5
+[22:23:21.257] Encrypted MTProto 2.0 Response received! Constructor: 0x62d6b459
+[22:23:21.293] Server acknowledged 1 messages.
+[22:23:21.335] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[22:23:21.376] RPC Result for ReqMsgId: 7680982073215805624, Inner Constructor: 0x8e1a1775
+[22:23:21.511] ==================================================
+[22:23:21.550] LIVE TELEGRAM RPC SUCCESS: nearestDc
+[22:23:21.576] Country: IN, Current DC: 5, Nearest Recommended DC: 5
+[22:23:21.589] ==================================================
+[22:23:25.828] Computing SRP-6A cryptographic proof for 2FA Cloud Password...
+[22:23:30.744] Submitting auth.checkPassword with SRP-6A proof...
+[22:23:30.944] Encrypted MTProto 2.0 Response received! Constructor: 0xf35c6d01
+[22:23:30.957] RPC Result for ReqMsgId: 7680982116165835068, Inner Constructor: 0x2144ca19
+[22:23:30.969] [RPC ERROR] Code: 400, Message: SRP_ID_INVALID
+[22:23:45.753] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:23:45.810] [WARN] Bad Message Notification for MsgId 7680982180589919308, Error Code: 35
+[22:24:10.822] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:24:10.862] [WARN] Bad Message Notification for MsgId 7680982287964101708, Error Code: 35
+[22:24:35.761] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:24:35.803] [WARN] Bad Message Notification for MsgId 7680982395338279812, Error Code: 35
+[22:25:00.760] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:25:00.804] [WARN] Bad Message Notification for MsgId 7680982502712462212, Error Code: 35
+[22:25:26.038] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:25:26.082] [WARN] Bad Message Notification for MsgId 7680982610086644612, Error Code: 35
+[22:25:50.750] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:25:50.799] [WARN] Bad Message Notification for MsgId 7680982717460827012, Error Code: 35
+[22:26:15.763] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:26:15.808] [WARN] Bad Message Notification for MsgId 7680982824835018000, Error Code: 35
+[22:26:40.748] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:26:40.808] [WARN] Bad Message Notification for MsgId 7680982932209187516, Error Code: 35
+[22:27:05.797] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:27:05.827] [WARN] Bad Message Notification for MsgId 7680983039583378508, Error Code: 35
+[22:27:30.755] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:27:30.823] [WARN] Bad Message Notification for MsgId 7680983146957556612, Error Code: 35
+[22:27:55.761] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:27:55.818] [WARN] Bad Message Notification for MsgId 7680983254331739012, Error Code: 35
+[22:28:20.757] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:28:20.818] [WARN] Bad Message Notification for MsgId 7680983361705925708, Error Code: 35
+[22:28:45.769] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:28:45.843] [WARN] Bad Message Notification for MsgId 7680983469080103812, Error Code: 35
+[22:29:10.773] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:29:10.872] [WARN] Bad Message Notification for MsgId 7680983576454290508, Error Code: 35
+[22:29:35.759] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:29:35.816] [WARN] Bad Message Notification for MsgId 7680983683828468612, Error Code: 35
+[22:30:00.764] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:30:00.838] [WARN] Bad Message Notification for MsgId 7680983791202651012, Error Code: 35
+[22:30:25.761] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:30:25.817] [WARN] Bad Message Notification for MsgId 7680983898576833412, Error Code: 35
+[22:30:50.765] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:30:50.826] [WARN] Bad Message Notification for MsgId 7680984005951015812, Error Code: 35
+[22:31:15.763] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:31:15.823] [WARN] Bad Message Notification for MsgId 7680984113325202508, Error Code: 35
+[22:31:40.760] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:31:40.821] [WARN] Bad Message Notification for MsgId 7680984220699389200, Error Code: 35
+[22:32:05.760] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:32:05.824] [WARN] Bad Message Notification for MsgId 7680984328073563012, Error Code: 35
+[22:32:30.764] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:32:30.830] [WARN] Bad Message Notification for MsgId 7680984435447749708, Error Code: 35
+[22:32:55.762] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:32:55.836] [WARN] Bad Message Notification for MsgId 7680984542821927812, Error Code: 35
+[22:33:20.766] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:33:20.844] [WARN] Bad Message Notification for MsgId 7680984650196118800, Error Code: 35
+[22:33:45.757] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:33:45.786] [WARN] Bad Message Notification for MsgId 7680984757570292612, Error Code: 35
+[22:34:10.764] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:34:10.855] [WARN] Bad Message Notification for MsgId 7680984864944475012, Error Code: 35
+[22:34:35.764] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:34:35.844] [WARN] Bad Message Notification for MsgId 7680984972318657412, Error Code: 35
+[22:35:00.762] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:35:00.865] [WARN] Bad Message Notification for MsgId 7680985079692839812, Error Code: 35
+[22:35:25.847] Encrypted MTProto 2.0 Response received! Constructor: 0xa7eff811
+[22:35:25.946] [WARN] Bad Message Notification for MsgId 7680985187067022212, Error Code: 35
+[22:35:42.793] Connecting to Telegram DC at 91.108.56.165:443 via MTProto TCP...
+[22:35:42.897] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[22:35:42.901] TCP Connection established. Sending MTProto Intermediate transport handshake...
+[22:35:42.919] Sending Encrypted RPC: invokeWithLayer(layer 195, initConnection(help.getNearestDc))...
+[22:35:43.157] Encrypted MTProto 2.0 Response received! Constructor: 0xedab447b
+[22:35:43.161] Server salt refreshed: 0x40b5f57dba077171.

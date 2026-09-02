@@ -709,7 +709,7 @@ void MTProtoSession::sendAccountGetPassword() {
     TL::TLBuffer rpcBuf;
     rpcBuf.writeUInt32(0xda9b0d0d); // invokeWithLayer
     rpcBuf.writeInt32(195);        // layer 195
-    rpcBuf.writeUInt32(TL::ID_ACCOUNT_GET_PASSWORD); // 0x548508de
+    rpcBuf.writeUInt32(TL::ID_ACCOUNT_GET_PASSWORD); // 0x548a30f5
 
     sendEncryptedMessage(rpcBuf.buffer(), true);
 }
@@ -720,7 +720,14 @@ void MTProtoSession::sendAuthCheckPassword(const QString& password) {
         return;
     }
 
-    emit logMessage("Computing SRP-6A cryptographic proof for 2FA Cloud Password...");
+    if (m_pwdSrpId == 0 || m_pwdP.isEmpty() || m_pwdSrpB.isEmpty()) {
+        emit logMessage("SRP session expired or missing parameters. Requesting fresh account.getPassword...");
+        m_pendingPassword = password;
+        sendAccountGetPassword();
+        return;
+    }
+
+    emit logMessage(QString("Computing SRP-6A cryptographic proof for 2FA Cloud Password (srp_id: %1)...").arg(m_pwdSrpId));
 
     QByteArray srpA, srpM1;
     if (!Crypto::CryptoEngine::computeSRP6A(password, m_pwdSalt1, m_pwdSalt2, m_pwdG, m_pwdP, m_pwdSrpB, srpA, srpM1)) {
@@ -728,17 +735,18 @@ void MTProtoSession::sendAuthCheckPassword(const QString& password) {
         return;
     }
 
-    emit logMessage("Submitting auth.checkPassword with SRP-6A proof...");
+    emit logMessage(QString("Submitting auth.checkPassword with SRP-6A proof (srp_id: %1, A: %2 bytes, M1: %3 bytes)...")
+                    .arg(m_pwdSrpId).arg(srpA.size()).arg(srpM1.size()));
 
-    // invokeWithLayer#da9b0d0d layer:int query:!X = X;
-    // auth.checkPassword#d18b4d16 password:InputCheckPasswordSRP = auth.Authorization;
-    // inputCheckPasswordSRP#d27ff082 srp_id:long A:bytes M1:bytes = InputCheckPasswordSRP;
+    int64_t srpIdToSend = m_pwdSrpId;
+    m_pwdSrpId = 0; // Invalidate current srp_id immediately so it can never be reused
+
     TL::TLBuffer rpcBuf;
     rpcBuf.writeUInt32(0xda9b0d0d); // invokeWithLayer
     rpcBuf.writeInt32(195);        // layer 195
     rpcBuf.writeUInt32(TL::ID_AUTH_CHECK_PASSWORD);
     rpcBuf.writeUInt32(TL::ID_INPUT_CHECK_PASSWORD_SRP);
-    rpcBuf.writeInt64(m_pwdSrpId);
+    rpcBuf.writeInt64(srpIdToSend);
     rpcBuf.writeBytes(srpA);
     rpcBuf.writeBytes(srpM1);
 
@@ -936,6 +944,17 @@ void MTProtoSession::processPlainMessage(TL::TLBuffer& plainBuf) {
             plainBuf.readInt64(ackMsgId);
         }
         emit logMessage(QString("Server acknowledged %1 messages.").arg(ackCount));
+    } else if (constructor == TL::ID_GZIP_PACKED) {
+        QByteArray packedData;
+        plainBuf.readBytes(packedData);
+        QByteArray uncompressed;
+        if (Crypto::CryptoEngine::gzipDecompress(packedData, uncompressed)) {
+            emit logMessage(QString("Decompressed outer GZIP packed message (%1 -> %2 bytes)").arg(packedData.size()).arg(uncompressed.size()));
+            TL::TLBuffer uncompBuf(uncompressed);
+            processPlainMessage(uncompBuf);
+        } else {
+            emit logMessage("[ERROR] Failed to decompress outer GZIP packed message");
+        }
     } else if (constructor == TL::ID_RPC_RESULT) {
         int64_t reqMsgId;
         plainBuf.readInt64(reqMsgId);
@@ -943,168 +962,7 @@ void MTProtoSession::processPlainMessage(TL::TLBuffer& plainBuf) {
         plainBuf.readUInt32(innerRpcConstructor);
 
         emit logMessage(QString("RPC Result for ReqMsgId: %1, Inner Constructor: 0x%2").arg(reqMsgId).arg(innerRpcConstructor, 8, 16, QChar('0')));
-
-        if (innerRpcConstructor == TL::ID_NEAREST_DC) {
-            QString country;
-            int32_t thisDc, nearestDc;
-            plainBuf.readString(country);
-            plainBuf.readInt32(thisDc);
-            plainBuf.readInt32(nearestDc);
-
-            emit nearestDcReceived(country, thisDc, nearestDc);
-
-            emit logMessage(QString("=================================================="));
-            emit logMessage(QString("LIVE TELEGRAM RPC SUCCESS: nearestDc"));
-            emit logMessage(QString("Country: %1, Current DC: %2, Nearest Recommended DC: %3").arg(country).arg(thisDc).arg(nearestDc));
-            emit logMessage(QString("=================================================="));
-        } else if (innerRpcConstructor == TL::ID_AUTH_SENT_CODE) {
-            // auth.sentCode#5e002502 flags:# type:auth.SentCodeType phone_code_hash:string next_type:flags.1?auth.CodeType timeout:flags.2?int = auth.SentCode;
-            int32_t flags;
-            plainBuf.readInt32(flags);
-            uint32_t typeConstructor;
-            plainBuf.readUInt32(typeConstructor);
-
-            QString typeStr = "Telegram App";
-            if (typeConstructor == TL::ID_AUTH_SENT_CODE_TYPE_APP) {
-                typeStr = "Telegram App";
-                int32_t length; plainBuf.readInt32(length);
-            } else if (typeConstructor == TL::ID_AUTH_SENT_CODE_TYPE_SMS) {
-                typeStr = "SMS";
-                int32_t length; plainBuf.readInt32(length);
-            } else if (typeConstructor == TL::ID_AUTH_SENT_CODE_TYPE_CALL) {
-                typeStr = "Phone Call";
-                int32_t length; plainBuf.readInt32(length);
-            } else if (typeConstructor == TL::ID_AUTH_SENT_CODE_TYPE_FLASH_CALL) {
-                typeStr = "Flash Call";
-                QString pattern; plainBuf.readString(pattern);
-            } else if (typeConstructor == TL::ID_AUTH_SENT_CODE_TYPE_MISSED_CALL) {
-                typeStr = "Missed Call";
-                QString prefix; plainBuf.readString(prefix);
-                int32_t length; plainBuf.readInt32(length);
-            } else if (typeConstructor == TL::ID_AUTH_SENT_CODE_TYPE_EMAIL_CODE) {
-                typeStr = "Email";
-                int32_t emailFlags; plainBuf.readInt32(emailFlags);
-                QString emailPattern; plainBuf.readString(emailPattern);
-                int32_t length; plainBuf.readInt32(length);
-            }
-
-            QString phoneCodeHash;
-            plainBuf.readString(phoneCodeHash);
-
-            int32_t timeout = 60;
-            if (flags & (1 << 1)) {
-                uint32_t nextType; plainBuf.readUInt32(nextType);
-            }
-            if (flags & (1 << 2)) {
-                plainBuf.readInt32(timeout);
-            }
-
-            emit logMessage(QString("=================================================="));
-            emit logMessage(QString("TELEGRAM LOGIN CODE SENT"));
-            emit logMessage(QString("Delivery Type: %1, Timeout: %2s, Hash: %3").arg(typeStr).arg(timeout).arg(phoneCodeHash));
-            emit logMessage(QString("=================================================="));
-
-            emit authSentCodeReceived(phoneCodeHash, typeStr, timeout);
-        } else if (innerRpcConstructor == TL::ID_AUTH_AUTHORIZATION || innerRpcConstructor == TL::ID_AUTH_AUTHORIZATION_CD) {
-            // auth.authorization#2ea2c0d4 flags:# setup_password_required:flags.1?true otherwise_relogin_days:flags.3?int tmp_sessions:flags.0?int future_auth_token:flags.2?bytes user:User = auth.Authorization;
-            int32_t authFlags;
-            plainBuf.readInt32(authFlags);
-            if (authFlags & (1 << 0)) { int32_t tmp; plainBuf.readInt32(tmp); }
-            if (authFlags & (1 << 2)) { QByteArray token; plainBuf.readBytes(token); }
-            if (authFlags & (1 << 3)) { int32_t days; plainBuf.readInt32(days); }
-
-            uint32_t userConstructor;
-            plainBuf.readUInt32(userConstructor);
-
-            int32_t userFlags;
-            plainBuf.readInt32(userFlags);
-
-            int64_t userId = 0, accessHash = 0;
-            plainBuf.readInt64(userId);
-
-            if (userFlags & (1 << 0)) {
-                plainBuf.readInt64(accessHash);
-            }
-
-            QString firstName, lastName, username, phone;
-            if (userFlags & (1 << 1)) plainBuf.readString(firstName);
-            if (userFlags & (1 << 2)) plainBuf.readString(lastName);
-            if (userFlags & (1 << 3)) plainBuf.readString(username);
-            if (userFlags & (1 << 4)) plainBuf.readString(phone);
-
-            emit logMessage(QString("=================================================="));
-            emit logMessage(QString("SUCCESSFUL TELEGRAM AUTHENTICATION!"));
-            emit logMessage(QString("User ID: %1, Name: %2 %3 (@%4), Phone: %5").arg(userId).arg(firstName).arg(lastName).arg(username).arg(phone));
-            emit logMessage(QString("=================================================="));
-
-            emit authSuccessReceived(userId, static_cast<quint64>(accessHash), firstName, lastName, username, phone);
-        } else if (innerRpcConstructor == TL::ID_AUTH_SIGN_UP_REQUIRED) {
-            emit logMessage("[AUTH] Sign Up is required for this new phone number");
-            emit authSignUpRequiredReceived();
-        } else if (innerRpcConstructor == TL::ID_ACCOUNT_PASSWORD) {
-            // account.password#95d4b496 flags:# has_recovery:flags.0?true has_secure_values:flags.1?true has_password:flags.2?true current_algo:flags.2?PasswordKdfAlgo srp_B:flags.2?bytes srp_id:flags.2?long hint:flags.3?string ...
-            int32_t pwdFlags;
-            plainBuf.readInt32(pwdFlags);
-
-            if (pwdFlags & (1 << 2)) {
-                uint32_t algoConstructor;
-                plainBuf.readUInt32(algoConstructor);
-                plainBuf.readBytes(m_pwdSalt1);
-                plainBuf.readBytes(m_pwdSalt2);
-                int32_t gVal; plainBuf.readInt32(gVal); m_pwdG = gVal;
-                plainBuf.readBytes(m_pwdP);
-
-                plainBuf.readBytes(m_pwdSrpB);
-                plainBuf.readInt64(m_pwdSrpId);
-            }
-
-            if (pwdFlags & (1 << 3)) {
-                plainBuf.readString(m_pwdHint);
-            }
-
-            emit logMessage(QString("2FA Cloud Password Needed. Hint: '%1'").arg(m_pwdHint));
-            emit authPasswordNeeded(m_pwdHint);
-        } else if (innerRpcConstructor == TL::ID_AUTH_LOGIN_TOKEN) {
-            // auth.loginToken#629f1980 expires:int token:bytes = auth.LoginToken;
-            int32_t expires;
-            QByteArray tokenBytes;
-            plainBuf.readInt32(expires);
-            plainBuf.readBytes(tokenBytes);
-
-            emit logMessage(QString("QR Login Token received (expires in %1s)").arg(expires));
-            emit authLoginTokenReceived(tokenBytes, expires);
-        } else if (innerRpcConstructor == TL::ID_AUTH_LOGIN_TOKEN_SUCCESS) {
-            emit logMessage("QR Code successfully scanned and authorized!");
-            emit authLoginSuccessReceived();
-        } else if (innerRpcConstructor == TL::ID_AUTH_LOGIN_TOKEN_MIGRATE_TO) {
-            int32_t targetDc;
-            QByteArray tokenBytes;
-            plainBuf.readInt32(targetDc);
-            plainBuf.readBytes(tokenBytes);
-            emit logMessage(QString("QR Login Token requires migration to DC %1").arg(targetDc));
-            migrateToDc(targetDc);
-        } else if (innerRpcConstructor == TL::ID_RPC_ERROR) {
-            int32_t errCode;
-            QString errMsg;
-            plainBuf.readInt32(errCode);
-            plainBuf.readString(errMsg);
-
-            emit logMessage(QString("[RPC ERROR] Code: %1, Message: %2").arg(errCode).arg(errMsg));
-
-            if (errMsg.startsWith("PHONE_MIGRATE_") || errMsg.startsWith("NETWORK_MIGRATE_")) {
-                int targetDc = errMsg.section('_', -1).toInt();
-                if (targetDc > 0) {
-                    emit logMessage(QString("Server requested DC migration to DC %1").arg(targetDc));
-                    migrateToDc(targetDc);
-                    return;
-                }
-            } else if (errMsg == "SESSION_PASSWORD_NEEDED") {
-                sendAccountGetPassword();
-                return;
-            }
-
-            emit rpcErrorReceived(errCode, errMsg);
-        }
+        handleRpcResult(reqMsgId, innerRpcConstructor, plainBuf);
     } else if (constructor == TL::ID_NEAREST_DC) {
         QString country;
         int32_t thisDc, nearestDc;
@@ -1113,6 +971,197 @@ void MTProtoSession::processPlainMessage(TL::TLBuffer& plainBuf) {
         plainBuf.readInt32(nearestDc);
 
         emit nearestDcReceived(country, thisDc, nearestDc);
+    }
+}
+
+void MTProtoSession::handleRpcResult(qint64 reqMsgId, quint32 innerRpcConstructor, TL::TLBuffer& plainBuf) {
+    if (innerRpcConstructor == TL::ID_GZIP_PACKED) {
+        QByteArray packedData;
+        plainBuf.readBytes(packedData);
+        QByteArray uncompressed;
+        if (Crypto::CryptoEngine::gzipDecompress(packedData, uncompressed)) {
+            emit logMessage(QString("Decompressed RPC GZIP packed payload for ReqMsgId %1 (%2 -> %3 bytes)").arg(reqMsgId).arg(packedData.size()).arg(uncompressed.size()));
+            TL::TLBuffer uncompBuf(uncompressed);
+            uint32_t uncompConstructor = 0;
+            if (uncompBuf.readUInt32(uncompConstructor)) {
+                emit logMessage(QString("Unpacked GZIP Inner Constructor: 0x%1").arg(uncompConstructor, 8, 16, QChar('0')));
+                handleRpcResult(reqMsgId, uncompConstructor, uncompBuf);
+            }
+        } else {
+            emit logMessage(QString("[ERROR] Failed to decompress RPC GZIP packed payload for ReqMsgId %1").arg(reqMsgId));
+        }
+        return;
+    }
+
+    if (innerRpcConstructor == TL::ID_NEAREST_DC) {
+        QString country;
+        int32_t thisDc, nearestDc;
+        plainBuf.readString(country);
+        plainBuf.readInt32(thisDc);
+        plainBuf.readInt32(nearestDc);
+
+        emit nearestDcReceived(country, thisDc, nearestDc);
+
+        emit logMessage(QString("=================================================="));
+        emit logMessage(QString("LIVE TELEGRAM RPC SUCCESS: nearestDc"));
+        emit logMessage(QString("Country: %1, Current DC: %2, Nearest Recommended DC: %3").arg(country).arg(thisDc).arg(nearestDc));
+        emit logMessage(QString("=================================================="));
+    } else if (innerRpcConstructor == TL::ID_AUTH_SENT_CODE) {
+        // auth.sentCode#5e002502 flags:# type:auth.SentCodeType phone_code_hash:string next_type:flags.1?auth.CodeType timeout:flags.2?int = auth.SentCode;
+        int32_t flags;
+        plainBuf.readInt32(flags);
+        uint32_t typeConstructor;
+        plainBuf.readUInt32(typeConstructor);
+
+        QString typeStr = "Telegram App";
+        if (typeConstructor == TL::ID_AUTH_SENT_CODE_TYPE_APP) {
+            typeStr = "Telegram App";
+            int32_t length; plainBuf.readInt32(length);
+        } else if (typeConstructor == TL::ID_AUTH_SENT_CODE_TYPE_SMS) {
+            typeStr = "SMS";
+            int32_t length; plainBuf.readInt32(length);
+        } else if (typeConstructor == TL::ID_AUTH_SENT_CODE_TYPE_CALL) {
+            typeStr = "Phone Call";
+            int32_t length; plainBuf.readInt32(length);
+        } else if (typeConstructor == TL::ID_AUTH_SENT_CODE_TYPE_FLASH_CALL) {
+            typeStr = "Flash Call";
+            QString pattern; plainBuf.readString(pattern);
+        } else if (typeConstructor == TL::ID_AUTH_SENT_CODE_TYPE_MISSED_CALL) {
+            typeStr = "Missed Call";
+            QString prefix; plainBuf.readString(prefix);
+            int32_t length; plainBuf.readInt32(length);
+        } else if (typeConstructor == TL::ID_AUTH_SENT_CODE_TYPE_EMAIL_CODE) {
+            typeStr = "Email";
+            int32_t emailFlags; plainBuf.readInt32(emailFlags);
+            QString emailPattern; plainBuf.readString(emailPattern);
+            int32_t length; plainBuf.readInt32(length);
+        }
+
+        QString phoneCodeHash;
+        plainBuf.readString(phoneCodeHash);
+
+        int32_t timeout = 60;
+        if (flags & (1 << 1)) {
+            uint32_t nextType; plainBuf.readUInt32(nextType);
+        }
+        if (flags & (1 << 2)) {
+            plainBuf.readInt32(timeout);
+        }
+
+        emit logMessage(QString("=================================================="));
+        emit logMessage(QString("TELEGRAM LOGIN CODE SENT"));
+        emit logMessage(QString("Delivery Type: %1, Timeout: %2s, Hash: %3").arg(typeStr).arg(timeout).arg(phoneCodeHash));
+        emit logMessage(QString("=================================================="));
+
+        emit authSentCodeReceived(phoneCodeHash, typeStr, timeout);
+    } else if (innerRpcConstructor == TL::ID_AUTH_AUTHORIZATION || innerRpcConstructor == TL::ID_AUTH_AUTHORIZATION_CD) {
+        // auth.authorization#2ea2c0d4 flags:# setup_password_required:flags.1?true otherwise_relogin_days:flags.3?int tmp_sessions:flags.0?int future_auth_token:flags.2?bytes user:User = auth.Authorization;
+        int32_t authFlags;
+        plainBuf.readInt32(authFlags);
+        if (authFlags & (1 << 0)) { int32_t tmp; plainBuf.readInt32(tmp); }
+        if (authFlags & (1 << 2)) { QByteArray token; plainBuf.readBytes(token); }
+        if (authFlags & (1 << 3)) { int32_t days; plainBuf.readInt32(days); }
+
+        uint32_t userConstructor;
+        plainBuf.readUInt32(userConstructor);
+
+        int32_t userFlags;
+        plainBuf.readInt32(userFlags);
+
+        int64_t userId = 0, accessHash = 0;
+        plainBuf.readInt64(userId);
+
+        if (userFlags & (1 << 0)) {
+            plainBuf.readInt64(accessHash);
+        }
+
+        QString firstName, lastName, username, phone;
+        if (userFlags & (1 << 1)) plainBuf.readString(firstName);
+        if (userFlags & (1 << 2)) plainBuf.readString(lastName);
+        if (userFlags & (1 << 3)) plainBuf.readString(username);
+        if (userFlags & (1 << 4)) plainBuf.readString(phone);
+
+        emit logMessage(QString("=================================================="));
+        emit logMessage(QString("SUCCESSFUL TELEGRAM AUTHENTICATION!"));
+        emit logMessage(QString("User ID: %1, Name: %2 %3 (@%4), Phone: %5").arg(userId).arg(firstName).arg(lastName).arg(username).arg(phone));
+        emit logMessage(QString("=================================================="));
+
+        emit authSuccessReceived(userId, static_cast<quint64>(accessHash), firstName, lastName, username, phone);
+    } else if (innerRpcConstructor == TL::ID_AUTH_SIGN_UP_REQUIRED) {
+        emit logMessage("[AUTH] Sign Up is required for this new phone number");
+        emit authSignUpRequiredReceived();
+    } else if (innerRpcConstructor == TL::ID_ACCOUNT_PASSWORD) {
+        // account.password#957b50fb flags:# has_recovery:flags.0?true has_secure_values:flags.1?true has_password:flags.2?true current_algo:flags.2?PasswordKdfAlgo srp_B:flags.2?bytes srp_id:flags.2?long hint:flags.3?string ...
+        int32_t pwdFlags;
+        plainBuf.readInt32(pwdFlags);
+
+        if (pwdFlags & (1 << 2)) {
+            uint32_t algoConstructor;
+            plainBuf.readUInt32(algoConstructor);
+            plainBuf.readBytes(m_pwdSalt1);
+            plainBuf.readBytes(m_pwdSalt2);
+            int32_t gVal; plainBuf.readInt32(gVal); m_pwdG = gVal;
+            plainBuf.readBytes(m_pwdP);
+
+            plainBuf.readBytes(m_pwdSrpB);
+            plainBuf.readInt64(m_pwdSrpId);
+        }
+
+        if (pwdFlags & (1 << 3)) {
+            plainBuf.readString(m_pwdHint);
+        }
+
+        emit logMessage(QString("2FA Cloud Password Needed. Hint: '%1'").arg(m_pwdHint));
+        emit authPasswordNeeded(m_pwdHint);
+
+        if (!m_pendingPassword.isEmpty()) {
+            QString pwd = m_pendingPassword;
+            m_pendingPassword.clear();
+            sendAuthCheckPassword(pwd);
+        }
+    } else if (innerRpcConstructor == TL::ID_AUTH_LOGIN_TOKEN) {
+        // auth.loginToken#629f1980 expires:int token:bytes = auth.LoginToken;
+        int32_t expires;
+        QByteArray tokenBytes;
+        plainBuf.readInt32(expires);
+        plainBuf.readBytes(tokenBytes);
+
+        emit logMessage(QString("QR Login Token received (expires in %1s)").arg(expires));
+        emit authLoginTokenReceived(tokenBytes, expires);
+    } else if (innerRpcConstructor == TL::ID_AUTH_LOGIN_TOKEN_SUCCESS) {
+        emit logMessage("QR Code successfully scanned and authorized!");
+        emit authLoginSuccessReceived();
+    } else if (innerRpcConstructor == TL::ID_AUTH_LOGIN_TOKEN_MIGRATE_TO) {
+        int32_t targetDc;
+        QByteArray tokenBytes;
+        plainBuf.readInt32(targetDc);
+        plainBuf.readBytes(tokenBytes);
+        emit logMessage(QString("QR Login Token requires migration to DC %1").arg(targetDc));
+        migrateToDc(targetDc);
+    } else if (innerRpcConstructor == TL::ID_RPC_ERROR) {
+        int32_t errCode;
+        QString errMsg;
+        plainBuf.readInt32(errCode);
+        plainBuf.readString(errMsg);
+
+        emit logMessage(QString("[RPC ERROR] Code: %1, Message: %2").arg(errCode).arg(errMsg));
+
+        if (errMsg.startsWith("PHONE_MIGRATE_") || errMsg.startsWith("NETWORK_MIGRATE_")) {
+            int targetDc = errMsg.section('_', -1).toInt();
+            if (targetDc > 0) {
+                emit logMessage(QString("Server requested DC migration to DC %1").arg(targetDc));
+                migrateToDc(targetDc);
+                return;
+            }
+        } else if (errMsg == "SESSION_PASSWORD_NEEDED" || errMsg == "PASSWORD_HASH_INVALID" || errMsg == "SRP_ID_INVALID" || errMsg == "SRP_PASSWORD_CHANGED") {
+            m_pwdSrpId = 0;
+            sendAccountGetPassword();
+            if (errMsg == "SESSION_PASSWORD_NEEDED") {
+                return;
+            }
+        }
+
+        emit rpcErrorReceived(errCode, errMsg);
     }
 }
 

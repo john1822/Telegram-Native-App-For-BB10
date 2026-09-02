@@ -57,6 +57,9 @@ public:
     static bool computeSRP6A(const QString& password, const QByteArray& salt1, const QByteArray& salt2,
                             int g, const QByteArray& pBytes, const QByteArray& srpB,
                             QByteArray& srpAOut, QByteArray& srpM1Out);
+
+    // Gzip Decompression
+    static bool gzipDecompress(const QByteArray& inData, QByteArray& outData);
 };
 
 } // namespace Crypto

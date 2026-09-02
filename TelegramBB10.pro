@@ -36,6 +36,7 @@ LIBS += -lbbcascades \
 HEADERS += \
     src/Config.h \
     src/crypto/CryptoEngine.h \
+    src/crypto/qrcodegen.h \
     src/crypto/QrGenerator.h \
     src/tl/TLBuffer.h \
     src/tl/TLTypes.h \
@@ -49,6 +50,7 @@ SOURCES += \
     src/main.cpp \
     src/Config.cpp \
     src/crypto/CryptoEngine.cpp \
+    src/crypto/qrcodegen.cpp \
     src/crypto/QrGenerator.cpp \
     src/tl/TLBuffer.cpp \
     src/network/TcpTransport.cpp \

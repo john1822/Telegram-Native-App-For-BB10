@@ -96,6 +96,7 @@ private:
 
     void handleEncryptedPacket(const quint8* data, size_t size);
     void processPlainMessage(TL::TLBuffer& plainBuf);
+    void handleRpcResult(qint64 reqMsgId, quint32 innerRpcConstructor, TL::TLBuffer& plainBuf);
     void sendEncryptedMessage(const QByteArray& messageData, bool isContentRelated = true);
 
     qint64 generateMessageId();
@@ -136,6 +137,7 @@ private:
     int m_pwdG;
     qint64 m_pwdSrpId;
     QString m_pwdHint;
+    QString m_pendingPassword;
 };
 
 } // namespace Core
