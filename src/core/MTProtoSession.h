@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QByteArray>
 #include <QString>
+#include <QTimer>
 #include <stdint.h>
 #include <stddef.h>
 
@@ -11,6 +12,10 @@ namespace Telegram {
 
 namespace Network {
 class TcpTransport;
+}
+
+namespace TL {
+class TLBuffer;
 }
 
 namespace Core {
@@ -36,8 +41,8 @@ public:
     SessionState state() const;
     QString stateString() const;
 
-    // RPC Methods
     void sendGetNearestDc();
+    void sendPingDelayDisconnect();
 
 signals:
     void stateChanged(Telegram::Core::SessionState newState, const QString& stateText);
@@ -51,6 +56,8 @@ private slots:
     void onTransportDisconnected();
     void onPacketReceived(const QByteArray& packet);
     void onTransportError(const QString& error);
+    void onPingTimer();
+    void onReconnectTimer();
 
 private:
     void sendReqPQMulti();
@@ -60,6 +67,7 @@ private:
     void handleSetClientDHParamsAnswer(uint32_t constructor, const uint8_t* data, size_t size);
 
     void handleEncryptedPacket(const uint8_t* data, size_t size);
+    void processPlainMessage(TL::TLBuffer& plainBuf);
     void sendEncryptedMessage(const QByteArray& messageData, bool isContentRelated = true);
 
     int64_t generateMessageId();
@@ -68,6 +76,11 @@ private:
 private:
     Network::TcpTransport* m_transport;
     SessionState m_state;
+    QString m_host;
+    quint16 m_port;
+    bool m_autoReconnect;
+    QTimer* m_pingTimer;
+    QTimer* m_reconnectTimer;
 
     // Handshake state
     uint8_t m_nonce[16];

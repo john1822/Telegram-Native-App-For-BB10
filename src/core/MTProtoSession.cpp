@@ -37,6 +37,11 @@ MTProtoSession::MTProtoSession(QObject* parent)
     : QObject(parent),
       m_transport(new Network::TcpTransport(this)),
       m_state(STATE_DISCONNECTED),
+      m_host(""),
+      m_port(0),
+      m_autoReconnect(true),
+      m_pingTimer(new QTimer(this)),
+      m_reconnectTimer(new QTimer(this)),
       m_authKeyId(0),
       m_serverSalt(0),
       m_sessionId(0),
@@ -49,6 +54,12 @@ MTProtoSession::MTProtoSession(QObject* parent)
     connect(m_transport, SIGNAL(packetReceived(QByteArray)), this, SLOT(onPacketReceived(QByteArray)));
     connect(m_transport, SIGNAL(errorOccurred(QString)), this, SLOT(onTransportError(QString)));
     connect(m_transport, SIGNAL(logMessage(QString)), this, SIGNAL(logMessage(QString)));
+
+    m_pingTimer->setInterval(25000); // Send heartbeat every 25s
+    connect(m_pingTimer, SIGNAL(timeout()), this, SLOT(onPingTimer()));
+
+    m_reconnectTimer->setSingleShot(true);
+    connect(m_reconnectTimer, SIGNAL(timeout()), this, SLOT(onReconnectTimer()));
 }
 
 MTProtoSession::~MTProtoSession() {
@@ -56,12 +67,18 @@ MTProtoSession::~MTProtoSession() {
 }
 
 void MTProtoSession::start(const QString& host, quint16 port) {
+    m_host = host;
+    m_port = port;
+    m_autoReconnect = true;
     m_state = STATE_CONNECTING;
     emit stateChanged(m_state, "Connecting to Telegram DC...");
     m_transport->connectToHost(host, port);
 }
 
 void MTProtoSession::stop() {
+    m_autoReconnect = false;
+    m_pingTimer->stop();
+    m_reconnectTimer->stop();
     m_transport->disconnectFromHost();
     m_state = STATE_DISCONNECTED;
     emit stateChanged(m_state, "Disconnected");
@@ -105,13 +122,57 @@ uint32_t MTProtoSession::generateSeqNo(bool isContentRelated) {
 
 void MTProtoSession::onTransportConnected() {
     m_state = STATE_CONNECTED;
-    emit stateChanged(m_state, "TCP Connected. Initiating MTProto 2.0 Handshake...");
-    sendReqPQMulti();
+    
+    if (!m_authKey.isEmpty() && m_authKeyId != 0) {
+        // Reuse existing auth key, generate new session_id
+        Crypto::CryptoEngine::generateRandomBytes(reinterpret_cast<uint8_t*>(&m_sessionId), 8);
+        m_seqNo = 0;
+        m_state = STATE_ENCRYPTED_READY;
+        emit stateChanged(m_state, "MTProto 2.0 Encrypted Channel Re-established!");
+        emit logMessage("Reconnected to Telegram DC with active Auth Key. Resuming session.");
+        m_pingTimer->start();
+        sendPingDelayDisconnect();
+    } else {
+        emit stateChanged(m_state, "TCP Connected. Initiating MTProto 2.0 Handshake...");
+        sendReqPQMulti();
+    }
 }
 
 void MTProtoSession::onTransportDisconnected() {
+    m_pingTimer->stop();
     m_state = STATE_DISCONNECTED;
     emit stateChanged(m_state, "Disconnected");
+
+    if (m_autoReconnect && !m_host.isEmpty()) {
+        emit logMessage("Connection dropped. Auto-reconnecting in 3 seconds...");
+        m_reconnectTimer->start(3000);
+    }
+}
+
+void MTProtoSession::onReconnectTimer() {
+    if (m_autoReconnect && !m_host.isEmpty()) {
+        emit logMessage(QString("Reconnecting to Telegram DC %1:%2...").arg(m_host).arg(m_port));
+        m_transport->connectToHost(m_host, m_port);
+    }
+}
+
+void MTProtoSession::onPingTimer() {
+    if (m_state == STATE_ENCRYPTED_READY) {
+        sendPingDelayDisconnect();
+    }
+}
+
+void MTProtoSession::sendPingDelayDisconnect() {
+    if (m_state != STATE_ENCRYPTED_READY) return;
+
+    int64_t pingId = 0;
+    Crypto::CryptoEngine::generateRandomBytes(reinterpret_cast<uint8_t*>(&pingId), 8);
+
+    TL::TLBuffer pingBuf;
+    pingBuf.writeUInt32(TL::ID_PING);
+    pingBuf.writeInt64(pingId);
+
+    sendEncryptedMessage(pingBuf.buffer(), false);
 }
 
 void MTProtoSession::onTransportError(const QString& error) {
@@ -513,6 +574,9 @@ void MTProtoSession::handleSetClientDHParamsAnswer(uint32_t constructor, const u
         emit logMessage(QString("ServerSalt: 0x%1, SessionID: 0x%2").arg(QString::number(m_serverSalt, 16)).arg(QString::number(m_sessionId, 16)));
         emit logMessage(QString("=================================================="));
 
+        // Start heartbeat ping timer to prevent server timeout
+        m_pingTimer->start();
+
         // Auto-test RPC: send help.getNearestDc
         sendGetNearestDc();
     } else {
@@ -650,12 +714,73 @@ void MTProtoSession::handleEncryptedPacket(const uint8_t* data, size_t size) {
         return;
     }
 
+    if (!m_pingTimer->isActive()) {
+        m_pingTimer->start();
+    }
+
+    processPlainMessage(plainBuf);
+}
+
+void MTProtoSession::processPlainMessage(TL::TLBuffer& plainBuf) {
+    if (plainBuf.remaining() < 4) return;
+
     uint32_t constructor;
     plainBuf.readUInt32(constructor);
 
     emit logMessage(QString("Encrypted MTProto 2.0 Response received! Constructor: 0x%1").arg(constructor, 8, 16, QChar('0')));
 
-    if (constructor == TL::ID_RPC_RESULT) {
+    if (constructor == TL::ID_MSG_CONTAINER) {
+        int32_t count = 0;
+        plainBuf.readInt32(count);
+        emit logMessage(QString("Message container received containing %1 messages.").arg(count));
+        for (int i = 0; i < count && plainBuf.remaining() >= 16; ++i) {
+            int64_t innerMsgId;
+            int32_t innerSeqNo, innerBytes;
+            plainBuf.readInt64(innerMsgId);
+            plainBuf.readInt32(innerSeqNo);
+            plainBuf.readInt32(innerBytes);
+            processPlainMessage(plainBuf);
+        }
+    } else if (constructor == TL::ID_NEW_SESSION_CREATED) {
+        int64_t firstMsgId, uniqueId, serverSalt;
+        plainBuf.readInt64(firstMsgId);
+        plainBuf.readInt64(uniqueId);
+        plainBuf.readInt64(serverSalt);
+        m_serverSalt = static_cast<uint64_t>(serverSalt);
+        emit logMessage(QString("New MTProto Session confirmed. Server Salt updated: 0x%1").arg(QString::number(m_serverSalt, 16)));
+    } else if (constructor == TL::ID_BAD_SERVER_SALT) {
+        int64_t badMsgId;
+        int32_t badSeqNo, errCode;
+        int64_t newServerSalt;
+        plainBuf.readInt64(badMsgId);
+        plainBuf.readInt32(badSeqNo);
+        plainBuf.readInt32(errCode);
+        plainBuf.readInt64(newServerSalt);
+        m_serverSalt = static_cast<uint64_t>(newServerSalt);
+        emit logMessage(QString("Server salt refreshed: 0x%1.").arg(QString::number(m_serverSalt, 16)));
+    } else if (constructor == TL::ID_BAD_MSG_NOTIFICATION) {
+        int64_t badMsgId;
+        int32_t badSeqNo, errCode;
+        plainBuf.readInt64(badMsgId);
+        plainBuf.readInt32(badSeqNo);
+        plainBuf.readInt32(errCode);
+        emit logMessage(QString("[WARN] Bad Message Notification for MsgId %1, Error Code: %2").arg(badMsgId).arg(errCode));
+    } else if (constructor == TL::ID_PONG) {
+        int64_t pongMsgId, pingId;
+        plainBuf.readInt64(pongMsgId);
+        plainBuf.readInt64(pingId);
+        emit logMessage(QString("Heartbeat PONG received from Telegram (ping_id: %1)").arg(pingId));
+    } else if (constructor == TL::ID_MSGS_ACK) {
+        uint32_t vectorConstructor;
+        int32_t ackCount;
+        plainBuf.readUInt32(vectorConstructor);
+        plainBuf.readInt32(ackCount);
+        for (int i = 0; i < ackCount && plainBuf.remaining() >= 8; ++i) {
+            int64_t ackMsgId;
+            plainBuf.readInt64(ackMsgId);
+        }
+        emit logMessage(QString("Server acknowledged %1 messages.").arg(ackCount));
+    } else if (constructor == TL::ID_RPC_RESULT) {
         int64_t reqMsgId;
         plainBuf.readInt64(reqMsgId);
         uint32_t innerRpcConstructor;

@@ -29,7 +29,12 @@ enum ConstructorId {
     ID_GZIP_PACKED            = 0x3072cfa1,
     ID_MSG_CONTAINER          = 0x73f1f8dc,
     ID_PONG                   = 0x347773c5,
+    ID_PING                   = 0x7abe77ec,
     ID_PING_DELAY_DISCONNECT  = 0xf342745b,
+    ID_NEW_SESSION_CREATED    = 0x9ec20908,
+    ID_BAD_SERVER_SALT        = 0xedab447b,
+    ID_BAD_MSG_NOTIFICATION   = 0xa7eff811,
+    ID_MSGS_ACK               = 0x62d6b459,
 
     ID_VECTOR                 = 0x1cb5c415,
 

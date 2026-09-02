@@ -22,7 +22,7 @@ static const uint qt_meta_data_Telegram__Core__MTProtoSession[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       9,   14, // methods
+      11,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -41,6 +41,8 @@ static const uint qt_meta_data_Telegram__Core__MTProtoSession[] = {
      277,   31,   31,   31, 0x08,
      310,  303,   31,   31, 0x08,
      339,  225,   31,   31, 0x08,
+     365,   31,   31,   31, 0x08,
+     379,   31,   31,   31, 0x08,
 
        0        // eod
 };
@@ -56,7 +58,8 @@ static const char qt_meta_stringdata_Telegram__Core__MTProtoSession[] = {
     "error\0errorOccurred(QString)\0"
     "onTransportConnected()\0onTransportDisconnected()\0"
     "packet\0onPacketReceived(QByteArray)\0"
-    "onTransportError(QString)\0"
+    "onTransportError(QString)\0onPingTimer()\0"
+    "onReconnectTimer()\0"
 };
 
 void Telegram::Core::MTProtoSession::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -74,6 +77,8 @@ void Telegram::Core::MTProtoSession::qt_static_metacall(QObject *_o, QMetaObject
         case 6: _t->onTransportDisconnected(); break;
         case 7: _t->onPacketReceived((*reinterpret_cast< const QByteArray(*)>(_a[1]))); break;
         case 8: _t->onTransportError((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 9: _t->onPingTimer(); break;
+        case 10: _t->onReconnectTimer(); break;
         default: ;
         }
     }
@@ -111,9 +116,9 @@ int Telegram::Core::MTProtoSession::qt_metacall(QMetaObject::Call _c, int _id, v
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 9)
+        if (_id < 11)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 9;
+        _id -= 11;
     }
     return _id;
 }
