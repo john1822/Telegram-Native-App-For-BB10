@@ -1203,9 +1203,11 @@ int tlSkipString(TL::TLBuffer& b);
 int tlReadString(TL::TLBuffer& b, QString& out);
 int tlSkipPeer(TL::TLBuffer& b);
 int tlSkipReplyHeader(TL::TLBuffer& b);
+int tlReadReplyHeader(TL::TLBuffer& b, int32_t& outReplyToId, QString& outQuoteText);
 int tlSkipFwdHeader(TL::TLBuffer& b);
 int tlReadMessageLeading(TL::TLBuffer& b, int32_t& outId, int32_t& outDate,
-                         bool& outIsOut, bool& outHasMedia, QString& outText, int& outConsumed);
+                         bool& outIsOut, bool& outHasMedia, QString& outText, int& outConsumed,
+                         int32_t& outReplyToId, QString& outReplyQuoteText);
 } // namespace
 
 void MTProtoSession::handleRpcResult(qint64 reqMsgId, quint32 innerRpcConstructor, TL::TLBuffer& plainBuf) {
@@ -1724,9 +1726,11 @@ void MTProtoSession::handleRpcResult(qint64 reqMsgId, quint32 innerRpcConstructo
             bool isOut = false, hasMedia = false;
             QString text;
             int consumed = 0;
+            int32_t replyToMsgId = 0;
+            QString replyQuoteText;
 
             TL::TLBuffer stBuf(rawData.mid(pos));
-            int leadRes = tlReadMessageLeading(stBuf, msgId, msgDate, isOut, hasMedia, text, consumed);
+            int leadRes = tlReadMessageLeading(stBuf, msgId, msgDate, isOut, hasMedia, text, consumed, replyToMsgId, replyQuoteText);
             // leadRes: 0 = full walk OK; -2 = fixed id captured but the later
             // flag-gated walk could not be completed; -1 = not a message/unsupported.
             bool idKnown = (leadRes == 0 || leadRes == -2);
@@ -1780,9 +1784,15 @@ void MTProtoSession::handleRpcResult(qint64 reqMsgId, quint32 innerRpcConstructo
             msgMap["id"] = msgId;
             msgMap["text"] = text;
             msgMap["isOutgoing"] = isOut;
+            msgMap["replyToMsgId"] = replyToMsgId;
+            if (!replyQuoteText.isEmpty()) {
+                msgMap["replySnippet"] = replyQuoteText;
+            }
             msgMap["date"] = msgDate ? msgDate : QDateTime::currentDateTime().toTime_t();
+            msgMap["dateStr"] = QDateTime::fromTime_t(
+                    msgDate ? msgDate : QDateTime::currentDateTime().toTime_t()).toString("MMMM d");
             msgMap["formattedTime"] = QDateTime::fromTime_t(
-                    msgDate ? msgDate : QDateTime::currentDateTime().toTime_t()).toString("hh:mm");
+                    msgDate ? msgDate : QDateTime::currentDateTime().toTime_t()).toString("h:mm AP");
 
             // Check for photo media inside this message's byte span.
             QString mediaPath;
@@ -1836,6 +1846,123 @@ void MTProtoSession::handleRpcResult(qint64 reqMsgId, quint32 innerRpcConstructo
         }
 
         emit fileReceived(reqMsgId, fileBytes);
+    } else if (innerRpcConstructor == TL::ID_USERS_USER_FULL || innerRpcConstructor == 0x3b6d152e ||
+               innerRpcConstructor == 0x3b02414e || innerRpcConstructor == 0xef464d26 || innerRpcConstructor == 0x1f440409) {
+        emit logMessage(QString("=================================================="));
+        emit logMessage(QString("LIVE TELEGRAM USER_FULL RECEIVED (0x%1)").arg(innerRpcConstructor, 8, 16, QChar('0')));
+        emit logMessage(QString("=================================================="));
+
+        const QByteArray& rawData = plainBuf.buffer();
+        qint64 userId = 0;
+        QString bio;
+        QString username;
+        QString phone;
+
+        // 1. Scan for user constructor in payload
+        for (int pos = 0; pos <= rawData.size() - 16; ++pos) {
+            uint32_t cons = *reinterpret_cast<const uint32_t*>(rawData.constData() + pos);
+            if (cons == 0xb1b8cc83 || cons == 0x83314fca || cons == 0x31774388 || cons == 0x2e5fb3b0) { // user
+                TL::TLBuffer uBuf(rawData.mid(pos + 4));
+                int32_t uFlags = 0;
+                uBuf.readInt32(uFlags);
+                if (cons == 0xb1b8cc83 || cons == 0x83314fca) {
+                    int32_t uFlags2 = 0;
+                    uBuf.readInt32(uFlags2);
+                }
+                int64_t uId = 0;
+                uBuf.readInt64(uId);
+                if (uId != 0 && userId == 0) userId = uId;
+                int64_t aHash = 0;
+                if (uFlags & (1 << 0)) uBuf.readInt64(aHash);
+                QString fName, lName, uName, ph;
+                if (uFlags & (1 << 1)) uBuf.readString(fName);
+                if (uFlags & (1 << 2)) uBuf.readString(lName);
+                if (uFlags & (1 << 3)) { uBuf.readString(uName); if (!uName.isEmpty()) username = uName; }
+                if (uFlags & (1 << 4)) { uBuf.readString(ph); if (!ph.isEmpty()) phone = ph; }
+            }
+        }
+
+        // 2. Scan for userFull structure: userFull#a02bc13e flags:# flags2:# id:long about:flags.1?string
+        for (int pos = 0; pos <= rawData.size() - 20; ++pos) {
+            uint32_t c = *reinterpret_cast<const uint32_t*>(rawData.constData() + pos);
+            if (c == TL::ID_USER_FULL || c == 0xa02bc13e || c == 0x3b02414e || c == 0xef464d26) {
+                TL::TLBuffer fullBuf(rawData.mid(pos + 4));
+                int32_t ufFlags = 0;
+                if (fullBuf.readInt32(ufFlags)) {
+                    int32_t ufFlags2 = 0;
+                    fullBuf.readInt32(ufFlags2);
+                    int64_t ufId = 0;
+                    fullBuf.readInt64(ufId);
+                    if (ufId != 0 && userId == 0) userId = ufId;
+                    if (ufFlags & (1 << 1)) { // bit 1: about
+                        QString aboutText;
+                        fullBuf.readString(aboutText);
+                        if (!aboutText.isEmpty()) bio = aboutText;
+                    }
+                }
+            }
+        }
+
+        emit logMessage(QString("[USER_FULL] userId: %1, bio: '%2', username: @%3, phone: %4")
+                        .arg(userId).arg(bio).arg(username).arg(phone));
+        emit userFullReceived(userId, bio, username, phone);
+    } else if (innerRpcConstructor == TL::ID_MESSAGES_CHATS || innerRpcConstructor == TL::ID_MESSAGES_CHATS_SLICE ||
+               innerRpcConstructor == 0x64ff9fd5 || innerRpcConstructor == 0x9cd81144 || innerRpcConstructor == 0x9c3e200b) {
+        emit logMessage(QString("=================================================="));
+        emit logMessage(QString("LIVE TELEGRAM COMMON CHATS RECEIVED (0x%1)").arg(innerRpcConstructor, 8, 16, QChar('0')));
+        emit logMessage(QString("=================================================="));
+
+        const QByteArray& rawData = plainBuf.buffer();
+        QList<QVariantMap> chats;
+
+        for (int pos = 0; pos <= rawData.size() - 24; ++pos) {
+            uint32_t cons = *reinterpret_cast<const uint32_t*>(rawData.constData() + pos);
+            if (cons == 0xd49f34c6 || cons == 0xfe4478bd || cons == 0x1c32b11c || cons == 0x83d3b767) { // channel
+                TL::TLBuffer cBuf(rawData.mid(pos + 4));
+                int32_t cFlags = 0; cBuf.readInt32(cFlags);
+                if (cons == 0xd49f34c6 || cons == 0xfe4478bd) { int32_t cFlags2 = 0; cBuf.readInt32(cFlags2); }
+                int64_t cId = 0; cBuf.readInt64(cId);
+                int64_t aHash = 0; if (cFlags & (1 << 13)) cBuf.readInt64(aHash);
+                QString title, uName;
+                cBuf.readString(title);
+                if (cFlags & (1 << 6)) cBuf.readString(uName);
+
+                int32_t participantsCount = 0;
+                if (cFlags & (1 << 17)) {
+                    cBuf.readInt32(participantsCount);
+                }
+
+                if (!title.isEmpty() && cId != 0) {
+                    QVariantMap cMap;
+                    cMap["id"] = QString::number(cId);
+                    cMap["title"] = title;
+                    cMap["username"] = uName;
+                    cMap["initials"] = Models::DialogItem::computeInitials(title);
+                    cMap["avatarColor"] = Models::DialogItem::computeAvatarColor(cId);
+                    cMap["membersText"] = participantsCount > 0 ? QString("%1 members").arg(participantsCount) : "member";
+                    chats.append(cMap);
+                }
+            } else if (cons == 0xd91cdd54 || cons == 0x41cbf256) { // chat
+                TL::TLBuffer chBuf(rawData.mid(pos + 4));
+                int32_t chFlags; int64_t chId;
+                if (chBuf.readInt32(chFlags) && chBuf.readInt64(chId)) {
+                    QString title; chBuf.readString(title);
+                    int32_t count = 0; chBuf.readInt32(count);
+                    if (!title.isEmpty() && chId != 0) {
+                        QVariantMap cMap;
+                        cMap["id"] = QString::number(chId);
+                        cMap["title"] = title;
+                        cMap["initials"] = Models::DialogItem::computeInitials(title);
+                        cMap["avatarColor"] = Models::DialogItem::computeAvatarColor(chId);
+                        cMap["membersText"] = count > 0 ? QString("%1 members").arg(count) : "member";
+                        chats.append(cMap);
+                    }
+                }
+            }
+        }
+
+        emit logMessage(QString("Total common chats parsed: %1").arg(chats.size()));
+        emit commonChatsReceived(0, chats);
     }
 }
 
@@ -1927,6 +2054,56 @@ void MTProtoSession::sendMessagesSendMessage(int peerType, qint64 peerId, quint6
     QByteArray rnd = Crypto::CryptoEngine::randomBytes(8);
     int64_t randomId = *reinterpret_cast<const int64_t*>(rnd.constData());
     buf.writeInt64(randomId);
+
+    sendEncryptedMessage(buf.buffer(), true);
+}
+
+void MTProtoSession::sendUsersGetFullUser(qint64 userId, quint64 accessHash) {
+    if (userId == 0) return;
+    if (accessHash == 0 && m_entityAccessHashes.contains(userId)) {
+        accessHash = m_entityAccessHashes.value(userId);
+    }
+
+    emit logMessage(QString("Requesting live Telegram full user for %1 (accessHash: 0x%2)...")
+                    .arg(userId).arg(accessHash, 0, 16));
+
+    TL::TLBuffer buf;
+    buf.writeUInt32(0xda9b0d0d); // invokeWithLayer#da9b0d0d
+    buf.writeInt32(195);        // layer 195
+
+    // users.getFullUser#b60dc69b id:InputUser = users.UserFull;
+    buf.writeUInt32(TL::ID_USERS_GET_FULL_USER);
+
+    // inputUser#f21158c9 user_id:long access_hash:long = InputUser;
+    buf.writeUInt32(TL::ID_INPUT_USER);
+    buf.writeInt64(userId);
+    buf.writeInt64(static_cast<int64_t>(accessHash));
+
+    sendEncryptedMessage(buf.buffer(), true);
+}
+
+void MTProtoSession::sendMessagesGetCommonChats(qint64 userId, quint64 accessHash, int limit) {
+    if (userId == 0) return;
+    if (accessHash == 0 && m_entityAccessHashes.contains(userId)) {
+        accessHash = m_entityAccessHashes.value(userId);
+    }
+
+    emit logMessage(QString("Requesting live Telegram common chats for user %1 (limit: %2)...")
+                    .arg(userId).arg(limit));
+
+    TL::TLBuffer buf;
+    buf.writeUInt32(0xda9b0d0d); // invokeWithLayer#da9b0d0d
+    buf.writeInt32(195);        // layer 195
+
+    // messages.getCommonChats#e0800be2 user_id:InputUser max_id:long limit:int = messages.Chats;
+    buf.writeUInt32(TL::ID_MESSAGES_GET_COMMON_CHATS);
+
+    buf.writeUInt32(TL::ID_INPUT_USER);
+    buf.writeInt64(userId);
+    buf.writeInt64(static_cast<int64_t>(accessHash));
+
+    buf.writeInt64(0); // max_id: 0
+    buf.writeInt32(limit);
 
     sendEncryptedMessage(buf.buffer(), true);
 }
@@ -2095,8 +2272,8 @@ int tlSkipPeer(TL::TLBuffer& b) {
     return 12;
 }
 
-// Skips a MessageReplyHeader. Returns bytes consumed or -1 on failure.
-int tlSkipReplyHeader(TL::TLBuffer& b) {
+// Reads a MessageReplyHeader. Returns bytes consumed or -1 on failure.
+int tlReadReplyHeader(TL::TLBuffer& b, int32_t& outReplyToId, QString& outQuoteText) {
     uint32_t cons = 0;
     if (!b.readUInt32(cons)) return -1;
     if (cons != 0xafbc09db) return -1;
@@ -2104,23 +2281,25 @@ int tlSkipReplyHeader(TL::TLBuffer& b) {
     int32_t replyToMsgId = 0;
     if (!b.readInt32(flags)) return -1;
     if (!b.readInt32(replyToMsgId)) return -1;
-    // flags.0 : reply_to_peer_id:Peer
-    // flags.1 : reply_to_top_id:int
-    // flags.2 : reply_to_media:MessageExtendedMedia (recursive, bail if present)
-    // flags.3 : reply_to_story_id:int
-    // flags.6 : quote_text:string
-    // flags.7 : quote_entities:Vector<MessageEntity>
-    // flags.8 : quote_offset:int
-    // flags.9 : reply_from:MessageFwdHeader
+    outReplyToId = replyToMsgId;
     if (flags & (1 << 0)) { if (tlSkipPeer(b) < 0) return -1; }
     if (flags & (1 << 1)) { int32_t t = 0; if (!b.readInt32(t)) return -1; }
     if (flags & (1 << 2)) return -1; // extended media: fall back
     if (flags & (1 << 3)) { int32_t t = 0; if (!b.readInt32(t)) return -1; }
-    if (flags & (1 << 6)) { if (tlSkipString(b) < 0) return -1; }
+    if (flags & (1 << 6)) {
+        if (tlReadString(b, outQuoteText) < 0) return -1;
+    }
     if (flags & (1 << 7)) return -1; // entities in reply: fall back
     if (flags & (1 << 8)) { int32_t t = 0; if (!b.readInt32(t)) return -1; }
     if (flags & (1 << 9)) return -1; // nested fwd in reply: fall back
     return 0;
+}
+
+// Skips a MessageReplyHeader. Returns bytes consumed or -1 on failure.
+int tlSkipReplyHeader(TL::TLBuffer& b) {
+    int32_t dummyId = 0;
+    QString dummyQuote;
+    return tlReadReplyHeader(b, dummyId, dummyQuote);
 }
 
 // Skips a MessageFwdHeader. Returns bytes consumed or -1 on failure.
@@ -2151,7 +2330,9 @@ int tlSkipFwdHeader(TL::TLBuffer& b) {
 // object is not walkable. `outConsumed` receives the bytes consumed.
 int tlReadMessageLeading(TL::TLBuffer& b, int32_t& outId, int32_t& outDate,
                          bool& outIsOut, bool& outHasMedia, QString& outText,
-                         int& outConsumed) {
+                         int& outConsumed, int32_t& outReplyToId, QString& outReplyQuoteText) {
+    outReplyToId = 0;
+    outReplyQuoteText = QString();
     size_t start = b.offset();
     uint32_t cons = 0;
     if (!b.readUInt32(cons)) return -1;
@@ -2181,12 +2362,12 @@ int tlReadMessageLeading(TL::TLBuffer& b, int32_t& outId, int32_t& outDate,
         if (flags & (1 << 2)) { if (tlSkipFwdHeader(b) < 0) return -2; }  // fwd_from
         if (flags & (1 << 11)) { int64_t tb = 0; if (!b.readInt64(tb)) return -2; } // via_bot_id:long
         if (flags2 & (1 << 0)) { int64_t tb = 0; if (!b.readInt64(tb)) return -2; } // via_business_bot_id
-        if (flags & (1 << 3)) { if (tlSkipReplyHeader(b) < 0) return -2; }// reply_to
+        if (flags & (1 << 3)) { if (tlReadReplyHeader(b, outReplyToId, outReplyQuoteText) < 0) return -2; }// reply_to
     } else {
         // messageService#2b085862
         if (flags & (1 << 8)) { if (tlSkipPeer(b) < 0) return -2; }       // from_id
         if (tlSkipPeer(b) < 0) return -2;                                 // peer_id
-        if (flags & (1 << 3)) { if (tlSkipReplyHeader(b) < 0) return -2; }// reply_to
+        if (flags & (1 << 3)) { if (tlReadReplyHeader(b, outReplyToId, outReplyQuoteText) < 0) return -2; }// reply_to
     }
 
     int32_t date = 0;

@@ -22,12 +22,12 @@ static const uint qt_meta_data_Telegram__Controllers__ChatListController[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-      23,   14, // methods
-      12,  129, // properties
+      29,   14, // methods
+      17,  159, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       8,       // signalCount
+       9,       // signalCount
 
  // signals: signature, parameters, type, tag, flags
       51,   43,   42,   42, 0x05,
@@ -38,39 +38,50 @@ static const uint qt_meta_data_Telegram__Controllers__ChatListController[] = {
      224,   42,   42,   42, 0x05,
      248,  241,   42,   42, 0x05,
      273,   42,   42,   42, 0x05,
+     289,   42,   42,   42, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-     297,  289,   42,   42, 0x0a,
-     351,  335,   42,   42, 0x0a,
-     413,  396,   42,   42, 0x0a,
-     448,   42,   42,   42, 0x0a,
-     492,  468,   42,   42, 0x0a,
-     552,  537,   42,   42, 0x0a,
-     575,   42,   42,   42, 0x0a,
+     314,  306,   42,   42, 0x0a,
+     368,  352,   42,   42, 0x0a,
+     430,  413,   42,   42, 0x0a,
+     465,   42,   42,   42, 0x0a,
+     509,  485,   42,   42, 0x0a,
+     569,  554,   42,   42, 0x0a,
+     592,   42,   42,   42, 0x0a,
+     633,  607,   42,   42, 0x0a,
+     697,  684,   42,   42, 0x0a,
 
  // methods: signature, parameters, type, tag, flags
-     590,  241,   42,   42, 0x02,
-     611,   42,   42,   42, 0x02,
-     638,  628,   42,   42, 0x02,
-     665,  152,   42,   42, 0x02,
-     735,  702,   42,   42, 0x02,
-     806,  768,   42,   42, 0x02,
-     857,  847,   42,   42, 0x02,
-     896,  892,   42,   42, 0x02,
+     746,  241,   42,   42, 0x02,
+     767,   42,   42,   42, 0x02,
+     794,  784,   42,   42, 0x02,
+     821,  152,   42,   42, 0x02,
+     891,  858,   42,   42, 0x02,
+     962,  924,   42,   42, 0x02,
+    1013, 1003,   42,   42, 0x02,
+    1052, 1048,   42,   42, 0x02,
+    1085, 1080, 1075,   42, 0x02,
+    1138, 1105,   42,   42, 0x02,
+    1203, 1179,   42,   42, 0x22,
 
  // properties: name, type, flags
-     949,  919, 0x00095409,
-     955,  919, 0x00095409,
-     974,  969, 0x01495001,
-     988,  984, 0x02495001,
-    1009, 1001, 0x0a495103,
-    1021, 1001, 0x0a495001,
-    1046, 1039, 0x04495001,
-    1061,  969, 0x01495001,
-    1069,  984, 0x02495103,
-    1082,  984, 0x02495001,
-    1100,  984, 0x02495001,
-    1120,  984, 0x02495001,
+    1266, 1236, 0x00095409,
+    1272, 1236, 0x00095409,
+    1286, 1075, 0x01495001,
+    1300, 1296, 0x02495001,
+    1321, 1313, 0x0a495103,
+    1333, 1313, 0x0a495001,
+    1358, 1351, 0x04495001,
+    1373, 1075, 0x01495001,
+    1381, 1296, 0x02495103,
+    1394, 1296, 0x02495001,
+    1412, 1296, 0x02495001,
+    1432, 1296, 0x02495001,
+    1449, 1236, 0x00095409,
+    1466, 1313, 0x0a495001,
+    1477, 1313, 0x0a495001,
+    1493, 1313, 0x0a495001,
+    1506, 1313, 0x0a495001,
 
  // properties: notify_signal_id
        0,
@@ -85,6 +96,11 @@ static const uint qt_meta_data_Telegram__Controllers__ChatListController[] = {
        7,
        7,
        7,
+       0,
+       8,
+       8,
+       8,
+       8,
 
        0        // eod
 };
@@ -99,29 +115,40 @@ static const char qt_meta_stringdata_Telegram__Controllers__ChatListController[]
     "chatOpened(qint64,int,QString,quint64)\0"
     "canSendChanged()\0folder\0"
     "folderFilterChanged(int)\0countsUpdated()\0"
-    "dialogs\0onDialogsReceived(QList<QVariantMap>)\0"
+    "profileChanged()\0dialogs\0"
+    "onDialogsReceived(QList<QVariantMap>)\0"
     "peerId,messages\0"
     "onHistoryReceived(qint64,QList<QVariantMap>)\0"
     "peerId,localPath\0onAvatarDownloaded(qint64,QString)\0"
     "onSessionRestored()\0peerId,peerType,message\0"
     "onNewMessageReceived(qint64,int,QVariantMap)\0"
     "messageId,date\0onMessageSent(int,int)\0"
-    "retryDialogs()\0setFolderFilter(int)\0"
-    "refreshDialogs()\0indexPath\0"
-    "selectDialog(QVariantList)\0"
+    "retryDialogs()\0userId,bio,username,phone\0"
+    "onUserFullReceived(qint64,QString,QString,QString)\0"
+    "userId,chats\0"
+    "onCommonChatsReceived(qint64,QList<QVariantMap>)\0"
+    "setFolderFilter(int)\0refreshDialogs()\0"
+    "indexPath\0selectDialog(QVariantList)\0"
     "openChat(qint64,int,QString,quint64)\0"
     "peerType,peerIdStr,accessHashStr\0"
     "loadHistory(int,QString,QString)\0"
     "peerType,peerIdStr,accessHashStr,text\0"
     "sendMessage(int,QString,QString,QString)\0"
     "text,time\0addInitialMessage(QString,QString)\0"
-    "msg\0logDiagnostic(QString)\0"
+    "msg\0logDiagnostic(QString)\0bool\0path\0"
+    "fileExists(QString)\0"
+    "peerIdStr,accessHashStr,username\0"
+    "loadUserProfile(QString,QString,QString)\0"
+    "peerIdStr,accessHashStr\0"
+    "loadUserProfile(QString,QString)\0"
     "bb::cascades::GroupDataModel*\0model\0"
-    "messagesModel\0bool\0isLoading\0int\0"
-    "dialogsCount\0QString\0searchQuery\0"
-    "selectedPeerTitle\0qint64\0selectedPeerId\0"
-    "canSend\0folderFilter\0unreadGroupsCount\0"
+    "messagesModel\0isLoading\0int\0dialogsCount\0"
+    "QString\0searchQuery\0selectedPeerTitle\0"
+    "qint64\0selectedPeerId\0canSend\0"
+    "folderFilter\0unreadGroupsCount\0"
     "unreadChannelsCount\0unreadTotalCount\0"
+    "commonChatsModel\0profileBio\0profileUsername\0"
+    "profilePhone\0profileStatus\0"
 };
 
 void Telegram::Controllers::ChatListController::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -138,21 +165,28 @@ void Telegram::Controllers::ChatListController::qt_static_metacall(QObject *_o, 
         case 5: _t->canSendChanged(); break;
         case 6: _t->folderFilterChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 7: _t->countsUpdated(); break;
-        case 8: _t->onDialogsReceived((*reinterpret_cast< const QList<QVariantMap>(*)>(_a[1]))); break;
-        case 9: _t->onHistoryReceived((*reinterpret_cast< qint64(*)>(_a[1])),(*reinterpret_cast< const QList<QVariantMap>(*)>(_a[2]))); break;
-        case 10: _t->onAvatarDownloaded((*reinterpret_cast< qint64(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
-        case 11: _t->onSessionRestored(); break;
-        case 12: _t->onNewMessageReceived((*reinterpret_cast< qint64(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const QVariantMap(*)>(_a[3]))); break;
-        case 13: _t->onMessageSent((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
-        case 14: _t->retryDialogs(); break;
-        case 15: _t->setFolderFilter((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 16: _t->refreshDialogs(); break;
-        case 17: _t->selectDialog((*reinterpret_cast< const QVariantList(*)>(_a[1]))); break;
-        case 18: _t->openChat((*reinterpret_cast< qint64(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3])),(*reinterpret_cast< quint64(*)>(_a[4]))); break;
-        case 19: _t->loadHistory((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3]))); break;
-        case 20: _t->sendMessage((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3])),(*reinterpret_cast< const QString(*)>(_a[4]))); break;
-        case 21: _t->addInitialMessage((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
-        case 22: _t->logDiagnostic((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 8: _t->profileChanged(); break;
+        case 9: _t->onDialogsReceived((*reinterpret_cast< const QList<QVariantMap>(*)>(_a[1]))); break;
+        case 10: _t->onHistoryReceived((*reinterpret_cast< qint64(*)>(_a[1])),(*reinterpret_cast< const QList<QVariantMap>(*)>(_a[2]))); break;
+        case 11: _t->onAvatarDownloaded((*reinterpret_cast< qint64(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
+        case 12: _t->onSessionRestored(); break;
+        case 13: _t->onNewMessageReceived((*reinterpret_cast< qint64(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const QVariantMap(*)>(_a[3]))); break;
+        case 14: _t->onMessageSent((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
+        case 15: _t->retryDialogs(); break;
+        case 16: _t->onUserFullReceived((*reinterpret_cast< qint64(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3])),(*reinterpret_cast< const QString(*)>(_a[4]))); break;
+        case 17: _t->onCommonChatsReceived((*reinterpret_cast< qint64(*)>(_a[1])),(*reinterpret_cast< const QList<QVariantMap>(*)>(_a[2]))); break;
+        case 18: _t->setFolderFilter((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 19: _t->refreshDialogs(); break;
+        case 20: _t->selectDialog((*reinterpret_cast< const QVariantList(*)>(_a[1]))); break;
+        case 21: _t->openChat((*reinterpret_cast< qint64(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3])),(*reinterpret_cast< quint64(*)>(_a[4]))); break;
+        case 22: _t->loadHistory((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3]))); break;
+        case 23: _t->sendMessage((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3])),(*reinterpret_cast< const QString(*)>(_a[4]))); break;
+        case 24: _t->addInitialMessage((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
+        case 25: _t->logDiagnostic((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 26: { bool _r = _t->fileExists((*reinterpret_cast< const QString(*)>(_a[1])));
+            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
+        case 27: _t->loadUserProfile((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3]))); break;
+        case 28: _t->loadUserProfile((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
         default: ;
         }
     }
@@ -190,9 +224,9 @@ int Telegram::Controllers::ChatListController::qt_metacall(QMetaObject::Call _c,
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 23)
+        if (_id < 29)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 23;
+        _id -= 29;
     }
 #ifndef QT_NO_PROPERTIES
       else if (_c == QMetaObject::ReadProperty) {
@@ -210,27 +244,32 @@ int Telegram::Controllers::ChatListController::qt_metacall(QMetaObject::Call _c,
         case 9: *reinterpret_cast< int*>(_v) = unreadGroupsCount(); break;
         case 10: *reinterpret_cast< int*>(_v) = unreadChannelsCount(); break;
         case 11: *reinterpret_cast< int*>(_v) = unreadTotalCount(); break;
+        case 12: *reinterpret_cast< bb::cascades::GroupDataModel**>(_v) = commonChatsModel(); break;
+        case 13: *reinterpret_cast< QString*>(_v) = profileBio(); break;
+        case 14: *reinterpret_cast< QString*>(_v) = profileUsername(); break;
+        case 15: *reinterpret_cast< QString*>(_v) = profilePhone(); break;
+        case 16: *reinterpret_cast< QString*>(_v) = profileStatus(); break;
         }
-        _id -= 12;
+        _id -= 17;
     } else if (_c == QMetaObject::WriteProperty) {
         void *_v = _a[0];
         switch (_id) {
         case 4: setSearchQuery(*reinterpret_cast< QString*>(_v)); break;
         case 8: setFolderFilter(*reinterpret_cast< int*>(_v)); break;
         }
-        _id -= 12;
+        _id -= 17;
     } else if (_c == QMetaObject::ResetProperty) {
-        _id -= 12;
+        _id -= 17;
     } else if (_c == QMetaObject::QueryPropertyDesignable) {
-        _id -= 12;
+        _id -= 17;
     } else if (_c == QMetaObject::QueryPropertyScriptable) {
-        _id -= 12;
+        _id -= 17;
     } else if (_c == QMetaObject::QueryPropertyStored) {
-        _id -= 12;
+        _id -= 17;
     } else if (_c == QMetaObject::QueryPropertyEditable) {
-        _id -= 12;
+        _id -= 17;
     } else if (_c == QMetaObject::QueryPropertyUser) {
-        _id -= 12;
+        _id -= 17;
     }
 #endif // QT_NO_PROPERTIES
     return _id;
@@ -287,5 +326,11 @@ void Telegram::Controllers::ChatListController::folderFilterChanged(int _t1)
 void Telegram::Controllers::ChatListController::countsUpdated()
 {
     QMetaObject::activate(this, &staticMetaObject, 7, 0);
+}
+
+// SIGNAL 8
+void Telegram::Controllers::ChatListController::profileChanged()
+{
+    QMetaObject::activate(this, &staticMetaObject, 8, 0);
 }
 QT_END_MOC_NAMESPACE

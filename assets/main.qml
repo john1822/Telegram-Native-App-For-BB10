@@ -1255,7 +1255,7 @@ NavigationPane {
                                     var page = chatScreenDef.createObject();
                                     chatList.logDiagnostic("page null? " + (page === null ? ("YES (status=" + chatScreenDef.status + ", err=" + chatScreenDef.errorString() + ")") : "NO"));
                                     if (page) {
-                                        page.loadChat(data.title, data.peerType, "" + data.peerId, "" + data.accessHash, data.initials, data.avatarColor, data.avatarPath ? data.avatarPath : "", chatList.canSend);
+                                        page.loadChat(data.title, data.peerType, "" + data.peerId, "" + data.accessHash, data.initials, data.avatarColor, data.avatarPath ? data.avatarPath : "", chatList.canSend, rootNavPane, data.username ? data.username : "");
                                         chatList.logDiagnostic("about to push");
                                         rootNavPane.push(page);
                                         chatList.logDiagnostic("pushed");
@@ -1716,7 +1716,7 @@ NavigationPane {
                                 var page = chatScreenDef.createObject();
                                 chatList.logDiagnostic("page null? " + (page === null ? "YES" : "NO"));
                                 if (page) {
-                                    page.loadChat(data.title, data.peerType, "" + data.peerId, "" + data.accessHash, data.initials, data.avatarColor, data.avatarPath ? data.avatarPath : "", chatList.canSend);
+                                    page.loadChat(data.title, data.peerType, "" + data.peerId, "" + data.accessHash, data.initials, data.avatarColor, data.avatarPath ? data.avatarPath : "", chatList.canSend, rootNavPane, data.username ? data.username : "");
                                     chatList.logDiagnostic("about to push");
                                     rootNavPane.push(page);
                                     chatList.logDiagnostic("pushed");

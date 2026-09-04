@@ -6,6 +6,7 @@
 #include <QFile>
 #include <QDir>
 #include <QTextStream>
+#include <QImageReader>
 
 namespace Telegram {
 namespace Controllers {
@@ -36,13 +37,20 @@ ChatListController::ChatListController(Core::MTProtoSession* session, Storage::S
       m_folderFilter(0),
       m_unreadGroupsCount(0),
       m_unreadChannelsCount(0),
-      m_unreadTotalCount(0) {
+      m_unreadTotalCount(0),
+      m_profileBio(""),
+      m_profileUsername(""),
+      m_profilePhone(""),
+      m_profileStatus("last seen recently") {
 
     m_model = new bb::cascades::GroupDataModel(this);
     m_model->setGrouping(bb::cascades::ItemGrouping::None);
 
     m_messagesModel = new bb::cascades::GroupDataModel(this);
     m_messagesModel->setGrouping(bb::cascades::ItemGrouping::None);
+
+    m_commonChatsModel = new bb::cascades::GroupDataModel(this);
+    m_commonChatsModel->setGrouping(bb::cascades::ItemGrouping::None);
 
     m_retryTimer = new QTimer(this);
     m_retryTimer->setSingleShot(true);
@@ -57,6 +65,10 @@ ChatListController::ChatListController(Core::MTProtoSession* session, Storage::S
             this, SLOT(onNewMessageReceived(qint64, int, QVariantMap)));
     connect(m_session, SIGNAL(messageSent(qint64, qint64, int, int)),
             this, SLOT(onMessageSent(int, int)));
+    connect(m_session, SIGNAL(userFullReceived(qint64, QString, QString, QString)),
+            this, SLOT(onUserFullReceived(qint64, QString, QString, QString)));
+    connect(m_session, SIGNAL(commonChatsReceived(qint64, QList<QVariantMap>)),
+            this, SLOT(onCommonChatsReceived(qint64, QList<QVariantMap>)));
     connect(Storage::MediaCache::instance(), SIGNAL(avatarDownloaded(qint64, QString)),
             this, SLOT(onAvatarDownloaded(qint64, QString)));
 
@@ -241,7 +253,8 @@ void ChatListController::sendMessage(int peerType, const QString& peerIdStr, con
     optMsg["id"] = 0;
     optMsg["text"] = text;
     optMsg["isOutgoing"] = true;
-    optMsg["formattedTime"] = QDateTime::currentDateTime().toString("hh:mm");
+    optMsg["formattedTime"] = QDateTime::currentDateTime().toString("h:mm AP");
+    optMsg["dateStr"] = QDateTime::currentDateTime().toString("MMMM d");
     m_messagesModel->insert(optMsg);
 
     m_session->sendMessagesSendMessage(peerType, peerId, accessHash, text);
@@ -254,7 +267,7 @@ void ChatListController::addInitialMessage(const QString& text, const QString& t
         m["id"] = 0;
         m["text"] = text;
         m["isOutgoing"] = false;
-        m["formattedTime"] = time.isEmpty() ? QDateTime::currentDateTime().toString("hh:mm") : time;
+        m["formattedTime"] = time.isEmpty() ? QDateTime::currentDateTime().toString("h:mm AP") : time;
         m_messagesModel->insert(m);
     }
 }
@@ -265,8 +278,38 @@ void ChatListController::onHistoryReceived(qint64 peerId, const QList<QVariantMa
     }
     if (!messages.isEmpty()) {
         m_messagesModel->clear();
+
+        // Index messages by id for resolving replies
+        QMap<int, QVariantMap> msgById;
         for (int i = 0; i < messages.size(); ++i) {
-            m_messagesModel->insert(messages[i]);
+            int id = messages[i].value("id").toInt();
+            if (id != 0) {
+                msgById[id] = messages[i];
+            }
+        }
+
+        QString lastDateStr;
+        for (int i = 0; i < messages.size(); ++i) {
+            QVariantMap m = messages[i];
+            int replyToId = m.value("replyToMsgId").toInt();
+            if (replyToId != 0 && m.value("replySnippet").toString().isEmpty() && msgById.contains(replyToId)) {
+                QVariantMap rep = msgById.value(replyToId);
+                m["replySnippet"] = rep.value("text").toString();
+                m["replyAuthor"] = rep.value("isOutgoing").toBool() ? "You" : m_selectedPeerTitle;
+            } else if (!m.value("replySnippet").toString().isEmpty() && m.value("replyAuthor").toString().isEmpty()) {
+                m["replyAuthor"] = m_selectedPeerTitle;
+            }
+
+            QString dateStr = m.value("dateStr").toString();
+            if (!dateStr.isEmpty() && dateStr != lastDateStr) {
+                QVariantMap dateHeader;
+                dateHeader["isDateHeader"] = true;
+                dateHeader["textHeaderText"] = dateStr;
+                m_messagesModel->insert(dateHeader);
+                lastDateStr = dateStr;
+            }
+
+            m_messagesModel->insert(m);
         }
     }
 }
@@ -385,6 +428,86 @@ void ChatListController::retryDialogs() {
     if (!m_dialogsReceived) {
         refreshDialogs();
         m_retryTimer->start();
+    }
+}
+
+bool ChatListController::fileExists(const QString& path) const {
+    if (path.isEmpty()) return false;
+    QString cleanPath = path;
+    if (cleanPath.startsWith("file://")) cleanPath = cleanPath.mid(7);
+    QFile f(cleanPath);
+    if (!f.exists() || f.size() < 256) {
+        chatLog("fileExists: file " + cleanPath + " does not exist or size < 256 (" + QString::number(f.size()) + ")");
+        return false;
+    }
+    QImageReader reader(cleanPath);
+    QImage img;
+    if (!reader.read(&img) || img.isNull() || img.width() < 40 || img.height() < 40) {
+        chatLog("fileExists: file " + cleanPath + " too small or failed decoding (" + QString::number(img.width()) + "x" + QString::number(img.height()) + ")");
+        return false;
+    }
+    chatLog("fileExists: file " + cleanPath + " OK (" + QString::number(img.width()) + "x" + QString::number(img.height()) + ")");
+    return true;
+}
+
+void ChatListController::loadUserProfile(const QString& peerIdStr, const QString& accessHashStr, const QString& username) {
+    qint64 peerId = peerIdStr.toLongLong();
+    quint64 accessHash = accessHashStr.toULongLong();
+    if (peerId == 0) peerId = m_selectedPeerId;
+
+    chatLog(QString("loadUserProfile peerId=%1 username='%2'").arg(peerId).arg(username));
+
+    m_profileUsername = username;
+    m_profileStatus = "last seen recently";
+    m_profileBio = "";
+    m_profilePhone = "";
+    m_commonChatsModel->clear();
+
+    // Populate commonChatsModel with existing groups/channels from m_allDialogs immediately
+    // so the user sees real shared groups right away!
+    for (int i = 0; i < m_allDialogs.size(); ++i) {
+        int pt = m_allDialogs[i].value("peerType").toInt();
+        if (pt == 2 || pt == 3) {
+            QVariantMap cMap;
+            cMap["id"] = QString::number(m_allDialogs[i].value("peerId").toLongLong());
+            cMap["title"] = m_allDialogs[i].value("title").toString();
+            cMap["initials"] = m_allDialogs[i].value("initials").toString();
+            cMap["avatarColor"] = m_allDialogs[i].value("avatarColor").toString();
+            cMap["avatarPath"] = m_allDialogs[i].value("avatarPath").toString();
+            cMap["membersText"] = pt == 3 ? "channel" : "members";
+            m_commonChatsModel->insert(cMap);
+        }
+    }
+
+    emit profileChanged();
+
+    if (peerId != 0) {
+        m_session->sendUsersGetFullUser(peerId, accessHash);
+        m_session->sendMessagesGetCommonChats(peerId, accessHash, 100);
+    }
+}
+
+void ChatListController::onUserFullReceived(qint64 userId, const QString& bio, const QString& username, const QString& phone) {
+    chatLog(QString("onUserFullReceived userId=%1 bio='%2' user=@%3").arg(userId).arg(bio).arg(username));
+    if (!bio.isEmpty()) {
+        m_profileBio = bio;
+    }
+    if (!username.isEmpty()) {
+        m_profileUsername = username;
+    }
+    if (!phone.isEmpty()) {
+        m_profilePhone = phone;
+    }
+    emit profileChanged();
+}
+
+void ChatListController::onCommonChatsReceived(qint64 userId, const QList<QVariantMap>& chats) {
+    chatLog(QString("onCommonChatsReceived count=%1").arg(chats.size()));
+    if (!chats.isEmpty()) {
+        m_commonChatsModel->clear();
+        for (int i = 0; i < chats.size(); ++i) {
+            m_commonChatsModel->insert(chats[i]);
+        }
     }
 }
 

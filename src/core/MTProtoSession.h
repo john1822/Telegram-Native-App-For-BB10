@@ -59,6 +59,8 @@ public:
     void sendMessagesGetDialogs(int offsetDate = 0, int offsetId = 0, int limit = 100);
     void sendMessagesGetHistory(int peerType, qint64 peerId, quint64 accessHash, int offsetId = 0, int limit = 100);
     void sendMessagesSendMessage(int peerType, qint64 peerId, quint64 accessHash, const QString& message);
+    void sendUsersGetFullUser(qint64 userId, quint64 accessHash);
+    void sendMessagesGetCommonChats(qint64 userId, quint64 accessHash, int limit = 100);
     void sendUploadGetPeerPhoto(qint64 peerId, int peerType, quint64 accessHash, qint64 photoId, bool big = false);
     void sendUploadGetFile(qint64 fileId, quint64 accessHash, const QByteArray& fileReference, int offset = 0, int limit = 131072);
 
@@ -93,6 +95,8 @@ signals:
     void historyReceived(qint64 peerId, const QList<QVariantMap>& messages);
     void messageSent(qint64 peerId, qint64 randomId, int messageId, int date);
     void newMessageReceived(qint64 peerId, int peerType, const QVariantMap& message);
+    void userFullReceived(qint64 userId, const QString& bio, const QString& username, const QString& phone);
+    void commonChatsReceived(qint64 userId, const QList<QVariantMap>& chats);
 
     // Phase 5: Media Subsystem Signals
     void peerPhotoReceived(qint64 peerId, const QByteArray& bytes);

@@ -105,6 +105,15 @@ enum ConstructorId {
 
     ID_USER                    = 0x31774388,
     ID_USER_EMPTY              = 0xd3bc4b7a,
+    ID_INPUT_USER_EMPTY        = 0xf392b7f4,
+    ID_INPUT_USER_SELF         = 0xf7c1b13f,
+    ID_INPUT_USER              = 0xf21158c6,
+    ID_USERS_GET_FULL_USER     = 0xb60f5918,
+    ID_USERS_USER_FULL         = 0x3b6d152e,
+    ID_USER_FULL               = 0xa02bc13e,
+    ID_MESSAGES_GET_COMMON_CHATS = 0xe40ca104,
+    ID_MESSAGES_CHATS          = 0x64ff9fd5,
+    ID_MESSAGES_CHATS_SLICE    = 0x9cd81144,
 
     ID_CHAT                    = 0x41cbf256,
     ID_CHAT_EMPTY              = 0x29562764,

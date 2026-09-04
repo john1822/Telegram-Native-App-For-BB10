@@ -33,6 +33,11 @@ class ChatListController : public QObject {
     Q_PROPERTY(int unreadGroupsCount READ unreadGroupsCount NOTIFY countsUpdated)
     Q_PROPERTY(int unreadChannelsCount READ unreadChannelsCount NOTIFY countsUpdated)
     Q_PROPERTY(int unreadTotalCount READ unreadTotalCount NOTIFY countsUpdated)
+    Q_PROPERTY(bb::cascades::GroupDataModel* commonChatsModel READ commonChatsModel CONSTANT)
+    Q_PROPERTY(QString profileBio READ profileBio NOTIFY profileChanged)
+    Q_PROPERTY(QString profileUsername READ profileUsername NOTIFY profileChanged)
+    Q_PROPERTY(QString profilePhone READ profilePhone NOTIFY profileChanged)
+    Q_PROPERTY(QString profileStatus READ profileStatus NOTIFY profileChanged)
 
 public:
     explicit ChatListController(Core::MTProtoSession* session, Storage::SessionStorage* storage, QObject* parent = 0);
@@ -40,6 +45,7 @@ public:
 
     bb::cascades::GroupDataModel* model() const { return m_model; }
     bb::cascades::GroupDataModel* messagesModel() const { return m_messagesModel; }
+    bb::cascades::GroupDataModel* commonChatsModel() const { return m_commonChatsModel; }
     bool isLoading() const { return m_isLoading; }
     int dialogsCount() const { return m_allDialogs.size(); }
     QString searchQuery() const { return m_searchQuery; }
@@ -50,6 +56,10 @@ public:
     int unreadGroupsCount() const { return m_unreadGroupsCount; }
     int unreadChannelsCount() const { return m_unreadChannelsCount; }
     int unreadTotalCount() const { return m_unreadTotalCount; }
+    QString profileBio() const { return m_profileBio; }
+    QString profileUsername() const { return m_profileUsername; }
+    QString profilePhone() const { return m_profilePhone; }
+    QString profileStatus() const { return m_profileStatus; }
 
     void setSearchQuery(const QString& query);
     Q_INVOKABLE void setFolderFilter(int folder);
@@ -61,6 +71,8 @@ public:
     Q_INVOKABLE void sendMessage(int peerType, const QString& peerIdStr, const QString& accessHashStr, const QString& text);
     Q_INVOKABLE void addInitialMessage(const QString& text, const QString& time);
     Q_INVOKABLE void logDiagnostic(const QString& msg);
+    Q_INVOKABLE bool fileExists(const QString& path) const;
+    Q_INVOKABLE void loadUserProfile(const QString& peerIdStr, const QString& accessHashStr, const QString& username = "");
 
 public slots:
     void onDialogsReceived(const QList<QVariantMap>& dialogs);
@@ -70,6 +82,8 @@ public slots:
     void onNewMessageReceived(qint64 peerId, int peerType, const QVariantMap& message);
     void onMessageSent(int messageId, int date);
     void retryDialogs();
+    void onUserFullReceived(qint64 userId, const QString& bio, const QString& username, const QString& phone);
+    void onCommonChatsReceived(qint64 userId, const QList<QVariantMap>& chats);
 
 signals:
     void loadingChanged(bool loading);
@@ -80,6 +94,7 @@ signals:
     void canSendChanged();
     void folderFilterChanged(int folder);
     void countsUpdated();
+    void profileChanged();
 
 private:
     void populateModel(const QList<QVariantMap>& dialogs);
@@ -91,6 +106,7 @@ private:
     Storage::SessionStorage* m_storage;
     bb::cascades::GroupDataModel* m_model;
     bb::cascades::GroupDataModel* m_messagesModel;
+    bb::cascades::GroupDataModel* m_commonChatsModel;
     QList<QVariantMap> m_allDialogs;
     bool m_isLoading;
     bool m_dialogsReceived;
@@ -104,6 +120,10 @@ private:
     int m_unreadGroupsCount;
     int m_unreadChannelsCount;
     int m_unreadTotalCount;
+    QString m_profileBio;
+    QString m_profileUsername;
+    QString m_profilePhone;
+    QString m_profileStatus;
 };
 
 } // namespace Controllers
