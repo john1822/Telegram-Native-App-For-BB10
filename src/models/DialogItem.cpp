@@ -20,7 +20,10 @@ QVariantMap DialogItem::toMap() const {
     QVariantMap map;
     map["peerId"] = peerId;
     map["peerType"] = static_cast<int>(peerType);
-    map["accessHash"] = accessHash;
+    // Store accessHash as a decimal string: QML/JS reads 64-bit integers as
+    // lossy doubles, so exposing the raw quint64 would corrupt the value for
+    // the QML->C++ round trip (causing CHANNEL_INVALID on chat open).
+    map["accessHash"] = QString::number(accessHash);
     map["title"] = title;
     map["username"] = username;
     map["lastMessage"] = lastMessage;
@@ -31,6 +34,7 @@ QVariantMap DialogItem::toMap() const {
     map["isOutgoing"] = isOutgoing;
     map["initials"] = initials.isEmpty() ? computeInitials(title) : initials;
     map["avatarColor"] = avatarColor.isEmpty() ? computeAvatarColor(peerId) : avatarColor;
+    map["avatarPath"] = avatarPath;
     return map;
 }
 
@@ -49,6 +53,7 @@ DialogItem DialogItem::fromMap(const QVariantMap& map) {
     item.isOutgoing = map.value("isOutgoing").toBool();
     item.initials = map.value("initials").toString();
     item.avatarColor = map.value("avatarColor").toString();
+    item.avatarPath = map.value("avatarPath").toString();
     return item;
 }
 

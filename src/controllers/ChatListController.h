@@ -5,6 +5,7 @@
 #include <QString>
 #include <QVariantMap>
 #include <QList>
+#include <QTimer>
 #include <bb/cascades/GroupDataModel>
 
 namespace Telegram {
@@ -27,6 +28,7 @@ class ChatListController : public QObject {
     Q_PROPERTY(QString searchQuery READ searchQuery WRITE setSearchQuery NOTIFY searchQueryChanged)
     Q_PROPERTY(QString selectedPeerTitle READ selectedPeerTitle NOTIFY selectedPeerChanged)
     Q_PROPERTY(qint64 selectedPeerId READ selectedPeerId NOTIFY selectedPeerChanged)
+    Q_PROPERTY(bool canSend READ canSend NOTIFY canSendChanged)
 
 public:
     explicit ChatListController(Core::MTProtoSession* session, Storage::SessionStorage* storage, QObject* parent = 0);
@@ -39,6 +41,7 @@ public:
     QString searchQuery() const { return m_searchQuery; }
     QString selectedPeerTitle() const { return m_selectedPeerTitle; }
     qint64 selectedPeerId() const { return m_selectedPeerId; }
+    bool canSend() const { return m_canSend; }
 
     void setSearchQuery(const QString& query);
 
@@ -48,11 +51,16 @@ public:
     Q_INVOKABLE void loadHistory(int peerType, const QString& peerIdStr, const QString& accessHashStr);
     Q_INVOKABLE void sendMessage(int peerType, const QString& peerIdStr, const QString& accessHashStr, const QString& text);
     Q_INVOKABLE void addInitialMessage(const QString& text, const QString& time);
+    Q_INVOKABLE void logDiagnostic(const QString& msg);
 
 public slots:
     void onDialogsReceived(const QList<QVariantMap>& dialogs);
     void onHistoryReceived(qint64 peerId, const QList<QVariantMap>& messages);
+    void onAvatarDownloaded(qint64 peerId, const QString& localPath);
     void onSessionRestored();
+    void onNewMessageReceived(qint64 peerId, int peerType, const QVariantMap& message);
+    void onMessageSent(int messageId, int date);
+    void retryDialogs();
 
 signals:
     void loadingChanged(bool loading);
@@ -60,6 +68,7 @@ signals:
     void searchQueryChanged(const QString& query);
     void selectedPeerChanged();
     void chatOpened(qint64 peerId, int peerType, const QString& title, quint64 accessHash);
+    void canSendChanged();
 
 private:
     void populateModel(const QList<QVariantMap>& dialogs);
@@ -71,9 +80,13 @@ private:
     bb::cascades::GroupDataModel* m_messagesModel;
     QList<QVariantMap> m_allDialogs;
     bool m_isLoading;
+    bool m_dialogsReceived;
+    bool m_canSend;
+    QTimer* m_retryTimer;
     QString m_searchQuery;
     QString m_selectedPeerTitle;
     qint64 m_selectedPeerId;
+    qint64 m_lastSentPeerId;
 };
 
 } // namespace Controllers

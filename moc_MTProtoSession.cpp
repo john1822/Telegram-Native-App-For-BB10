@@ -22,12 +22,12 @@ static const uint qt_meta_data_Telegram__Core__MTProtoSession[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-      23,   14, // methods
+      26,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-      16,       // signalCount
+      19,       // signalCount
 
  // signals: signature, parameters, type, tag, flags
       51,   32,   31,   31, 0x05,
@@ -46,15 +46,18 @@ static const uint qt_meta_data_Telegram__Core__MTProtoSession[] = {
      645,  637,   31,   31, 0x05,
      697,  681,   31,   31, 0x05,
      771,  740,   31,   31, 0x05,
+     830,  806,   31,   31, 0x05,
+     886,  873,   31,   31, 0x05,
+     938,  923,   31,   31, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-     806,   31,   31,   31, 0x08,
-     829,   31,   31,   31, 0x08,
-     862,  855,   31,   31, 0x08,
-     891,  224,   31,   31, 0x08,
-     917,   31,   31,   31, 0x08,
-     931,   31,   31,   31, 0x08,
-     950,   31,   31,   31, 0x08,
+     970,   31,   31,   31, 0x08,
+     993,   31,   31,   31, 0x08,
+    1026, 1019,   31,   31, 0x08,
+    1055,  224,   31,   31, 0x08,
+    1081,   31,   31,   31, 0x08,
+    1095,   31,   31,   31, 0x08,
+    1114,   31,   31,   31, 0x08,
 
        0        // eod
 };
@@ -82,6 +85,10 @@ static const char qt_meta_stringdata_Telegram__Core__MTProtoSession[] = {
     "historyReceived(qint64,QList<QVariantMap>)\0"
     "peerId,randomId,messageId,date\0"
     "messageSent(qint64,qint64,int,int)\0"
+    "peerId,peerType,message\0"
+    "newMessageReceived(qint64,int,QVariantMap)\0"
+    "peerId,bytes\0peerPhotoReceived(qint64,QByteArray)\0"
+    "reqMsgId,bytes\0fileReceived(qint64,QByteArray)\0"
     "onTransportConnected()\0onTransportDisconnected()\0"
     "packet\0onPacketReceived(QByteArray)\0"
     "onTransportError(QString)\0onPingTimer()\0"
@@ -110,13 +117,16 @@ void Telegram::Core::MTProtoSession::qt_static_metacall(QObject *_o, QMetaObject
         case 13: _t->dialogsReceived((*reinterpret_cast< const QList<QVariantMap>(*)>(_a[1]))); break;
         case 14: _t->historyReceived((*reinterpret_cast< qint64(*)>(_a[1])),(*reinterpret_cast< const QList<QVariantMap>(*)>(_a[2]))); break;
         case 15: _t->messageSent((*reinterpret_cast< qint64(*)>(_a[1])),(*reinterpret_cast< qint64(*)>(_a[2])),(*reinterpret_cast< int(*)>(_a[3])),(*reinterpret_cast< int(*)>(_a[4]))); break;
-        case 16: _t->onTransportConnected(); break;
-        case 17: _t->onTransportDisconnected(); break;
-        case 18: _t->onPacketReceived((*reinterpret_cast< const QByteArray(*)>(_a[1]))); break;
-        case 19: _t->onTransportError((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 20: _t->onPingTimer(); break;
-        case 21: _t->onReconnectTimer(); break;
-        case 22: _t->onMigrateTimer(); break;
+        case 16: _t->newMessageReceived((*reinterpret_cast< qint64(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const QVariantMap(*)>(_a[3]))); break;
+        case 17: _t->peerPhotoReceived((*reinterpret_cast< qint64(*)>(_a[1])),(*reinterpret_cast< const QByteArray(*)>(_a[2]))); break;
+        case 18: _t->fileReceived((*reinterpret_cast< qint64(*)>(_a[1])),(*reinterpret_cast< const QByteArray(*)>(_a[2]))); break;
+        case 19: _t->onTransportConnected(); break;
+        case 20: _t->onTransportDisconnected(); break;
+        case 21: _t->onPacketReceived((*reinterpret_cast< const QByteArray(*)>(_a[1]))); break;
+        case 22: _t->onTransportError((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 23: _t->onPingTimer(); break;
+        case 24: _t->onReconnectTimer(); break;
+        case 25: _t->onMigrateTimer(); break;
         default: ;
         }
     }
@@ -154,9 +164,9 @@ int Telegram::Core::MTProtoSession::qt_metacall(QMetaObject::Call _c, int _id, v
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 23)
+        if (_id < 26)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 23;
+        _id -= 26;
     }
     return _id;
 }
@@ -269,5 +279,26 @@ void Telegram::Core::MTProtoSession::messageSent(qint64 _t1, qint64 _t2, int _t3
 {
     void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)), const_cast<void*>(reinterpret_cast<const void*>(&_t4)) };
     QMetaObject::activate(this, &staticMetaObject, 15, _a);
+}
+
+// SIGNAL 16
+void Telegram::Core::MTProtoSession::newMessageReceived(qint64 _t1, int _t2, const QVariantMap & _t3)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
+    QMetaObject::activate(this, &staticMetaObject, 16, _a);
+}
+
+// SIGNAL 17
+void Telegram::Core::MTProtoSession::peerPhotoReceived(qint64 _t1, const QByteArray & _t2)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    QMetaObject::activate(this, &staticMetaObject, 17, _a);
+}
+
+// SIGNAL 18
+void Telegram::Core::MTProtoSession::fileReceived(qint64 _t1, const QByteArray & _t2)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    QMetaObject::activate(this, &staticMetaObject, 18, _a);
 }
 QT_END_MOC_NAMESPACE

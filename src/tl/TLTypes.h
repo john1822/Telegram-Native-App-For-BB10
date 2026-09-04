@@ -30,7 +30,7 @@ enum ConstructorId {
     ID_MSG_CONTAINER          = 0x73f1f8dc,
     ID_PONG                   = 0x347773c5,
     ID_PING                   = 0x7abe77ec,
-    ID_PING_DELAY_DISCONNECT  = 0xf342745b,
+    ID_PING_DELAY_DISCONNECT  = 0xf3427b8c,
     ID_NEW_SESSION_CREATED    = 0x9ec20908,
     ID_BAD_SERVER_SALT        = 0xedab447b,
     ID_BAD_MSG_NOTIFICATION   = 0xa7eff811,
@@ -59,7 +59,7 @@ enum ConstructorId {
     ID_AUTH_SENT_CODE_TYPE_FIREBASE    = 0xe57b1432,
 
     ID_AUTH_SIGN_IN           = 0x8d52a951,
-    ID_AUTH_LOG_OUT           = 0x3e72ba14,
+    ID_AUTH_LOG_OUT           = 0x3e72ba19,
     ID_AUTH_AUTHORIZATION     = 0x2ea2c0d4,
     ID_AUTH_AUTHORIZATION_CD  = 0xcd0509a6,
     ID_AUTH_SIGN_UP_REQUIRED  = 0x44747e9a,
@@ -84,7 +84,8 @@ enum ConstructorId {
     ID_MESSAGES_DIALOGS_SLICE  = 0x71e094f3,
     ID_MESSAGES_DIALOGS_NOT_MODIFIED = 0xf0e3e596,
     ID_MESSAGES_GET_HISTORY    = 0x4423e6c5,
-    ID_MESSAGES_SEND_MESSAGE   = 0x0983f972,
+    ID_MESSAGES_SEND_MESSAGE   = 0x545cd15a,
+    ID_MESSAGES_SENT_MESSAGE   = 0xd1f4ee35,
     ID_MESSAGES_MESSAGES       = 0x8c718e87,
     ID_MESSAGES_MESSAGES_SLICE = 0x3a20ecb8,
     ID_MESSAGES_CHANNEL_MESSAGES = 0xc776ba4e,
@@ -119,7 +120,40 @@ enum ConstructorId {
     ID_UPDATES                 = 0x74ae4240,
     ID_UPDATES_COMBINED        = 0x78d4dec1,
     ID_UPDATE_SHORT_MESSAGE    = 0x313bc7f8,
-    ID_UPDATE_SHORT_CHAT_MESSAGE = 0x4d6deea8
+    ID_UPDATE_SHORT_CHAT_MESSAGE = 0x4d6deea8,
+    ID_UPDATE_NEW_MESSAGE      = 0x9a1caff9,
+    ID_UPDATE_NEW_CHANNEL_MESSAGE = 0x51b2727a,
+
+    // Phase 5: Media Subsystem Constructors
+    ID_UPLOAD_GET_FILE            = 0xbe5335be,
+    ID_UPLOAD_FILE                = 0x096a18d5,
+    ID_UPLOAD_FILE_CDN_REDIRECT   = 0x0f592c47,
+
+    ID_INPUT_PEER_PHOTO_FILE_LOCATION = 0x37257e99,
+    ID_INPUT_PHOTO_FILE_LOCATION      = 0x40181ffe,
+    ID_INPUT_DOCUMENT_FILE_LOCATION   = 0xbad07584,
+
+    ID_STORAGE_FILE_UNKNOWN       = 0xaa963b05,
+    ID_STORAGE_FILE_PARTIAL       = 0x40bc6f52,
+    ID_STORAGE_FILE_JPEG          = 0x007efe0e,
+    ID_STORAGE_FILE_GIF           = 0xcae1aadf,
+    ID_STORAGE_FILE_PNG           = 0x0a4f63c0,
+    ID_STORAGE_FILE_PDF           = 0xae1e508d,
+    ID_STORAGE_FILE_MP3           = 0x528a0690,
+    ID_STORAGE_FILE_MOV           = 0x4b09ebbc,
+    ID_STORAGE_FILE_MP4           = 0xb330d69a,
+    ID_STORAGE_FILE_WEBP          = 0x1081464c,
+
+    ID_USER_PROFILE_PHOTO         = 0x82d1f706,
+    ID_CHAT_PHOTO                 = 0x1c6e1c11,
+    ID_PHOTO                      = 0xfb197a65,
+    ID_PHOTO_EMPTY                = 0x2331b22d,
+    ID_DOCUMENT                   = 0x8fd4e4d8,
+    ID_DOCUMENT_EMPTY             = 0x36f8c871,
+
+    ID_MESSAGE_MEDIA_PHOTO        = 0x695150d7,
+    ID_MESSAGE_MEDIA_DOCUMENT     = 0x4cf4d72d,
+    ID_MESSAGE_MEDIA_UNSUPPORTED  = 0x9f84f49e
 };
 
 } // namespace TL

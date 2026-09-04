@@ -1,18 +1,38 @@
 #include "ChatListController.h"
 #include "../core/MTProtoSession.h"
 #include "../storage/SessionStorage.h"
+#include "../storage/MediaCache.h"
+
+#include <QFile>
+#include <QDir>
+#include <QTextStream>
 
 namespace Telegram {
 namespace Controllers {
+
+namespace {
+    void chatLog(const QString& msg) {
+        QDir().mkpath("data");
+        QFile f("data/app_log.txt");
+        if (f.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text)) {
+            QTextStream s(&f);
+            s << "[CHAT] " << msg << "\n";
+            s.flush();
+        }
+    }
+}
 
 ChatListController::ChatListController(Core::MTProtoSession* session, Storage::SessionStorage* storage, QObject* parent)
     : QObject(parent),
       m_session(session),
       m_storage(storage),
       m_isLoading(false),
+      m_dialogsReceived(false),
+      m_canSend(true),
       m_searchQuery(""),
       m_selectedPeerTitle(""),
-      m_selectedPeerId(0) {
+      m_selectedPeerId(0),
+      m_lastSentPeerId(0) {
 
     m_model = new bb::cascades::GroupDataModel(this);
     m_model->setGrouping(bb::cascades::ItemGrouping::None);
@@ -20,10 +40,21 @@ ChatListController::ChatListController(Core::MTProtoSession* session, Storage::S
     m_messagesModel = new bb::cascades::GroupDataModel(this);
     m_messagesModel->setGrouping(bb::cascades::ItemGrouping::None);
 
+    m_retryTimer = new QTimer(this);
+    m_retryTimer->setSingleShot(true);
+    m_retryTimer->setInterval(5000);
+    connect(m_retryTimer, SIGNAL(timeout()), this, SLOT(retryDialogs()));
+
     connect(m_session, SIGNAL(dialogsReceived(QList<QVariantMap>)),
             this, SLOT(onDialogsReceived(QList<QVariantMap>)));
     connect(m_session, SIGNAL(historyReceived(qint64, QList<QVariantMap>)),
             this, SLOT(onHistoryReceived(qint64, QList<QVariantMap>)));
+    connect(m_session, SIGNAL(newMessageReceived(qint64, int, QVariantMap)),
+            this, SLOT(onNewMessageReceived(qint64, int, QVariantMap)));
+    connect(m_session, SIGNAL(messageSent(qint64, qint64, int, int)),
+            this, SLOT(onMessageSent(int, int)));
+    connect(Storage::MediaCache::instance(), SIGNAL(avatarDownloaded(qint64, QString)),
+            this, SLOT(onAvatarDownloaded(qint64, QString)));
 
     // Load initial cached dialogs from local disk immediately
     QList<QVariantMap> cached = m_storage->loadDialogs();
@@ -70,16 +101,26 @@ void ChatListController::setSearchQuery(const QString& query) {
 
 void ChatListController::refreshDialogs() {
     m_isLoading = true;
+    m_dialogsReceived = false;
     emit loadingChanged(true);
-    m_session->sendMessagesGetDialogs(0, 0, 40);
+    m_session->sendMessagesGetDialogs(0, 0, 100);
+    m_retryTimer->start();
+}
+
+void ChatListController::logDiagnostic(const QString& msg) {
+    chatLog("DIAG " + msg);
 }
 
 void ChatListController::selectDialog(const QVariantList& indexPath) {
+    chatLog("selectDialog called. indexPath size = " + QString::number(indexPath.size()));
     if (indexPath.isEmpty()) return;
 
     QVariant data = m_model->data(indexPath);
     QVariantMap map = data.toMap();
-    if (map.isEmpty()) return;
+    if (map.isEmpty()) {
+        chatLog("selectDialog: data empty for indexPath");
+        return;
+    }
 
     qint64 peerId = map.value("peerId").toLongLong();
     int peerType = map.value("peerType").toInt();
@@ -87,6 +128,8 @@ void ChatListController::selectDialog(const QVariantList& indexPath) {
     quint64 accessHash = map.value("accessHash").toULongLong();
     QString lastMsg = map.value("lastMessage").toString();
     QString time = map.value("formattedTime").toString();
+
+    chatLog(QString("selectDialog peerId=%1 type=%2 '%3'").arg(peerId).arg(peerType).arg(title));
 
     m_messagesModel->clear();
     if (!lastMsg.isEmpty()) {
@@ -99,17 +142,29 @@ void ChatListController::selectDialog(const QVariantList& indexPath) {
     }
 
     openChat(peerId, peerType, title, accessHash);
-    m_session->sendMessagesGetHistory(peerType, peerId, accessHash, 0, 50);
+    m_session->sendMessagesGetHistory(peerType, peerId, accessHash, 0, 100);
 }
 
 void ChatListController::openChat(qint64 peerId, int peerType, const QString& title, quint64 accessHash) {
+    chatLog(QString("openChat peerId=%1 type=%2").arg(peerId).arg(peerType));
     m_selectedPeerId = peerId;
     m_selectedPeerTitle = title;
+    m_lastSentPeerId = 0;
+
+    // Determine whether this chat allows sending messages.
+    // Private chats and groups are always sendable; channels use the permission
+    // flags parsed into the session (read-only broadcast channels hide the
+    // composer).
+    m_canSend = m_session->canSendToPeer(peerId);
+
+    emit canSendChanged();
     emit selectedPeerChanged();
     emit chatOpened(peerId, peerType, title, accessHash);
 }
 
 void ChatListController::onDialogsReceived(const QList<QVariantMap>& dialogs) {
+    m_dialogsReceived = true;
+    m_retryTimer->stop();
     m_allDialogs = dialogs;
     m_storage->saveDialogs(m_allDialogs);
 
@@ -131,7 +186,7 @@ void ChatListController::loadHistory(int peerType, const QString& peerIdStr, con
         peerId = m_selectedPeerId;
     }
     if (peerId == 0) return;
-    m_session->sendMessagesGetHistory(peerType, peerId, accessHash, 0, 50);
+    m_session->sendMessagesGetHistory(peerType, peerId, accessHash, 0, 100);
 }
 
 void ChatListController::sendMessage(int peerType, const QString& peerIdStr, const QString& accessHashStr, const QString& text) {
@@ -163,7 +218,9 @@ void ChatListController::addInitialMessage(const QString& text, const QString& t
 }
 
 void ChatListController::onHistoryReceived(qint64 peerId, const QList<QVariantMap>& messages) {
-    Q_UNUSED(peerId);
+    if (peerId != 0 && peerId != m_selectedPeerId) {
+        return;
+    }
     if (!messages.isEmpty()) {
         m_messagesModel->clear();
         for (int i = 0; i < messages.size(); ++i) {
@@ -172,8 +229,123 @@ void ChatListController::onHistoryReceived(qint64 peerId, const QList<QVariantMa
     }
 }
 
+void ChatListController::onNewMessageReceived(qint64 peerId, int peerType, const QVariantMap& message) {
+    // If the message is for the currently open chat, add it to the messages model
+    if (peerId == m_selectedPeerId && m_selectedPeerId != 0) {
+        bool isOut = message.value("isOutgoing").toBool();
+        int newId = message.value("id").toInt();
+        // 1) If this exact message id already exists (e.g. confirmed via the
+        //    sentMessage RPC), update it in place instead of inserting a copy.
+        bool found = false;
+        for (int r = 0; r < m_messagesModel->size(); ++r) {
+            QVariantList indexPath;
+            indexPath << r;
+            QVariantMap item = m_messagesModel->data(indexPath).toMap();
+            if (item.value("id").toInt() == newId && newId != 0) {
+                m_messagesModel->updateItem(indexPath, message);
+                found = true;
+                break;
+            }
+        }
+        if (found) {
+            return;
+        }
+        if (isOut) {
+            // 2) Otherwise, replace a matching optimistic sent message (id == 0)
+            //    with the confirmed server message instead of inserting a duplicate.
+            bool replaced = false;
+            for (int r = m_messagesModel->size() - 1; r >= 0; --r) {
+                QVariantList indexPath;
+                indexPath << r;
+                QVariantMap item = m_messagesModel->data(indexPath).toMap();
+                if (item.value("id").toInt() == 0 && item.value("isOutgoing").toBool() &&
+                    item.value("text").toString() == message.value("text").toString()) {
+                    QVariantMap updated = message;
+                    item["formattedTime"] = message.value("formattedTime");
+                    m_messagesModel->updateItem(indexPath, item);
+                    replaced = true;
+                    break;
+                }
+            }
+            if (!replaced) {
+                m_messagesModel->insert(message);
+            }
+        } else {
+            m_messagesModel->insert(message);
+        }
+    }
+
+    // Update the dialog list: move this dialog to the top, update lastMessage and unread
+    for (int i = 0; i < m_allDialogs.size(); ++i) {
+        if (m_allDialogs[i].value("peerId").toLongLong() == peerId) {
+            bool isOut = message.value("isOutgoing").toBool();
+            if (!isOut) {
+                int unread = m_allDialogs[i].value("unreadCount").toInt();
+                m_allDialogs[i]["unreadCount"] = unread + 1;
+            }
+            m_allDialogs[i]["lastMessage"] = message.value("text");
+            m_allDialogs[i]["formattedTime"] = message.value("formattedTime");
+
+            // Move to front of model for most-recent-first ordering
+            QVariantMap item = m_allDialogs.takeAt(i);
+            m_allDialogs.prepend(item);
+            m_model->clear();
+            for (int j = 0; j < m_allDialogs.size(); ++j) {
+                m_model->insert(m_allDialogs[j]);
+            }
+            return;
+        }
+    }
+}
+
+void ChatListController::onAvatarDownloaded(qint64 peerId, const QString& localPath) {
+    for (int i = 0; i < m_allDialogs.size(); ++i) {
+        if (m_allDialogs[i].value("peerId").toLongLong() == peerId) {
+            m_allDialogs[i]["avatarPath"] = localPath;
+            break;
+        }
+    }
+
+    for (int r = 0; r < m_model->size(); ++r) {
+        QVariantList indexPath;
+        indexPath << r;
+        QVariantMap item = m_model->data(indexPath).toMap();
+        if (item.value("peerId").toLongLong() == peerId) {
+            item["avatarPath"] = localPath;
+            m_model->updateItem(indexPath, item);
+            break;
+        }
+    }
+}
+
 void ChatListController::onSessionRestored() {
+    m_dialogsReceived = false;
     refreshDialogs();
+    m_retryTimer->start();
+}
+
+void ChatListController::onMessageSent(int messageId, int date) {
+    // Replace the last pending optimistic message (id == 0) with the confirmed
+    // server message id and timestamp, so it stays in place (no duplicate).
+    for (int r = m_messagesModel->size() - 1; r >= 0; --r) {
+        QVariantList indexPath;
+        indexPath << r;
+        QVariantMap item = m_messagesModel->data(indexPath).toMap();
+        if (item.value("id").toInt() == 0 && item.value("isOutgoing").toBool()) {
+            item["id"] = messageId;
+            item["date"] = date;
+            item["formattedTime"] = QDateTime::fromTime_t(date).toString("hh:mm");
+            m_messagesModel->updateItem(indexPath, item);
+            return;
+        }
+    }
+}
+
+void ChatListController::retryDialogs() {
+    if (!m_dialogsReceived) {
+        refreshDialogs();
+        m_retryTimer->start();
+    }
 }
 
 } // namespace Controllers

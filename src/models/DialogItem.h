@@ -28,6 +28,7 @@ struct DialogItem {
     bool isOutgoing;
     QString initials;
     QString avatarColor;
+    QString avatarPath;
 
     DialogItem()
         : peerId(0), peerType(PEER_USER), accessHash(0), date(0),

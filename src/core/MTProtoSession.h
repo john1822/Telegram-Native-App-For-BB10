@@ -56,9 +56,11 @@ public:
     void sendExportLoginToken();
 
     // Phase 3 & 4: Dialogs & Messaging
-    void sendMessagesGetDialogs(int offsetDate = 0, int offsetId = 0, int limit = 30);
-    void sendMessagesGetHistory(int peerType, qint64 peerId, quint64 accessHash, int offsetId = 0, int limit = 50);
+    void sendMessagesGetDialogs(int offsetDate = 0, int offsetId = 0, int limit = 100);
+    void sendMessagesGetHistory(int peerType, qint64 peerId, quint64 accessHash, int offsetId = 0, int limit = 100);
     void sendMessagesSendMessage(int peerType, qint64 peerId, quint64 accessHash, const QString& message);
+    void sendUploadGetPeerPhoto(qint64 peerId, int peerType, quint64 accessHash, qint64 photoId, bool big = false);
+    void sendUploadGetFile(qint64 fileId, quint64 accessHash, const QByteArray& fileReference, int offset = 0, int limit = 131072);
 
     void migrateToDc(int dcId);
     void restoreSession(int dcId, const QString& dcIp, int dcPort, quint64 authKeyId, const QByteArray& authKey, quint64 serverSalt);
@@ -67,6 +69,7 @@ public:
     quint64 authKeyId() const { return m_authKeyId; }
     QByteArray authKey() const { return m_authKey; }
     quint64 serverSalt() const { return m_serverSalt; }
+    bool canSendToPeer(qint64 peerId) const;
 
 signals:
     void stateChanged(int newState, const QString& stateText);
@@ -89,6 +92,11 @@ signals:
     void dialogsReceived(const QList<QVariantMap>& dialogs);
     void historyReceived(qint64 peerId, const QList<QVariantMap>& messages);
     void messageSent(qint64 peerId, qint64 randomId, int messageId, int date);
+    void newMessageReceived(qint64 peerId, int peerType, const QVariantMap& message);
+
+    // Phase 5: Media Subsystem Signals
+    void peerPhotoReceived(qint64 peerId, const QByteArray& bytes);
+    void fileReceived(qint64 reqMsgId, const QByteArray& bytes);
 
 private slots:
     void onTransportConnected();
@@ -110,6 +118,8 @@ private:
     void processPlainMessage(TL::TLBuffer& plainBuf);
     void handleRpcResult(qint64 reqMsgId, quint32 innerRpcConstructor, TL::TLBuffer& plainBuf);
     void sendEncryptedMessage(const QByteArray& messageData, bool isContentRelated = true);
+    void sendEncryptedMessage(const QByteArray& messageData, qint64 msgId, quint32 seqNo);
+    void resendPendingContentMessage();
 
     qint64 generateMessageId();
     quint32 generateSeqNo(bool isContentRelated);
@@ -141,6 +151,14 @@ private:
     qint64 m_lastMsgId;
     qint32 m_timeOffset;
 
+    // Pending in-flight content messages (to re-send with identical msg_id/seq_no on bad_server_salt)
+    struct PendingContentMessage {
+        QByteArray data;
+        qint64 msgId;
+        quint32 seqNo;
+    };
+    QList<PendingContentMessage> m_pendingContentMessages;
+
     // 2FA Cloud Password State
     QByteArray m_pwdSalt1;
     QByteArray m_pwdSalt2;
@@ -154,6 +172,9 @@ private:
     // Entity Metadata Cache
     QMap<qint64, quint64> m_entityAccessHashes;
     QMap<qint64, int> m_entityPeerTypes;
+    QMap<qint64, qint64> m_entityPhotoIds;
+    QMap<qint64, bool> m_entityCanSend;
+    QMap<qint64, qint64> m_pendingPhotoRequests;
 };
 
 } // namespace Core

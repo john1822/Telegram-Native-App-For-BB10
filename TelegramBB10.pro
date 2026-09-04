@@ -47,6 +47,7 @@ HEADERS += \
     src/controllers/DiagnosticController.h \
     src/controllers/AuthController.h \
     src/models/DialogItem.h \
+    src/storage/MediaCache.h \
     src/controllers/ChatListController.h
 
 SOURCES += \
@@ -59,6 +60,7 @@ SOURCES += \
     src/network/TcpTransport.cpp \
     src/core/MTProtoSession.cpp \
     src/storage/SessionStorage.cpp \
+    src/storage/MediaCache.cpp \
     src/controllers/DiagnosticController.cpp \
     src/controllers/AuthController.cpp \
     src/models/DialogItem.cpp \

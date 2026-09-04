@@ -5,6 +5,7 @@
 #include "TLTypes.h"
 #include "Config.h"
 #include "../models/DialogItem.h"
+#include "../storage/MediaCache.h"
 
 #include <QDateTime>
 #include <QDebug>
@@ -603,7 +604,7 @@ void MTProtoSession::sendPingDelayDisconnect() {
     rpcBuf.writeInt64(static_cast<int64_t>(pingId));
     rpcBuf.writeInt32(35); // disconnect_delay = 35s
 
-    sendEncryptedMessage(rpcBuf.buffer(), false);
+    sendEncryptedMessage(rpcBuf.buffer(), true);
 }
 
 void MTProtoSession::sendGetNearestDc() {
@@ -716,9 +717,12 @@ void MTProtoSession::sendAccountGetPassword() {
 
     emit logMessage("Requesting 2FA Cloud Password parameters (account.getPassword)...");
 
+    // NOTE: account.getPassword must NOT be wrapped in invokeWithLayer.
+    // The MTProto layer (195) is already negotiated during session setup via the
+    // initial invokeWithLayer -> initConnection exchange. Wrapping a subsequent
+    // (non-initial) method in invokeWithLayer causes the server to reject it with
+    // INPUT_METHOD_INVALID (400). Send the method bare like all post-negotiation calls.
     TL::TLBuffer rpcBuf;
-    rpcBuf.writeUInt32(0xda9b0d0d); // invokeWithLayer
-    rpcBuf.writeInt32(195);        // layer 195
     rpcBuf.writeUInt32(TL::ID_ACCOUNT_GET_PASSWORD); // 0x548a30f5
 
     sendEncryptedMessage(rpcBuf.buffer(), true);
@@ -771,7 +775,7 @@ void MTProtoSession::sendAuthLogOut() {
     TL::TLBuffer rpcBuf;
     rpcBuf.writeUInt32(0xda9b0d0d); // invokeWithLayer
     rpcBuf.writeInt32(195);        // layer 195
-    rpcBuf.writeUInt32(TL::ID_AUTH_LOG_OUT); // 0x3e72ba14
+    rpcBuf.writeUInt32(TL::ID_AUTH_LOG_OUT); // 0x3e72ba19
 
     sendEncryptedMessage(rpcBuf.buffer(), true);
 }
@@ -791,6 +795,15 @@ void MTProtoSession::sendExportLoginToken() {
     rpcBuf.writeInt32(0); // except_ids count = 0
 
     sendEncryptedMessage(rpcBuf.buffer(), true);
+}
+
+bool MTProtoSession::canSendToPeer(qint64 peerId) const {
+    if (m_entityCanSend.contains(peerId)) {
+        return m_entityCanSend.value(peerId);
+    }
+    // Default to sendable for peers we have no per-peer flag data for
+    // (private chats, plain groups, and users default to sendable).
+    return true;
 }
 
 void MTProtoSession::sendMessagesGetDialogs(int offsetDate, int offsetId, int limit) {
@@ -819,11 +832,28 @@ void MTProtoSession::sendMessagesGetDialogs(int offsetDate, int offsetId, int li
 // MTProto 2.0 Encrypted Message Transmission & Decryption
 // --------------------------------------------------------------------------
 void MTProtoSession::sendEncryptedMessage(const QByteArray& messageData, bool isContentRelated) {
+    qint64 msgId = generateMessageId();
+    quint32 seqNo = generateSeqNo(isContentRelated);
+
+    if (isContentRelated) {
+        // Remember in-flight content messages so they can be re-sent with the
+        // exact same msg_id/seq_no after a bad_server_salt (per MTProto spec).
+        PendingContentMessage pcm;
+        pcm.data = messageData;
+        pcm.msgId = msgId;
+        pcm.seqNo = seqNo;
+        m_pendingContentMessages.append(pcm);
+    }
+
+    sendEncryptedMessage(messageData, msgId, seqNo);
+}
+
+void MTProtoSession::sendEncryptedMessage(const QByteArray& messageData, qint64 msgId, quint32 seqNo) {
     TL::TLBuffer plainBuf;
     plainBuf.writeInt64(static_cast<int64_t>(m_serverSalt));
     plainBuf.writeInt64(static_cast<int64_t>(m_sessionId));
-    plainBuf.writeInt64(generateMessageId());
-    plainBuf.writeInt32(static_cast<int32_t>(generateSeqNo(isContentRelated)));
+    plainBuf.writeInt64(msgId);
+    plainBuf.writeInt32(static_cast<int32_t>(seqNo));
     plainBuf.writeInt32(static_cast<int32_t>(messageData.size()));
     plainBuf.writeRaw(reinterpret_cast<const uint8_t*>(messageData.constData()), messageData.size());
 
@@ -852,6 +882,23 @@ void MTProtoSession::sendEncryptedMessage(const QByteArray& messageData, bool is
 
     QByteArray packet(reinterpret_cast<const char*>(envelope.data()), envelope.size());
     m_transport->sendPacket(packet);
+}
+
+void MTProtoSession::resendPendingContentMessage() {
+    if (m_pendingContentMessages.isEmpty()) {
+        emit logMessage("[WARN] bad_server_salt received but no pending content messages to re-send");
+        return;
+    }
+    emit logMessage(QString("Re-sending %1 pending content message(s) with corrected server salt...").arg(m_pendingContentMessages.size()));
+    // Re-send ALL pending messages with the exact same msg_id/seq_no each.
+    // The salt has already been refreshed; subsequent bad_server_salt notifications
+    // (one per in-flight message that used the old salt) will find an empty queue.
+    QList<PendingContentMessage> pending = m_pendingContentMessages;
+    m_pendingContentMessages.clear();
+    for (int i = 0; i < pending.size(); ++i) {
+        emit logMessage(QString("  Re-sending MsgId %1, SeqNo %2").arg(pending[i].msgId).arg(pending[i].seqNo));
+        sendEncryptedMessage(pending[i].data, pending[i].msgId, pending[i].seqNo);
+    }
 }
 
 void MTProtoSession::handleEncryptedPacket(const quint8* data, size_t size) {
@@ -953,10 +1000,11 @@ void MTProtoSession::processPlainMessage(TL::TLBuffer& plainBuf) {
         plainBuf.readInt32(errCode);
         plainBuf.readInt64(newServerSalt);
         m_serverSalt = static_cast<uint64_t>(newServerSalt);
-        emit logMessage(QString("Server salt refreshed: 0x%1. Re-transmitting live dialogs request...").arg(QString::number(m_serverSalt, 16)));
+        emit logMessage(QString("Server salt refreshed: 0x%1.").arg(QString::number(m_serverSalt, 16)));
 
-        // Automatically re-transmit getDialogs with the fresh salt
-        sendMessagesGetDialogs();
+        // Re-send the exact message that failed (same msg_id/seq_no) with the corrected salt,
+        // rather than building a fresh RPC that would inflate the seq_no counter.
+        resendPendingContentMessage();
     } else if (constructor == TL::ID_BAD_MSG_NOTIFICATION) {
         int64_t badMsgId;
         int32_t badSeqNo, errCode;
@@ -1007,9 +1055,158 @@ void MTProtoSession::processPlainMessage(TL::TLBuffer& plainBuf) {
 
         emit nearestDcReceived(country, thisDc, nearestDc);
     } else if (constructor == TL::ID_UPDATES || constructor == TL::ID_UPDATES_COMBINED) {
-        emit logMessage(QString("Incoming real-time MTProto updates stream (constructor: 0x%1)").arg(constructor, 8, 16, QChar('0')));
+        emit logMessage(QString("Incoming real-time MTProto updates container (constructor: 0x%1)").arg(constructor, 8, 16, QChar('0')));
+
+        // Scan raw payload for updateNewMessage (0x9a1caff9) entries
+        const QByteArray& rawData = plainBuf.buffer();
+        int foundNewMessages = 0;
+
+        for (int pos = 0; pos <= rawData.size() - 20; ++pos) {
+            uint32_t cons = *reinterpret_cast<const uint32_t*>(rawData.constData() + pos);
+            if (cons == TL::ID_UPDATE_NEW_MESSAGE || cons == TL::ID_UPDATE_NEW_CHANNEL_MESSAGE) {
+                // Scan forward from this update for an ID_MESSAGE (0x3ae56482) object
+                for (int mPos = pos + 4; mPos <= rawData.size() - 40; ++mPos) {
+                    uint32_t mCons = *reinterpret_cast<const uint32_t*>(rawData.constData() + mPos);
+                    if (mCons == TL::ID_MESSAGE) {
+                        TL::TLBuffer msgBuf(rawData.mid(mPos + 4, 80));
+                        int32_t mFlags = 0;
+                        int32_t msgId = 0;
+                        int64_t fromId = 0;
+                        int64_t peerId = 0;
+                        int32_t date = 0;
+                        QString text;
+
+                        msgBuf.readInt32(mFlags);
+                        msgBuf.readInt32(msgId);
+
+                        if (mFlags & (1 << 0)) {
+                            // from_id (peer)
+                            uint32_t fCons = 0;
+                            msgBuf.readUInt32(fCons);
+                            msgBuf.readInt64(fromId);
+                        }
+                        // to_id (peer)
+                        uint32_t tCons = 0;
+                        msgBuf.readUInt32(tCons);
+                        msgBuf.readInt64(peerId);
+                        if (tCons == TL::ID_PEER_USER) {
+                            // user message: check if outgoing
+                            if (mFlags & (1 << 2)) {
+                                fromId = peerId;
+                            }
+                        }
+
+                        msgBuf.readInt32(date);
+                        msgBuf.readString(text);
+
+                        int effectivePeerType = 0;
+                        if (tCons == TL::ID_PEER_USER) effectivePeerType = 1;
+                        else if (tCons == TL::ID_PEER_CHAT || tCons == 0xbad052c3) effectivePeerType = 2;
+                        else if (tCons == TL::ID_PEER_CHANNEL) effectivePeerType = 3;
+
+                        if (msgId != 0 && effectivePeerType > 0) {
+                            bool isOut = (mFlags & (1 << 2)) != 0;
+                            QVariantMap msgMap;
+                            msgMap["id"] = msgId;
+                            msgMap["peerId"] = peerId;
+                            msgMap["peerType"] = effectivePeerType;
+                            msgMap["text"] = text;
+                            msgMap["isOutgoing"] = isOut;
+                            msgMap["date"] = date;
+                            msgMap["formattedTime"] = QDateTime::fromTime_t(date).toString("hh:mm");
+
+                            emit logMessage(QString("[NEW MESSAGE] id %1 peer %2 (type %3): '%4' (out: %5)")
+                                            .arg(msgId).arg(peerId).arg(effectivePeerType)
+                                            .arg(text.left(60)).arg(isOut ? "YES" : "NO"));
+
+                            emit newMessageReceived(peerId, effectivePeerType, msgMap);
+                            foundNewMessages++;
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+        emit logMessage(QString("Updates container: found %1 new message(s)").arg(foundNewMessages));
+    } else if (constructor == TL::ID_UPDATE_SHORT_MESSAGE || constructor == TL::ID_UPDATE_SHORT_CHAT_MESSAGE) {
+        int32_t flags;
+        plainBuf.readInt32(flags);
+        bool isOut       = (flags & (1 << 1)) != 0;
+        bool mentioned   = (flags & (1 << 2)) != 0;
+        bool silent      = (flags & (1 << 5)) != 0;
+
+        int32_t msgId = 0;
+        plainBuf.readInt32(msgId);
+
+        int64_t fromPeerId = 0;
+        int32_t fromPeerType = 0;
+        int64_t chatId = 0;
+
+        if (constructor == TL::ID_UPDATE_SHORT_CHAT_MESSAGE) {
+            // updateShortChatMessage: from_id (peer), chat_id
+            uint32_t fromCons = 0;
+            plainBuf.readUInt32(fromCons);
+            plainBuf.readInt64(fromPeerId);
+            if (fromCons == TL::ID_PEER_USER) fromPeerType = 1;
+            else if (fromCons == TL::ID_PEER_CHAT || fromCons == 0xbad052c3) fromPeerType = 2;
+            else if (fromCons == TL::ID_PEER_CHANNEL) fromPeerType = 3;
+            plainBuf.readInt64(chatId);
+        } else {
+            // updateShortMessage: user_id
+            plainBuf.readInt64(fromPeerId);
+            fromPeerType = 1; // user
+        }
+
+        QString text;
+        plainBuf.readString(text);
+
+        int32_t pts = 0, ptsCount = 0, date = 0;
+        plainBuf.readInt32(pts);
+        plainBuf.readInt32(ptsCount);
+        plainBuf.readInt32(date);
+
+        // Determine the effective peerId for this message
+        int64_t effectivePeerId = 0;
+        int effectivePeerType = 0;
+        if (constructor == TL::ID_UPDATE_SHORT_CHAT_MESSAGE) {
+            effectivePeerId = chatId;
+            effectivePeerType = 2; // chat (group)
+        } else {
+            effectivePeerId = fromPeerId;
+            effectivePeerType = fromPeerType;
+        }
+
+        QVariantMap msgMap;
+        msgMap["id"] = msgId;
+        msgMap["peerId"] = effectivePeerId;
+        msgMap["peerType"] = effectivePeerType;
+        msgMap["text"] = text;
+        msgMap["isOutgoing"] = isOut;
+        msgMap["mentioned"] = mentioned;
+        msgMap["silent"] = silent;
+        msgMap["date"] = date;
+        msgMap["formattedTime"] = QDateTime::fromTime_t(date).toString("hh:mm");
+
+        emit logMessage(QString("[NEW MESSAGE] id %1 from peer %2 (type %3): '%4' (out: %5)")
+                        .arg(msgId).arg(effectivePeerId).arg(effectivePeerType)
+                        .arg(text.left(60)).arg(isOut ? "YES" : "NO"));
+
+        emit newMessageReceived(effectivePeerId, effectivePeerType, msgMap);
     }
 }
+
+// Forward declarations for the anonymous-namespace TL walking helpers below.
+// Opening the anonymous namespace here (same enclosing namespace) lets these be
+// used by handleRpcResult before their definitions later in the file.
+namespace {
+int tlSkipString(TL::TLBuffer& b);
+int tlReadString(TL::TLBuffer& b, QString& out);
+int tlSkipPeer(TL::TLBuffer& b);
+int tlSkipReplyHeader(TL::TLBuffer& b);
+int tlSkipFwdHeader(TL::TLBuffer& b);
+int tlReadMessageLeading(TL::TLBuffer& b, int32_t& outId, int32_t& outDate,
+                         bool& outIsOut, bool& outHasMedia, QString& outText, int& outConsumed);
+} // namespace
 
 void MTProtoSession::handleRpcResult(qint64 reqMsgId, quint32 innerRpcConstructor, TL::TLBuffer& plainBuf) {
     if (innerRpcConstructor == TL::ID_GZIP_PACKED) {
@@ -1027,6 +1224,25 @@ void MTProtoSession::handleRpcResult(qint64 reqMsgId, quint32 innerRpcConstructo
         } else {
             emit logMessage(QString("[ERROR] Failed to decompress RPC GZIP packed payload for ReqMsgId %1").arg(reqMsgId));
         }
+        return;
+    }
+
+    if (innerRpcConstructor == TL::ID_MESSAGES_SENT_MESSAGE) {
+        // messages.sentMessage#d1f4ee35 flags:# out:flags.1?true msg_id:int date:int pts:int pts_count:int
+        int32_t sFlags = 0;
+        int32_t msgId = 0;
+        int32_t date = 0;
+        plainBuf.readInt32(sFlags);
+        plainBuf.readInt32(msgId);
+        plainBuf.readInt32(date);
+
+        QVariantMap sentMap;
+        sentMap["id"] = msgId;
+        sentMap["date"] = date;
+        sentMap["formattedTime"] = QDateTime::fromTime_t(date).toString("hh:mm");
+
+        emit logMessage(QString("MESSAGE SENT CONFIRMED: id %1, date %2").arg(msgId).arg(date));
+        emit messageSent(0, 0, msgId, date);
         return;
     }
 
@@ -1124,7 +1340,7 @@ void MTProtoSession::handleRpcResult(qint64 reqMsgId, quint32 innerRpcConstructo
         emit logMessage(QString("=================================================="));
 
         emit authSuccessReceived(userId, static_cast<quint64>(accessHash), firstName, lastName, username, phone);
-        sendMessagesGetDialogs();
+        sendMessagesGetDialogs(0, 0, 100);
     } else if (innerRpcConstructor == TL::ID_AUTH_SIGN_UP_REQUIRED) {
         emit logMessage("[AUTH] Sign Up is required for this new phone number");
         emit authSignUpRequiredReceived();
@@ -1264,11 +1480,11 @@ void MTProtoSession::handleRpcResult(qint64 reqMsgId, quint32 innerRpcConstructo
         for (int pos = 0; pos <= rawData.size() - 16; ++pos) {
             uint32_t cons = *reinterpret_cast<const uint32_t*>(rawData.constData() + pos);
 
-            if (cons == 0x83314fca || cons == 0x31774388) { // user
+            if (cons == 0xb1b8cc83 || cons == 0x83314fca || cons == 0x31774388) { // user
                 TL::TLBuffer uBuf(rawData.mid(pos + 4));
                 int32_t uFlags = 0;
                 uBuf.readInt32(uFlags);
-                if (cons == 0x83314fca) {
+                if (cons == 0xb1b8cc83 || cons == 0x83314fca) {
                     int32_t uFlags2 = 0;
                     uBuf.readInt32(uFlags2);
                 }
@@ -1284,6 +1500,28 @@ void MTProtoSession::handleRpcResult(qint64 reqMsgId, quint32 innerRpcConstructo
                 if (uFlags & (1 << 3)) uBuf.readString(uName);
                 if (uFlags & (1 << 4)) uBuf.readString(phone);
 
+                if (uFlags & (1 << 5)) { // photo:UserProfilePhoto
+                    uint32_t pCons = 0;
+                    if (uBuf.readUInt32(pCons) && (pCons == TL::ID_USER_PROFILE_PHOTO || pCons == 0xd559d318)) {
+                        int32_t pFlags = 0;
+                        int64_t photoId = 0;
+                        if (uBuf.readInt32(pFlags) && uBuf.readInt64(photoId) && photoId != 0) {
+                            m_entityPhotoIds[uId] = photoId;
+                            QByteArray stripped;
+                            if (pFlags & (1 << 1)) {
+                                uBuf.readBytes(stripped);
+                            }
+                            int32_t dcId = 0;
+                            uBuf.readInt32(dcId);
+                            emit logMessage(QString("   [USER PHOTO] %1: photoId %2, dcId %3, stripped: %4 bytes (hex: %5)")
+                                            .arg(uId).arg(photoId).arg(dcId).arg(stripped.size()).arg(QString(stripped.left(16).toHex())));
+                            if (!stripped.isEmpty()) {
+                                Storage::MediaCache::instance()->saveAvatar(uId, stripped);
+                            }
+                        }
+                    }
+                }
+
                 QString title = fName + (lName.isEmpty() ? "" : " " + lName);
                 if (title.trimmed().isEmpty()) title = uName.isEmpty() ? phone : "@" + uName;
                 if (!title.isEmpty() && uId != 0) {
@@ -1292,11 +1530,11 @@ void MTProtoSession::handleRpcResult(qint64 reqMsgId, quint32 innerRpcConstructo
                     entityUsernames[uId] = uName;
                     emit logMessage(QString("[USER] %1: '%2' (@%3)").arg(uId).arg(title).arg(uName));
                 }
-            } else if (cons == 0xfe4478bd || cons == 0x1c32b11c || cons == 0x83d3b767) { // channel
+            } else if (cons == 0xd49f34c6 || cons == 0xfe4478bd || cons == 0x1c32b11c || cons == 0x83d3b767) { // channel
                 TL::TLBuffer cBuf(rawData.mid(pos + 4));
                 int32_t cFlags = 0;
                 cBuf.readInt32(cFlags);
-                if (cons == 0xfe4478bd) {
+                if (cons == 0xd49f34c6 || cons == 0xfe4478bd) {
                     int32_t cFlags2 = 0;
                     cBuf.readInt32(cFlags2);
                 }
@@ -1310,6 +1548,44 @@ void MTProtoSession::handleRpcResult(qint64 reqMsgId, quint32 innerRpcConstructo
                 cBuf.readString(title);
                 if (cFlags & (1 << 6)) {
                     cBuf.readString(uName);
+                }
+
+                // Determine whether the current user can send messages to this
+                // channel. Not kicked (bit 1) and not left (bit 2) plus
+                // megagroup membership (bit 6) grants posting rights; broadcast
+                // channels are read-only for non-admin/editor participants.
+                bool canPost = !(cFlags & (1 << 1)) && !(cFlags & (1 << 2));
+                if (canPost) {
+                    bool isBroadcast = (cFlags & (1 << 4)) != 0;
+                    bool isMegagroup = (cFlags & (1 << 6)) != 0;
+                    bool isCreator    = (cFlags & (1 << 0)) != 0;
+                    bool isEditor     = (cFlags & (1 << 3)) != 0;
+                    if (isBroadcast && !isMegagroup && !isCreator && !isEditor) {
+                        canPost = false;
+                    }
+                }
+                if (cId != 0) {
+                    m_entityCanSend[cId] = canPost;
+                }
+
+                uint32_t pCons = 0;
+                if (cBuf.readUInt32(pCons) && (pCons == TL::ID_CHAT_PHOTO || pCons == 0x475cdbd5)) {
+                    int32_t pFlags = 0;
+                    int64_t photoId = 0;
+                    if (cBuf.readInt32(pFlags) && cBuf.readInt64(photoId) && photoId != 0) {
+                        m_entityPhotoIds[cId] = photoId;
+                        QByteArray stripped;
+                        if (pFlags & (1 << 1)) {
+                            cBuf.readBytes(stripped);
+                        }
+                        int32_t dcId = 0;
+                        cBuf.readInt32(dcId);
+                        emit logMessage(QString("   [CHANNEL PHOTO] %1: photoId %2, dcId %3, stripped: %4 bytes (hex: %5)")
+                                        .arg(cId).arg(photoId).arg(dcId).arg(stripped.size()).arg(QString(stripped.left(16).toHex())));
+                        if (!stripped.isEmpty()) {
+                            Storage::MediaCache::instance()->saveAvatar(cId, stripped);
+                        }
+                    }
                 }
 
                 if (!title.isEmpty() && cId != 0) {
@@ -1405,12 +1681,26 @@ void MTProtoSession::handleRpcResult(qint64 reqMsgId, quint32 innerRpcConstructo
             item.initials = Models::DialogItem::computeInitials(item.title);
             item.avatarColor = Models::DialogItem::computeAvatarColor(item.peerId);
 
+            if (Storage::MediaCache::instance()->hasAvatar(item.peerId)) {
+                item.avatarPath = Storage::MediaCache::instance()->avatarPath(item.peerId);
+            }
+
             dialogList.append(item.toMap());
-            emit logMessage(QString("Dialog [%1]: %2 (Unread: %3, Pinned: %4)")
-                            .arg(i + 1).arg(item.title).arg(item.unreadCount).arg(item.isPinned ? "YES" : "NO"));
+            emit logMessage(QString("Dialog [%1]: %2 (Unread: %3, Pinned: %4, Avatar: %5)")
+                            .arg(i + 1).arg(item.title).arg(item.unreadCount).arg(item.isPinned ? "YES" : "NO").arg(item.avatarPath.isEmpty() ? "NO" : "YES"));
         }
 
         emit dialogsReceived(dialogList);
+
+        // Background download avatars for visible dialogs
+        // First 10 get full-size (big=true), rest get small to avoid flooding
+        for (int i = 0; i < qMin(30, dialogEntries.size()); ++i) {
+            qint64 pId = dialogEntries[i].peerId;
+            if (m_entityPhotoIds.contains(pId)) {
+                bool wantBig = (i < 10);
+                sendUploadGetPeerPhoto(pId, dialogEntries[i].peerType, entityAccessHashes.value(pId, 0), m_entityPhotoIds.value(pId), wantBig);
+            }
+        }
     } else if (innerRpcConstructor == TL::ID_MESSAGES_MESSAGES ||
                innerRpcConstructor == TL::ID_MESSAGES_MESSAGES_SLICE ||
                innerRpcConstructor == TL::ID_MESSAGES_CHANNEL_MESSAGES) {
@@ -1418,53 +1708,134 @@ void MTProtoSession::handleRpcResult(qint64 reqMsgId, quint32 innerRpcConstructo
 
         const QByteArray& rawData = plainBuf.buffer();
         QList<QVariantMap> messagesList;
+        QSet<int32_t> seenIds;
 
-        // Resilient message scanner looking for string messages
-        // Extract messages from payload
+        // Extract messages from payload. For each matched Message constructor we
+        // first attempt a strict TL walk of the leading fields (correct id, date
+        // and message text); if that fails we fall back to the legacy heuristic.
         for (int pos = 0; pos <= rawData.size() - 20; ++pos) {
             uint32_t cons = *reinterpret_cast<const uint32_t*>(rawData.constData() + pos);
-            if (cons == 0x38116eed || cons == 0x761450c3 || cons == 0x94345242 ||
-                cons == 0x835014c3 || cons == 0x77045b37 || cons == 0x55dd8ae8 ||
-                cons == TL::ID_MESSAGE) {
-                TL::TLBuffer mBuf(rawData.mid(pos + 4));
-                int32_t flags = 0;
-                int32_t msgId = 0;
-                if (mBuf.readInt32(flags) && mBuf.readInt32(msgId)) {
-                    bool isOut = (flags & (1 << 1)) != 0;
-                    // Skip peer structures and find string
-                    for (int sPos = pos + 16; sPos <= qMin(pos + 200, rawData.size() - 4); ++sPos) {
-                        quint8 len = static_cast<quint8>(rawData.at(sPos));
-                        if (len > 0 && len < 120 && (sPos + 1 + len <= rawData.size())) {
-                            QByteArray textBytes = rawData.mid(sPos + 1, len);
-                            bool isAscii = true;
-                            for (int k = 0; k < textBytes.size(); ++k) {
-                                quint8 ch = static_cast<quint8>(textBytes.at(k));
-                                if (ch < 32 && ch != '\n' && ch != '\r' && ch != '\t') {
-                                    isAscii = false;
-                                    break;
-                                }
-                            }
-                            if (isAscii && textBytes.trimmed().length() > 0) {
-                                QString text = QString::fromUtf8(textBytes.constData(), textBytes.size());
-                                QVariantMap msgMap;
-                                msgMap["id"] = msgId;
-                                msgMap["text"] = text;
-                                msgMap["isOutgoing"] = isOut;
-                                msgMap["date"] = QDateTime::currentDateTime().toTime_t();
-                                msgMap["formattedTime"] = QDateTime::currentDateTime().toString("hh:mm");
-                                messagesList.append(msgMap);
-                                emit logMessage(QString("[HISTORY MSG] id %1: '%2' (out: %3)").arg(msgId).arg(text).arg(isOut ? "YES" : "NO"));
-                                pos = sPos + len;
-                                break;
-                            }
+            bool isMsgCons = (cons == 0x38116eed || cons == 0x761450c3 || cons == 0x94345242 ||
+                              cons == 0x835014c3 || cons == 0x77045b37 || cons == 0x55dd8ae8 ||
+                              cons == TL::ID_MESSAGE || cons == TL::ID_MESSAGE_SERVICE);
+            if (!isMsgCons) continue;
+
+            int32_t msgId = 0, msgDate = 0;
+            bool isOut = false, hasMedia = false;
+            QString text;
+            int consumed = 0;
+
+            TL::TLBuffer stBuf(rawData.mid(pos));
+            int leadRes = tlReadMessageLeading(stBuf, msgId, msgDate, isOut, hasMedia, text, consumed);
+            // leadRes: 0 = full walk OK; -2 = fixed id captured but the later
+            // flag-gated walk could not be completed; -1 = not a message/unsupported.
+            bool idKnown = (leadRes == 0 || leadRes == -2);
+
+            if (leadRes != 0) {
+                // Fallback: locate a plausible UTF-8 string for the text, but
+                // keep a correctly-captured id from the strict read when we have
+                // one (media/reply/fwd-heavy messages still recover their id).
+                int msgStart = pos;
+                bool found = false;
+                for (int sPos = pos + 16; sPos <= qMin(pos + 240, rawData.size() - 4); ++sPos) {
+                    quint8 len = static_cast<quint8>(rawData.at(sPos));
+                    if (len == 0 || len >= 120 || (sPos + 1 + len > rawData.size())) continue;
+                    QByteArray textBytes = rawData.mid(sPos + 1, len);
+                    bool ok = true;
+                    for (int k = 0; k < textBytes.size(); ++k) {
+                        quint8 ch = static_cast<quint8>(textBytes.at(k));
+                        if (ch < 32 && ch != '\n' && ch != '\r' && ch != '\t') { ok = false; break; }
+                    }
+                    if (ok && textBytes.trimmed().length() > 0) {
+                        text = QString::fromUtf8(textBytes.constData(), textBytes.size());
+                        if (!idKnown) msgDate = QDateTime::currentDateTime().toTime_t();
+                        pos = sPos + len;
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found && !idKnown) continue;
+                if (!idKnown) {
+                    // Recover id + flags via the fixed-offset read path so the
+                    // heuristic does not confuse flags2 with the id.
+                    TL::TLBuffer iBuf(rawData.mid(msgStart));
+                    int32_t f0 = 0, f1 = 0, newId = 0;
+                    if (iBuf.readInt32(f0)) {
+                        isOut = (f0 & (1 << 1)) != 0;
+                        if (cons == 0x94345242) { // message: flags, flags2, then id
+                            if (iBuf.readInt32(f1) && iBuf.readInt32(newId)) msgId = newId;
+                        } else if (iBuf.readInt32(newId)) { // service: flags, then id
+                            msgId = newId;
                         }
                     }
                 }
+                if (msgId != 0 && seenIds.contains(msgId)) continue;
+            } else {
+                if (seenIds.contains(msgId)) continue; // duplicate scan hit
+            }
+
+            seenIds.insert(msgId);
+
+            QVariantMap msgMap;
+            msgMap["id"] = msgId;
+            msgMap["text"] = text;
+            msgMap["isOutgoing"] = isOut;
+            msgMap["date"] = msgDate ? msgDate : QDateTime::currentDateTime().toTime_t();
+            msgMap["formattedTime"] = QDateTime::fromTime_t(
+                    msgDate ? msgDate : QDateTime::currentDateTime().toTime_t()).toString("hh:mm");
+
+            // Check for photo media inside this message's byte span.
+            QString mediaPath;
+            int photoScanLimit = qMin(pos + 600, rawData.size() - 24);
+            for (int pScan = pos + 4; pScan < photoScanLimit; ++pScan) {
+                uint32_t pCons = *reinterpret_cast<const uint32_t*>(rawData.constData() + pScan);
+                if (pCons == 0xe0b0bc2e) { // photoStrippedSize
+                    TL::TLBuffer sBuf(rawData.mid(pScan + 4));
+                    QString sType;
+                    QByteArray strippedBytes;
+                    if (sBuf.readString(sType) && sBuf.readBytes(strippedBytes) && !strippedBytes.isEmpty()) {
+                        qint64 photoId = static_cast<qint64>(msgId);
+                        mediaPath = Storage::MediaCache::instance()->savePhoto(photoId, strippedBytes);
+                        emit logMessage(QString("   [PHOTO MEDIA] msgId %1: extracted %2 bytes stripped photo")
+                                        .arg(msgId).arg(strippedBytes.size()));
+                        break;
+                    }
+                }
+            }
+            if (!mediaPath.isEmpty()) {
+                msgMap["mediaPath"] = mediaPath;
+            }
+
+            messagesList.append(msgMap);
+            emit logMessage(QString("[HISTORY MSG] id %1: '%2' (out: %3, media: %4)")
+                            .arg(msgId).arg(text).arg(isOut ? "YES" : "NO").arg(mediaPath.isEmpty() ? "NO" : "YES"));
+
+            // Move scanning cursor forward so we don't re-match this message.
+            if (leadRes == 0) {
+                pos = pos + qMax(consumed, 4) - 1;
             }
         }
 
         emit logMessage(QString("Extracted %1 messages from history payload").arg(messagesList.size()));
         emit historyReceived(0, messagesList);
+    } else if (innerRpcConstructor == TL::ID_UPLOAD_FILE) {
+        uint32_t fileType = 0;
+        int32_t mtime = 0;
+        QByteArray fileBytes;
+        plainBuf.readUInt32(fileType);
+        plainBuf.readInt32(mtime);
+        plainBuf.readBytes(fileBytes);
+
+        emit logMessage(QString("UPLOAD FILE RECEIVED: ReqMsgId %1, type: 0x%2, size: %3 bytes")
+                        .arg(reqMsgId).arg(fileType, 8, 16, QChar('0')).arg(fileBytes.size()));
+
+        if (m_pendingPhotoRequests.contains(reqMsgId)) {
+            qint64 peerId = m_pendingPhotoRequests.take(reqMsgId);
+            Storage::MediaCache::instance()->saveAvatar(peerId, fileBytes);
+            emit peerPhotoReceived(peerId, fileBytes);
+        }
+
+        emit fileReceived(reqMsgId, fileBytes);
     }
 }
 
@@ -1483,6 +1854,9 @@ void MTProtoSession::sendMessagesGetHistory(int peerType, qint64 peerId, quint64
     emit logMessage(QString("Requesting message history for peer %1 (type: %2, accessHash: 0x%3, limit: %4)...")
                     .arg(peerId).arg(peerType).arg(accessHash, 0, 16).arg(limit));
     TL::TLBuffer buf;
+
+    buf.writeUInt32(0xda9b0d0d); // invokeWithLayer#da9b0d0d
+    buf.writeInt32(195);        // layer 195
 
     // messages.getHistory#4423e6c5 peer:InputPeer offset_id:int offset_date:int add_offset:int limit:int max_id:int min_id:int hash:long = messages.Messages;
     buf.writeUInt32(TL::ID_MESSAGES_GET_HISTORY);
@@ -1527,6 +1901,9 @@ void MTProtoSession::sendMessagesSendMessage(int peerType, qint64 peerId, quint6
     emit logMessage(QString("Sending message to peer %1: '%2'").arg(peerId).arg(message));
     TL::TLBuffer buf;
 
+    buf.writeUInt32(0xda9b0d0d); // invokeWithLayer#da9b0d0d
+    buf.writeInt32(195);        // layer 195
+
     // messages.sendMessage#0983f972 flags:# peer:InputPeer message:string random_id:long ...
     buf.writeUInt32(TL::ID_MESSAGES_SEND_MESSAGE);
     buf.writeInt32(0); // flags = 0
@@ -1553,6 +1930,286 @@ void MTProtoSession::sendMessagesSendMessage(int peerType, qint64 peerId, quint6
 
     sendEncryptedMessage(buf.buffer(), true);
 }
+
+void MTProtoSession::sendUploadGetPeerPhoto(qint64 peerId, int peerType, quint64 accessHash, qint64 photoId, bool big) {
+    if (peerId == 0) return;
+    if (accessHash == 0 && m_entityAccessHashes.contains(peerId)) {
+        accessHash = m_entityAccessHashes.value(peerId);
+    }
+    if (peerType == 0 && m_entityPeerTypes.contains(peerId)) {
+        peerType = m_entityPeerTypes.value(peerId);
+    }
+
+    emit logMessage(QString("Requesting peer photo for %1 (type: %2, photoId: %3, big: %4)...")
+                    .arg(peerId).arg(peerType).arg(photoId).arg(big ? "YES" : "NO"));
+
+    TL::TLBuffer buf;
+    buf.writeUInt32(0xda9b0d0d); // invokeWithLayer#da9b0d0d
+    buf.writeInt32(195);        // layer 195
+
+    // upload.getFile#be53356a flags:# precise:flags.0?true cdn_supported:flags.1?true location:InputFileLocation offset:long limit:int = upload.File;
+    buf.writeUInt32(TL::ID_UPLOAD_GET_FILE);
+    buf.writeInt32(0); // flags = 0
+
+    // inputPeerPhotoFileLocation#37257e9f flags:# big:flags.0?true peer:InputPeer photo_id:long = InputFileLocation;
+    buf.writeUInt32(TL::ID_INPUT_PEER_PHOTO_FILE_LOCATION);
+    buf.writeInt32(big ? 1 : 0); // flags (bit 0: big)
+
+    if (peerType == Models::PEER_CHANNEL) {
+        buf.writeUInt32(TL::ID_INPUT_PEER_CHANNEL);
+        buf.writeInt64(peerId);
+        buf.writeInt64(static_cast<int64_t>(accessHash));
+    } else if (peerType == Models::PEER_CHAT) {
+        buf.writeUInt32(TL::ID_INPUT_PEER_CHAT);
+        buf.writeInt64(peerId);
+    } else {
+        buf.writeUInt32(TL::ID_INPUT_PEER_USER);
+        buf.writeInt64(peerId);
+        buf.writeInt64(static_cast<int64_t>(accessHash));
+    }
+
+    buf.writeInt64(photoId); // photo_id: long
+    buf.writeInt64(0);       // offset: long (0)
+    buf.writeInt32(131072);  // limit: int (128 KB)
+
+    sendEncryptedMessage(buf.buffer(), true);
+    m_pendingPhotoRequests[m_lastMsgId] = peerId;
+}
+
+void MTProtoSession::sendUploadGetFile(qint64 fileId, quint64 accessHash, const QByteArray& fileReference, int offset, int limit) {
+    emit logMessage(QString("Requesting document/photo file chunk %1 (offset: %2, limit: %3)...")
+                    .arg(fileId).arg(offset).arg(limit));
+
+    TL::TLBuffer buf;
+    buf.writeUInt32(0xda9b0d0d); // invokeWithLayer#da9b0d0d
+    buf.writeInt32(195);        // layer 195
+
+    buf.writeUInt32(TL::ID_UPLOAD_GET_FILE);
+    buf.writeInt32(0); // flags = 0
+
+    // inputDocumentFileLocation#bad07584 id:long access_hash:long file_reference:bytes thumb_size:string = InputFileLocation;
+    buf.writeUInt32(TL::ID_INPUT_DOCUMENT_FILE_LOCATION);
+    buf.writeInt64(fileId);
+    buf.writeInt64(static_cast<int64_t>(accessHash));
+    buf.writeBytes(fileReference);
+    buf.writeString(""); // thumb_size
+
+    buf.writeInt64(offset);
+    buf.writeInt32(limit);
+
+    sendEncryptedMessage(buf.buffer(), true);
+}
+
+// --------------------------------------------------------------------------
+// TL parsing helpers for verbose Message / Media object walking (layer 195)
+// --------------------------------------------------------------------------
+namespace {
+
+// Reads a TL-string (length-prefixed bytes) and returns its length in bytes
+// consumed (including the 4-byte alignment padding). Returns -1 on overflow.
+int tlSkipString(TL::TLBuffer& b) {
+    size_t start = b.offset();
+    if (b.remaining() < 1) return -1;
+    quint8 lead = (quint8)b.buffer().at((int)b.offset());
+    int len = -1;
+    size_t header = 1;
+    if (lead == 0xfe) {
+        if (b.remaining() < 5) return -1;
+        b.setOffset(b.offset() + 1);
+        int32_t l = 0;
+        if (!b.readInt32(l)) return -1;
+        len = l;
+        header = 5;
+    } else if (lead > 253) {
+        return -1;
+    } else {
+        len = lead;
+        b.setOffset(b.offset() + 1);
+    }
+    if (len < 0 || len > 16 * 1024 * 1024) { b.setOffset(start); return -1; }
+    size_t total = ((size_t)len + header + 3) & ~3u; // round the whole field to 4
+    if (b.remaining() < total) { b.setOffset(start); return -1; }
+    b.setOffset(start + total);
+    return static_cast<int>(b.offset() - start);
+}
+
+// Reads a TL-string and stores decoded UTF-8 in `out`. Returns bytes consumed
+// on success, -1 on failure.
+int tlReadString(TL::TLBuffer& b, QString& out) {
+    size_t start = b.offset();
+    if (b.remaining() < 1) return -1;
+    quint8 lead = (quint8)b.buffer().at((int)b.offset());
+    int len = -1;
+    if (lead == 0xfe) {
+        if (b.remaining() < 5) return -1;
+        b.setOffset(b.offset() + 1);
+        int32_t l = 0;
+        if (!b.readInt32(l)) return -1;
+        len = l;
+        } else if (lead > 253) {
+        return -1;
+    } else {
+        len = lead;
+        b.setOffset(b.offset() + 1);
+    }
+    if (len < 0 || len > 16 * 1024 * 1024) { b.setOffset(start); return -1; }
+    if (b.remaining() < (size_t)len) { b.setOffset(start); return -1; }
+    QByteArray raw = b.buffer().mid((int)b.offset(), len);
+    b.setOffset(b.offset() + len);
+    size_t pad = (4 - ((b.offset() - start) % 4)) % 4;
+    if (b.remaining() < pad) { b.setOffset(start); return -1; }
+    b.setOffset(b.offset() + pad);
+    out = QString::fromUtf8(raw);
+    return static_cast<int>(b.offset() - start);
+}
+
+// Reads a TL `bytes` field raw length. Returns bytes consumed, -1 on failure.
+int tlSkipBytes(TL::TLBuffer& b) {
+    QString tmp;
+    return tlReadString(b, tmp); // bytes are serialised exactly like string
+}
+
+// Reads a Vector<T> head (cons + count) and returns the element bytes count.
+// The caller must then walk `count` elements of `size` bytes each; if `size`
+// is 0 it returns -1 (cannot advance without a per-element size).
+int tlVectorHead(TL::TLBuffer& b, int& count) {
+    uint32_t cons = 0;
+    if (!b.readUInt32(cons)) return -1;
+    if (cons != TL::ID_VECTOR && cons != 0x1cb5c415) return -1;
+    int32_t n = 0;
+    if (!b.readInt32(n)) return -1;
+    if (n < 0 || n > 100000) return -1;
+    count = n;
+    return 0;
+}
+
+// Skips a single Peer object (peerUser/peerChat/peerChannel). Returns bytes
+// consumed, or -1 on failure.
+int tlSkipPeer(TL::TLBuffer& b) {
+    uint32_t cons = 0;
+    if (!b.readUInt32(cons)) return -1;      // advances b by 4
+    bool known = (cons == TL::ID_PEER_USER || cons == TL::ID_PEER_CHAT || cons == TL::ID_PEER_CHANNEL);
+    if (!known) return -1;
+    int64_t id = 0;
+    if (!b.readInt64(id)) return -1;          // advances b by 8
+    return 12;
+}
+
+// Skips a MessageReplyHeader. Returns bytes consumed or -1 on failure.
+int tlSkipReplyHeader(TL::TLBuffer& b) {
+    uint32_t cons = 0;
+    if (!b.readUInt32(cons)) return -1;
+    if (cons != 0xafbc09db) return -1;
+    int32_t flags = 0;
+    int32_t replyToMsgId = 0;
+    if (!b.readInt32(flags)) return -1;
+    if (!b.readInt32(replyToMsgId)) return -1;
+    // flags.0 : reply_to_peer_id:Peer
+    // flags.1 : reply_to_top_id:int
+    // flags.2 : reply_to_media:MessageExtendedMedia (recursive, bail if present)
+    // flags.3 : reply_to_story_id:int
+    // flags.6 : quote_text:string
+    // flags.7 : quote_entities:Vector<MessageEntity>
+    // flags.8 : quote_offset:int
+    // flags.9 : reply_from:MessageFwdHeader
+    if (flags & (1 << 0)) { if (tlSkipPeer(b) < 0) return -1; }
+    if (flags & (1 << 1)) { int32_t t = 0; if (!b.readInt32(t)) return -1; }
+    if (flags & (1 << 2)) return -1; // extended media: fall back
+    if (flags & (1 << 3)) { int32_t t = 0; if (!b.readInt32(t)) return -1; }
+    if (flags & (1 << 6)) { if (tlSkipString(b) < 0) return -1; }
+    if (flags & (1 << 7)) return -1; // entities in reply: fall back
+    if (flags & (1 << 8)) { int32_t t = 0; if (!b.readInt32(t)) return -1; }
+    if (flags & (1 << 9)) return -1; // nested fwd in reply: fall back
+    return 0;
+}
+
+// Skips a MessageFwdHeader. Returns bytes consumed or -1 on failure.
+int tlSkipFwdHeader(TL::TLBuffer& b) {
+    uint32_t cons = 0;
+    if (!b.readUInt32(cons)) return -1;
+    if (cons != 0xc78722ab && cons != 0x4328579) return -1;
+    int32_t flags = 0;
+    if (!b.readInt32(flags)) return -1;
+    // messageFwdHeader field order does NOT follow flag-bit order:
+    if (flags & (1 << 0)) { if (tlSkipPeer(b) < 0) return -1; }   // from_id:Peer
+    if (flags & (1 << 5)) { if (tlSkipString(b) < 0) return -1; } // from_name:string
+    int32_t date = 0;
+    if (!b.readInt32(date)) return -1;                             // date:int (always)
+    if (flags & (1 << 2)) { int32_t t = 0; if (!b.readInt32(t)) return -1; } // channel_post:int
+    if (flags & (1 << 3)) { if (tlSkipString(b) < 0) return -1; } // post_author:string
+    if (flags & (1 << 4)) {
+        if (tlSkipPeer(b) < 0) return -1;                          // saved_from_peer:Peer
+        int32_t t = 0; if (!b.readInt32(t)) return -1;             // saved_from_msg_id:int
+    }
+    if (flags & (1 << 6)) { if (tlSkipString(b) < 0) return -1; } // psa_type:string
+    return 0;
+}
+
+// Parses the leading fields of a `message#94345242` (and messageService#2b085862)
+// up to and including `message:string`. Fills id/outDate/outIsOut/outText and
+// reports whether a media flag is present. Returns 0 on success, -1 if the
+// object is not walkable. `outConsumed` receives the bytes consumed.
+int tlReadMessageLeading(TL::TLBuffer& b, int32_t& outId, int32_t& outDate,
+                         bool& outIsOut, bool& outHasMedia, QString& outText,
+                         int& outConsumed) {
+    size_t start = b.offset();
+    uint32_t cons = 0;
+    if (!b.readUInt32(cons)) return -1;
+    bool isMsg = (cons == 0x94345242);
+    bool isService = (cons == TL::ID_MESSAGE_SERVICE); // 0x2b085862
+    if (!isMsg && !isService) return -1;
+
+    int32_t flags = 0;
+    if (!b.readInt32(flags)) return -1;
+    int32_t flags2 = 0;
+    if (isMsg) {
+        if (!b.readInt32(flags2)) return -1;
+    }
+    outIsOut = (flags & (1 << 1)) != 0;
+
+    int32_t id = 0;
+    if (!b.readInt32(id)) return -1;
+    outId = id;                       // id captured reliably at fixed offset
+    outHasMedia = isMsg && (flags & (1 << 9)) != 0;
+
+    // ---- leading flag-gated fields (before date/message) ----
+    if (isMsg) {
+        if (flags & (1 << 8)) { if (tlSkipPeer(b) < 0) return -2; }       // from_id
+        if (flags & (1 << 29)) { int32_t tb = 0; if (!b.readInt32(tb)) return -2; } // from_boosts_applied:int
+        if (tlSkipPeer(b) < 0) return -2;                                 // peer_id (always)
+        if (flags & (1 << 28)) { if (tlSkipPeer(b) < 0) return -2; }      // saved_peer_id
+        if (flags & (1 << 2)) { if (tlSkipFwdHeader(b) < 0) return -2; }  // fwd_from
+        if (flags & (1 << 11)) { int64_t tb = 0; if (!b.readInt64(tb)) return -2; } // via_bot_id:long
+        if (flags2 & (1 << 0)) { int64_t tb = 0; if (!b.readInt64(tb)) return -2; } // via_business_bot_id
+        if (flags & (1 << 3)) { if (tlSkipReplyHeader(b) < 0) return -2; }// reply_to
+    } else {
+        // messageService#2b085862
+        if (flags & (1 << 8)) { if (tlSkipPeer(b) < 0) return -2; }       // from_id
+        if (tlSkipPeer(b) < 0) return -2;                                 // peer_id
+        if (flags & (1 << 3)) { if (tlSkipReplyHeader(b) < 0) return -2; }// reply_to
+    }
+
+    int32_t date = 0;
+    if (!b.readInt32(date)) return -2;
+    outDate = date;
+
+    if (isService) {
+        // messageService#2b085862 carries `action:MessageAction` (a typed
+        // object), not a free-text `message` string, so there is no message
+        // text to read. Return success with the id/date already captured.
+        outText = QString();
+        outConsumed = static_cast<int>(b.offset() - start);
+        return 0;
+    }
+
+    QString text;
+    if (tlReadString(b, text) < 0) return -2;   // id is still valid, walk incomplete
+    outText = text;
+    outConsumed = static_cast<int>(b.offset() - start);
+    return 0;
+}
+
+} // namespace
 
 } // namespace Core
 } // namespace Telegram
