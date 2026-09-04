@@ -1,8 +1,10 @@
 1
-43
+50
 ChatScreen.qml
+ContactsView.qml
 images/set_account.png
 images/set_business.png
+images/set_calls.png
 images/set_chats.png
 images/set_devices.png
 images/set_folders.png
@@ -11,6 +13,7 @@ images/set_help_ask.png
 images/set_help_faq.png
 images/set_help_features.png
 images/set_help_policy.png
+images/set_invite.png
 images/set_language.png
 images/set_notifications.png
 images/set_power.png
@@ -28,6 +31,8 @@ images/tg_camera_badge.png
 images/tg_camera_white.png
 images/tg_edit_info.png
 images/tg_emoji.png
+images/tg_fab_add.png
+images/tg_fab_button.png
 images/tg_mic.png
 images/tg_more.png
 images/tg_msg.png
@@ -38,6 +43,8 @@ images/tg_search.png
 images/tg_send.png
 images/tg_settings_tile.png
 images/tg_set_photo.png
+images/tg_sort.png
+images/tg_tab_circle.png
 images/tg_video.png
 main.qml
 MyProfileView.qml

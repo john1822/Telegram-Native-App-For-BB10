@@ -1322,6 +1322,10 @@ void MTProtoSession::handleRpcResult(qint64 reqMsgId, quint32 innerRpcConstructo
 
         int32_t userFlags;
         plainBuf.readInt32(userFlags);
+        if (userConstructor == 0xb1b8cc83 || userConstructor == 0x83314fca || userConstructor == 0x2e566735) {
+            int32_t userFlags2 = 0;
+            plainBuf.readInt32(userFlags2);
+        }
 
         int64_t userId = 0, accessHash = 0;
         plainBuf.readInt64(userId);

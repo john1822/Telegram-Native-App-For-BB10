@@ -38,6 +38,8 @@ ChatListController::ChatListController(Core::MTProtoSession* session, Storage::S
       m_unreadGroupsCount(0),
       m_unreadChannelsCount(0),
       m_unreadTotalCount(0),
+      m_contactsCount(0),
+      m_contactsSearchQuery(""),
       m_profileBio(""),
       m_profileUsername(""),
       m_profilePhone(""),
@@ -51,6 +53,9 @@ ChatListController::ChatListController(Core::MTProtoSession* session, Storage::S
 
     m_commonChatsModel = new bb::cascades::GroupDataModel(this);
     m_commonChatsModel->setGrouping(bb::cascades::ItemGrouping::None);
+
+    m_contactsModel = new bb::cascades::GroupDataModel(this);
+    m_contactsModel->setGrouping(bb::cascades::ItemGrouping::None);
 
     m_retryTimer = new QTimer(this);
     m_retryTimer->setSingleShot(true);
@@ -78,6 +83,7 @@ ChatListController::ChatListController(Core::MTProtoSession* session, Storage::S
         m_allDialogs = cached;
         updateCounts();
         applyFilters();
+        applyContactsFilter();
         emit countChanged(m_allDialogs.size());
     }
 }
@@ -156,6 +162,42 @@ void ChatListController::setSearchQuery(const QString& query) {
     applyFilters();
 }
 
+void ChatListController::setContactsSearchQuery(const QString& query) {
+    if (m_contactsSearchQuery == query) return;
+    m_contactsSearchQuery = query;
+    emit contactsSearchQueryChanged(m_contactsSearchQuery);
+    applyContactsFilter();
+}
+
+void ChatListController::applyContactsFilter() {
+    m_contactsModel->clear();
+    QString q = m_contactsSearchQuery.trimmed().toLower();
+    int count = 0;
+    for (int i = 0; i < m_allDialogs.size(); ++i) {
+        const QVariantMap& item = m_allDialogs[i];
+        int peerType = item.value("peerType").toInt();
+        // In Telegram, user contacts are peerType == 1
+        if (peerType != 1) continue;
+
+        if (!q.isEmpty()) {
+            QString title = item.value("title").toString().toLower();
+            QString username = item.value("username").toString().toLower();
+            if (!title.contains(q) && !username.contains(q)) {
+                continue;
+            }
+        }
+
+        QVariantMap contact = item;
+        if (!contact.contains("status") || contact.value("status").toString().isEmpty()) {
+            contact["status"] = "last seen recently";
+        }
+        m_contactsModel->insert(contact);
+        count++;
+    }
+    m_contactsCount = count;
+    emit contactsCountChanged(m_contactsCount);
+}
+
 void ChatListController::refreshDialogs() {
     m_isLoading = true;
     m_dialogsReceived = false;
@@ -227,6 +269,7 @@ void ChatListController::onDialogsReceived(const QList<QVariantMap>& dialogs) {
 
     updateCounts();
     applyFilters();
+    applyContactsFilter();
 
     m_isLoading = false;
     emit loadingChanged(false);

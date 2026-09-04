@@ -38,6 +38,9 @@ class ChatListController : public QObject {
     Q_PROPERTY(QString profileUsername READ profileUsername NOTIFY profileChanged)
     Q_PROPERTY(QString profilePhone READ profilePhone NOTIFY profileChanged)
     Q_PROPERTY(QString profileStatus READ profileStatus NOTIFY profileChanged)
+    Q_PROPERTY(bb::cascades::GroupDataModel* contactsModel READ contactsModel CONSTANT)
+    Q_PROPERTY(int contactsCount READ contactsCount NOTIFY contactsCountChanged)
+    Q_PROPERTY(QString contactsSearchQuery READ contactsSearchQuery WRITE setContactsSearchQuery NOTIFY contactsSearchQueryChanged)
 
 public:
     explicit ChatListController(Core::MTProtoSession* session, Storage::SessionStorage* storage, QObject* parent = 0);
@@ -60,8 +63,12 @@ public:
     QString profileUsername() const { return m_profileUsername; }
     QString profilePhone() const { return m_profilePhone; }
     QString profileStatus() const { return m_profileStatus; }
+    bb::cascades::GroupDataModel* contactsModel() const { return m_contactsModel; }
+    int contactsCount() const { return m_contactsCount; }
+    QString contactsSearchQuery() const { return m_contactsSearchQuery; }
 
     void setSearchQuery(const QString& query);
+    void setContactsSearchQuery(const QString& query);
     Q_INVOKABLE void setFolderFilter(int folder);
 
     Q_INVOKABLE void refreshDialogs();
@@ -95,10 +102,13 @@ signals:
     void folderFilterChanged(int folder);
     void countsUpdated();
     void profileChanged();
+    void contactsCountChanged(int count);
+    void contactsSearchQueryChanged(const QString& query);
 
 private:
     void populateModel(const QList<QVariantMap>& dialogs);
     void applyFilters();
+    void applyContactsFilter();
     void updateCounts();
 
 private:
@@ -107,6 +117,7 @@ private:
     bb::cascades::GroupDataModel* m_model;
     bb::cascades::GroupDataModel* m_messagesModel;
     bb::cascades::GroupDataModel* m_commonChatsModel;
+    bb::cascades::GroupDataModel* m_contactsModel;
     QList<QVariantMap> m_allDialogs;
     bool m_isLoading;
     bool m_dialogsReceived;
@@ -120,6 +131,8 @@ private:
     int m_unreadGroupsCount;
     int m_unreadChannelsCount;
     int m_unreadTotalCount;
+    int m_contactsCount;
+    QString m_contactsSearchQuery;
     QString m_profileBio;
     QString m_profileUsername;
     QString m_profilePhone;

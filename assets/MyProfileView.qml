@@ -138,7 +138,7 @@ Container {
                     Label {
                         horizontalAlignment: HorizontalAlignment.Center
                         verticalAlignment: VerticalAlignment.Center
-                        text: (auth.userName && auth.userName.length > 0) ? auth.userName.trim().left(1).toUpperCase() : "J"
+                        text: (auth.userName && auth.userName.length > 0) ? auth.userName.replace(/^[\s\uFFFD#?]+/, "").trim().left(1).toUpperCase() : "J"
                         textStyle.color: Color.White
                         textStyle.fontSize: FontSize.XLarge
                         textStyle.fontWeight: FontWeight.Bold
@@ -147,7 +147,7 @@ Container {
 
                 // Full Contact Name
                 Label {
-                    text: (auth.userName && auth.userName.length > 0) ? auth.userName : "John"
+                    text: (auth.userName && auth.userName.length > 0) ? auth.userName.replace(/^[\s\uFFFD#?]+/, "").trim() : "John"
                     textStyle.color: Color.White
                     textStyle.fontSize: FontSize.Large
                     textStyle.fontWeight: FontWeight.Bold

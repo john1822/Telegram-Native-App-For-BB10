@@ -106,8 +106,13 @@ void AuthController::start() {
 
     if (m_storage->loadSession()) {
         if (m_storage->isLoggedIn()) {
-            m_userName = m_storage->firstName() + " " + m_storage->lastName();
-            m_userHandle = m_storage->username().isEmpty() ? "" : "@" + m_storage->username();
+            QString first = m_storage->firstName().trimmed();
+            QString last = m_storage->lastName().trimmed();
+            m_userName = last.isEmpty() ? first : (first + " " + last);
+            if (m_userName.isEmpty()) {
+                m_userName = "John";
+            }
+            m_userHandle = m_storage->username().isEmpty() ? "" : (m_storage->username().startsWith("@") ? m_storage->username() : "@" + m_storage->username());
             m_userId = QString::number(m_storage->userId());
             m_userPhone = m_storage->phone();
             emit userProfileChanged();

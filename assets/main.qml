@@ -646,8 +646,10 @@ NavigationPane {
 
                             // Search button
                             Container {
-                                preferredWidth: 44.0
-                                preferredHeight: 44.0
+                                preferredWidth: 46.0
+                                preferredHeight: 46.0
+                                minWidth: 46.0
+                                minHeight: 46.0
                                 verticalAlignment: VerticalAlignment.Center
                                 layout: DockLayout {}
                                 gestureHandlers: [
@@ -658,10 +660,11 @@ NavigationPane {
                                         }
                                     }
                                 ]
-                                Label {
-                                    text: "\u2315"
-                                    textStyle.color: Color.create("#d0d7de")
-                                    textStyle.fontSize: FontSize.XLarge
+                                ImageView {
+                                    imageSource: "asset:///images/tg_search.png"
+                                    preferredWidth: 32.0
+                                    preferredHeight: 32.0
+                                    scalingMethod: ScalingMethod.AspectFit
                                     horizontalAlignment: HorizontalAlignment.Center
                                     verticalAlignment: VerticalAlignment.Center
                                 }
@@ -670,7 +673,9 @@ NavigationPane {
                             // 3-dots overflow menu button
                             Container {
                                 preferredWidth: 44.0
-                                preferredHeight: 44.0
+                                preferredHeight: 46.0
+                                minWidth: 44.0
+                                minHeight: 46.0
                                 verticalAlignment: VerticalAlignment.Center
                                 layout: DockLayout {}
                                 gestureHandlers: [
@@ -680,10 +685,11 @@ NavigationPane {
                                         }
                                     }
                                 ]
-                                Label {
-                                    text: "\u22EE"
-                                    textStyle.color: Color.create("#d0d7de")
-                                    textStyle.fontSize: FontSize.XLarge
+                                ImageView {
+                                    imageSource: "asset:///images/tg_more.png"
+                                    preferredWidth: 28.0
+                                    preferredHeight: 32.0
+                                    scalingMethod: ScalingMethod.AspectFit
                                     horizontalAlignment: HorizontalAlignment.Center
                                     verticalAlignment: VerticalAlignment.Center
                                 }
@@ -1419,127 +1425,15 @@ NavigationPane {
 
                 layout: DockLayout {}
 
-                Container {
+                ContactsView {
                     horizontalAlignment: HorizontalAlignment.Fill
                     verticalAlignment: VerticalAlignment.Fill
-
-                    // Custom header
-                    Container {
-                        horizontalAlignment: HorizontalAlignment.Fill
-                        minHeight: 56.0
-                        background: tPanel
-                        leftPadding: 14.0
-                        rightPadding: 14.0
-                        layout: DockLayout {}
-                        Label {
-                            text: "Contacts"
-                            textStyle.color: tPrimary
-                            textStyle.fontSize: FontSize.Large
-                            textStyle.fontWeight: FontWeight.Bold
-                            verticalAlignment: VerticalAlignment.Center
-                        }
-                    }
-
-                    // States
-                    Container {
-                        visible: auth.authState != 5 || chatList.dialogsCount == 0
-                        layout: DockLayout {}
-                        horizontalAlignment: HorizontalAlignment.Fill
-                        verticalAlignment: VerticalAlignment.Fill
-                        Label {
-                            text: auth.authState != 5 ? "Please sign in to see your contacts." : "No contacts yet."
-                            textStyle.color: tSecondary
-                            textStyle.fontSize: FontSize.Medium
-                            multiline: true
-                            horizontalAlignment: HorizontalAlignment.Center
-                            verticalAlignment: VerticalAlignment.Center
-                        }
-                    }
-
-                    // Contacts list (same peer data as chats)
-                    ListView {
-                        visible: auth.authState == 5 && chatList.dialogsCount > 0
-                        horizontalAlignment: HorizontalAlignment.Fill
-                        verticalAlignment: VerticalAlignment.Fill
-                        dataModel: chatList.model
-                        scrollRole: ScrollRole.Main
-
-                        listItemComponents: [
-                            ListItemComponent {
-                                type: "item"
-                                Container {
-                                    id: contactRow
-                                    horizontalAlignment: HorizontalAlignment.Fill
-                                    topPadding: 8.0
-                                    bottomPadding: 8.0
-                                    leftPadding: 12.0
-                                    rightPadding: 12.0
-
-                                    layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
-
-                                    Container {
-                                        verticalAlignment: VerticalAlignment.Center
-                                        preferredWidth: 46.0
-                                        preferredHeight: 46.0
-                                        minWidth: 46.0
-                                        minHeight: 46.0
-                                        background: Color.create(ListItemData.avatarColor ? ListItemData.avatarColor : "#5288c1")
-                                        rightMargin: 12.0
-                                        layout: DockLayout {}
-                                        Label {
-                                            visible: !ListItemData.avatarPath || ListItemData.avatarPath.length == 0
-                                            horizontalAlignment: HorizontalAlignment.Center
-                                            verticalAlignment: VerticalAlignment.Center
-                                            text: ListItemData.initials ? ListItemData.initials : "?"
-                                            textStyle.color: Color.White
-                                            textStyle.fontSize: FontSize.Medium
-                                            textStyle.fontWeight: FontWeight.Bold
-                                        }
-                                        ImageView {
-                                            visible: ListItemData.avatarPath && ListItemData.avatarPath.length > 0
-                                            imageSource: ListItemData.avatarPath ? (ListItemData.avatarPath.indexOf("file://") === 0 ? ListItemData.avatarPath : "file://" + ListItemData.avatarPath) : ""
-                                            preferredWidth: 46.0
-                                            preferredHeight: 46.0
-                                            scalingMethod: ScalingMethod.AspectFill
-                                            horizontalAlignment: HorizontalAlignment.Center
-                                            verticalAlignment: VerticalAlignment.Center
-                                        }
-                                    }
-
-                                    Container {
-                                        verticalAlignment: VerticalAlignment.Center
-                                        layoutProperties: StackLayoutProperties { spaceQuota: 1.0 }
-                                        Label {
-                                            text: ListItemData.title ? ListItemData.title : ""
-                                            textStyle.color: Color.create("#ffffff")
-                                            textStyle.fontSize: FontSize.Small
-                                            textStyle.fontWeight: FontWeight.Bold
-                                        }
-                                        Label {
-                                            visible: ListItemData.peerType && ListItemData.peerType.length > 0
-                                            text: ListItemData.peerType ? ListItemData.peerType.toUpperCase() : ""
-                                            textStyle.color: Color.create("#4dcd5e")
-                                            textStyle.fontSize: FontSize.XXSmall
-                                        }
-                                    }
-                                }
-                            }
-                        ]
-
-                        onTriggered: {
-                            var data = chatList.model.data(indexPath);
-                            if (data) {
-                                chatList.selectDialog(indexPath);
-                                chatList.logDiagnostic("before createObject");
-                                var page = chatScreenDef.createObject();
-                                chatList.logDiagnostic("page null? " + (page === null ? "YES" : "NO"));
-                                if (page) {
-                                    page.loadChat(data.title, data.peerType, "" + data.peerId, "" + data.accessHash, data.initials, data.avatarColor, data.avatarPath ? data.avatarPath : "", chatList.canSend, rootNavPane, data.username ? data.username : "");
-                                    chatList.logDiagnostic("about to push");
-                                    rootNavPane.push(page);
-                                    chatList.logDiagnostic("pushed");
-                                }
-                            }
+                    onContactSelected: {
+                        chatList.logDiagnostic("ContactsView: opening chat for " + contactData.title);
+                        var page = chatScreenDef.createObject();
+                        if (page) {
+                            page.loadChat(contactData.title, contactData.peerType, "" + contactData.peerId, "" + contactData.accessHash, contactData.initials, contactData.avatarColor, contactData.avatarPath ? contactData.avatarPath : "", chatList.canSend, rootNavPane, contactData.username ? contactData.username : "");
+                            rootNavPane.push(page);
                         }
                     }
                 }
@@ -1862,24 +1756,35 @@ NavigationPane {
                         Container {
                             horizontalAlignment: HorizontalAlignment.Center
                             minWidth: 54.0
-                            minHeight: 28.0
+                            minHeight: 32.0
                             background: shellPage.activeSection == 1 ? Color.create("#203850") : Color.Transparent
                             layout: DockLayout {}
 
                             // Blue circular avatar with user initial
                             Container {
-                                preferredWidth: 22.0
-                                preferredHeight: 22.0
-                                minWidth: 22.0
-                                minHeight: 22.0
-                                background: Color.create("#24a1de")
+                                preferredWidth: 32.0
+                                preferredHeight: 32.0
+                                minWidth: 32.0
+                                minHeight: 32.0
+                                maxWidth: 32.0
+                                maxHeight: 32.0
                                 horizontalAlignment: HorizontalAlignment.Center
                                 verticalAlignment: VerticalAlignment.Center
                                 layout: DockLayout {}
+
+                                ImageView {
+                                    imageSource: "asset:///images/tg_tab_circle.png"
+                                    preferredWidth: 32.0
+                                    preferredHeight: 32.0
+                                    scalingMethod: ScalingMethod.AspectFit
+                                    horizontalAlignment: HorizontalAlignment.Fill
+                                    verticalAlignment: VerticalAlignment.Fill
+                                }
+
                                 Label {
-                                    text: auth.userName.length > 0 ? auth.userName.trim().left(1).toUpperCase() : "J"
+                                    text: auth.userName.length > 0 ? auth.userName.replace(/^[\s\uFFFD#?]+/, "").trim().left(1).toUpperCase() : "J"
                                     textStyle.color: Color.White
-                                    textStyle.fontSize: FontSize.XXSmall
+                                    textStyle.fontSize: FontSize.Small
                                     textStyle.fontWeight: FontWeight.Bold
                                     horizontalAlignment: HorizontalAlignment.Center
                                     verticalAlignment: VerticalAlignment.Center

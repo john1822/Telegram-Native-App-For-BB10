@@ -74,10 +74,10 @@ Container {
 
                 // Search Button (Magnifying Glass)
                 Container {
-                    preferredWidth: 46.0
-                    preferredHeight: 46.0
-                    minWidth: 46.0
-                    minHeight: 46.0
+                    preferredWidth: 50.0
+                    preferredHeight: 50.0
+                    minWidth: 50.0
+                    minHeight: 50.0
                     verticalAlignment: VerticalAlignment.Center
                     layout: DockLayout {}
                     gestureHandlers: [
@@ -89,8 +89,8 @@ Container {
                     ]
                     ImageView {
                         imageSource: "asset:///images/tg_search.png"
-                        preferredWidth: 26.0
-                        preferredHeight: 26.0
+                        preferredWidth: 36.0
+                        preferredHeight: 36.0
                         scalingMethod: ScalingMethod.AspectFit
                         horizontalAlignment: HorizontalAlignment.Center
                         verticalAlignment: VerticalAlignment.Center
@@ -99,10 +99,10 @@ Container {
 
                 // 3-Dots Menu Button
                 Container {
-                    preferredWidth: 46.0
-                    preferredHeight: 46.0
-                    minWidth: 46.0
-                    minHeight: 46.0
+                    preferredWidth: 50.0
+                    preferredHeight: 50.0
+                    minWidth: 50.0
+                    minHeight: 50.0
                     verticalAlignment: VerticalAlignment.Center
                     layout: DockLayout {}
                     gestureHandlers: [
@@ -115,8 +115,8 @@ Container {
                     ]
                     ImageView {
                         imageSource: "asset:///images/tg_more.png"
-                        preferredWidth: 24.0
-                        preferredHeight: 26.0
+                        preferredWidth: 32.0
+                        preferredHeight: 38.0
                         scalingMethod: ScalingMethod.AspectFit
                         horizontalAlignment: HorizontalAlignment.Center
                         verticalAlignment: VerticalAlignment.Center
@@ -152,7 +152,7 @@ Container {
                         Label {
                             horizontalAlignment: HorizontalAlignment.Center
                             verticalAlignment: VerticalAlignment.Center
-                            text: (auth.userName && auth.userName.length > 0) ? auth.userName.trim().left(1).toUpperCase() : "J"
+                            text: (auth.userName && auth.userName.length > 0) ? auth.userName.replace(/^[\s\uFFFD#?]+/, "").trim().left(1).toUpperCase() : "J"
                             textStyle.color: Color.White
                             textStyle.fontSize: FontSize.XLarge
                             textStyle.fontWeight: FontWeight.Bold
@@ -173,7 +173,7 @@ Container {
 
                 // User full name
                 Label {
-                    text: (auth.userName && auth.userName.length > 0) ? auth.userName : "John"
+                    text: (auth.userName && auth.userName.length > 0) ? auth.userName.replace(/^[\s\uFFFD#?]+/, "").trim() : "John"
                     textStyle.color: Color.White
                     textStyle.fontSize: FontSize.Large
                     textStyle.fontWeight: FontWeight.Bold
