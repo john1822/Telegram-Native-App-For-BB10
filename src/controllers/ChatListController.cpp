@@ -32,7 +32,11 @@ ChatListController::ChatListController(Core::MTProtoSession* session, Storage::S
       m_searchQuery(""),
       m_selectedPeerTitle(""),
       m_selectedPeerId(0),
-      m_lastSentPeerId(0) {
+      m_lastSentPeerId(0),
+      m_folderFilter(0),
+      m_unreadGroupsCount(0),
+      m_unreadChannelsCount(0),
+      m_unreadTotalCount(0) {
 
     m_model = new bb::cascades::GroupDataModel(this);
     m_model->setGrouping(bb::cascades::ItemGrouping::None);
@@ -60,7 +64,8 @@ ChatListController::ChatListController(Core::MTProtoSession* session, Storage::S
     QList<QVariantMap> cached = m_storage->loadDialogs();
     if (!cached.isEmpty()) {
         m_allDialogs = cached;
-        populateModel(m_allDialogs);
+        updateCounts();
+        applyFilters();
         emit countChanged(m_allDialogs.size());
     }
 }
@@ -75,28 +80,68 @@ void ChatListController::populateModel(const QList<QVariantMap>& dialogs) {
     }
 }
 
+void ChatListController::updateCounts() {
+    int groups = 0;
+    int channels = 0;
+    int unread = 0;
+    for (int i = 0; i < m_allDialogs.size(); ++i) {
+        int pt = m_allDialogs[i].value("peerType").toInt();
+        int u = m_allDialogs[i].value("unreadCount").toInt();
+        if (u > 0) {
+            unread++;
+            if (pt == 2) {
+                groups++;
+            } else if (pt == 3) {
+                channels++;
+            }
+        }
+    }
+    m_unreadGroupsCount = groups;
+    m_unreadChannelsCount = channels;
+    m_unreadTotalCount = unread;
+    emit countsUpdated();
+}
+
+void ChatListController::setFolderFilter(int folder) {
+    if (m_folderFilter == folder) return;
+    m_folderFilter = folder;
+    emit folderFilterChanged(m_folderFilter);
+    applyFilters();
+}
+
+void ChatListController::applyFilters() {
+    QList<QVariantMap> filtered;
+    QString q = m_searchQuery.trimmed().toLower();
+
+    for (int i = 0; i < m_allDialogs.size(); ++i) {
+        const QVariantMap& item = m_allDialogs[i];
+        int peerType = item.value("peerType").toInt();
+        int unread = item.value("unreadCount").toInt();
+
+        // Check folder filter: 0=All, 1=Private, 2=Groups, 3=Channels, 4=Unread
+        if (m_folderFilter == 1 && peerType != 1) continue;
+        if (m_folderFilter == 2 && peerType != 2) continue;
+        if (m_folderFilter == 3 && peerType != 3) continue;
+        if (m_folderFilter == 4 && unread <= 0) continue;
+
+        if (!q.isEmpty()) {
+            QString title = item.value("title").toString().toLower();
+            QString username = item.value("username").toString().toLower();
+            QString lastMsg = item.value("lastMessage").toString().toLower();
+            if (!title.contains(q) && !username.contains(q) && !lastMsg.contains(q)) {
+                continue;
+            }
+        }
+        filtered.append(item);
+    }
+    populateModel(filtered);
+}
+
 void ChatListController::setSearchQuery(const QString& query) {
     if (m_searchQuery == query) return;
     m_searchQuery = query;
     emit searchQueryChanged(m_searchQuery);
-
-    if (m_searchQuery.trimmed().isEmpty()) {
-        populateModel(m_allDialogs);
-    } else {
-        QList<QVariantMap> filtered;
-        QString q = m_searchQuery.trimmed().toLower();
-        for (int i = 0; i < m_allDialogs.size(); ++i) {
-            const QVariantMap& item = m_allDialogs[i];
-            QString title = item.value("title").toString().toLower();
-            QString username = item.value("username").toString().toLower();
-            QString lastMsg = item.value("lastMessage").toString().toLower();
-
-            if (title.contains(q) || username.contains(q) || lastMsg.contains(q)) {
-                filtered.append(item);
-            }
-        }
-        populateModel(filtered);
-    }
+    applyFilters();
 }
 
 void ChatListController::refreshDialogs() {
@@ -168,11 +213,8 @@ void ChatListController::onDialogsReceived(const QList<QVariantMap>& dialogs) {
     m_allDialogs = dialogs;
     m_storage->saveDialogs(m_allDialogs);
 
-    if (m_searchQuery.trimmed().isEmpty()) {
-        populateModel(m_allDialogs);
-    } else {
-        setSearchQuery(m_searchQuery);
-    }
+    updateCounts();
+    applyFilters();
 
     m_isLoading = false;
     emit loadingChanged(false);
@@ -289,10 +331,8 @@ void ChatListController::onNewMessageReceived(qint64 peerId, int peerType, const
             // Move to front of model for most-recent-first ordering
             QVariantMap item = m_allDialogs.takeAt(i);
             m_allDialogs.prepend(item);
-            m_model->clear();
-            for (int j = 0; j < m_allDialogs.size(); ++j) {
-                m_model->insert(m_allDialogs[j]);
-            }
+            updateCounts();
+            applyFilters();
             return;
         }
     }

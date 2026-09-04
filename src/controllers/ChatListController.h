@@ -29,6 +29,10 @@ class ChatListController : public QObject {
     Q_PROPERTY(QString selectedPeerTitle READ selectedPeerTitle NOTIFY selectedPeerChanged)
     Q_PROPERTY(qint64 selectedPeerId READ selectedPeerId NOTIFY selectedPeerChanged)
     Q_PROPERTY(bool canSend READ canSend NOTIFY canSendChanged)
+    Q_PROPERTY(int folderFilter READ folderFilter WRITE setFolderFilter NOTIFY folderFilterChanged)
+    Q_PROPERTY(int unreadGroupsCount READ unreadGroupsCount NOTIFY countsUpdated)
+    Q_PROPERTY(int unreadChannelsCount READ unreadChannelsCount NOTIFY countsUpdated)
+    Q_PROPERTY(int unreadTotalCount READ unreadTotalCount NOTIFY countsUpdated)
 
 public:
     explicit ChatListController(Core::MTProtoSession* session, Storage::SessionStorage* storage, QObject* parent = 0);
@@ -42,8 +46,13 @@ public:
     QString selectedPeerTitle() const { return m_selectedPeerTitle; }
     qint64 selectedPeerId() const { return m_selectedPeerId; }
     bool canSend() const { return m_canSend; }
+    int folderFilter() const { return m_folderFilter; }
+    int unreadGroupsCount() const { return m_unreadGroupsCount; }
+    int unreadChannelsCount() const { return m_unreadChannelsCount; }
+    int unreadTotalCount() const { return m_unreadTotalCount; }
 
     void setSearchQuery(const QString& query);
+    Q_INVOKABLE void setFolderFilter(int folder);
 
     Q_INVOKABLE void refreshDialogs();
     Q_INVOKABLE void selectDialog(const QVariantList& indexPath);
@@ -69,9 +78,13 @@ signals:
     void selectedPeerChanged();
     void chatOpened(qint64 peerId, int peerType, const QString& title, quint64 accessHash);
     void canSendChanged();
+    void folderFilterChanged(int folder);
+    void countsUpdated();
 
 private:
     void populateModel(const QList<QVariantMap>& dialogs);
+    void applyFilters();
+    void updateCounts();
 
 private:
     Core::MTProtoSession* m_session;
@@ -87,6 +100,10 @@ private:
     QString m_selectedPeerTitle;
     qint64 m_selectedPeerId;
     qint64 m_lastSentPeerId;
+    int m_folderFilter;
+    int m_unreadGroupsCount;
+    int m_unreadChannelsCount;
+    int m_unreadTotalCount;
 };
 
 } // namespace Controllers

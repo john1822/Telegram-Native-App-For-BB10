@@ -596,13 +596,17 @@ NavigationPane {
             }
 
             // =================================================================
-            // SCREEN: CHAT LIST
+            // SCREEN: CHAT LIST (Modern Telegram Liquid Glass Home Screen)
             // =================================================================
             Container {
                 id: chatsScreen
                 visible: auth.authState == 5 && shellPage.activeSection == 0
                 horizontalAlignment: HorizontalAlignment.Fill
                 verticalAlignment: VerticalAlignment.Fill
+
+                property bool isSearching: false
+                property int activeFolderTab: 0
+                property bool showOverflowMenu: false
 
                 layout: DockLayout {}
 
@@ -611,102 +615,380 @@ NavigationPane {
                     horizontalAlignment: HorizontalAlignment.Fill
                     verticalAlignment: VerticalAlignment.Fill
 
-                    // Custom application header
+                    // ---------------------------------------------------------
+                    // TOP HEADER BAR (Modern Telegram dark slate navy)
+                    // ---------------------------------------------------------
                     Container {
                         id: chatsHeader
                         horizontalAlignment: HorizontalAlignment.Fill
                         minHeight: 56.0
-                        background: tPanel
-                        leftPadding: 14.0
-                        rightPadding: 14.0
+                        background: Color.create("#1d2733")
+                        leftPadding: 16.0
+                        rightPadding: 10.0
 
-                        layout: StackLayout {
-                            orientation: LayoutOrientation.LeftToRight
-                        }
+                        layout: DockLayout {}
 
+                        // Normal Header View: Title + Search & Overflow Actions
                         Container {
+                            visible: !chatsScreen.isSearching
+                            horizontalAlignment: HorizontalAlignment.Fill
                             verticalAlignment: VerticalAlignment.Center
-                            layoutProperties: StackLayoutProperties { spaceQuota: 1.0 }
+                            layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
 
                             Label {
                                 text: "Telegram"
-                                textStyle.color: tPrimary
+                                textStyle.color: Color.White
                                 textStyle.fontSize: FontSize.Large
                                 textStyle.fontWeight: FontWeight.Bold
+                                verticalAlignment: VerticalAlignment.Center
+                                layoutProperties: StackLayoutProperties { spaceQuota: 1.0 }
                             }
-                        }
 
-                        // Sync button (custom)
-                        Container {
-                            id: syncBtn
-                            verticalAlignment: VerticalAlignment.Center
-                            preferredWidth: 52.0
-                            preferredHeight: 52.0
-                            layout: DockLayout {}
-                            gestureHandlers: [
-                                TapHandler {
-                                    onTapped: {
-                                        chatList.refreshDialogs();
+                            // Search button
+                            Container {
+                                preferredWidth: 44.0
+                                preferredHeight: 44.0
+                                verticalAlignment: VerticalAlignment.Center
+                                layout: DockLayout {}
+                                gestureHandlers: [
+                                    TapHandler {
+                                        onTapped: {
+                                            chatsScreen.isSearching = true;
+                                            chatsScreen.showOverflowMenu = false;
+                                        }
                                     }
+                                ]
+                                Label {
+                                    text: "\u2315"
+                                    textStyle.color: Color.create("#d0d7de")
+                                    textStyle.fontSize: FontSize.XLarge
+                                    horizontalAlignment: HorizontalAlignment.Center
+                                    verticalAlignment: VerticalAlignment.Center
                                 }
-                            ]
-                            Label {
-                                text: "\u21BB"
-                                textStyle.color: tBlue
-                                textStyle.fontSize: FontSize.XXLarge
-                                horizontalAlignment: HorizontalAlignment.Center
+                            }
+
+                            // 3-dots overflow menu button
+                            Container {
+                                preferredWidth: 44.0
+                                preferredHeight: 44.0
                                 verticalAlignment: VerticalAlignment.Center
+                                layout: DockLayout {}
+                                gestureHandlers: [
+                                    TapHandler {
+                                        onTapped: {
+                                            chatsScreen.showOverflowMenu = !chatsScreen.showOverflowMenu;
+                                        }
+                                    }
+                                ]
+                                Label {
+                                    text: "\u22EE"
+                                    textStyle.color: Color.create("#d0d7de")
+                                    textStyle.fontSize: FontSize.XLarge
+                                    horizontalAlignment: HorizontalAlignment.Center
+                                    verticalAlignment: VerticalAlignment.Center
+                                }
                             }
                         }
-                    }
 
-                    // Search field (custom field look)
-                    Container {
-                        horizontalAlignment: HorizontalAlignment.Fill
-                        minHeight: 46.0
-                        background: tPanel
-                        topPadding: 6.0
-                        bottomPadding: 6.0
-                        leftPadding: 14.0
-                        rightPadding: 14.0
-
+                        // Search Mode Header View
                         Container {
+                            visible: chatsScreen.isSearching
                             horizontalAlignment: HorizontalAlignment.Fill
-                            verticalAlignment: VerticalAlignment.Fill
-                            minHeight: 40.0
-                            background: tBg
-                            layout: DockLayout {}
+                            verticalAlignment: VerticalAlignment.Center
+                            layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
 
-                            Label {
-                                text: "\u2315"
-                                textStyle.color: tSecondary
-                                textStyle.fontSize: FontSize.Medium
+                            // Back arrow button
+                            Container {
+                                preferredWidth: 40.0
+                                preferredHeight: 44.0
                                 verticalAlignment: VerticalAlignment.Center
-                                leftMargin: 12.0
+                                layout: DockLayout {}
+                                gestureHandlers: [
+                                    TapHandler {
+                                        onTapped: {
+                                            chatsScreen.isSearching = false;
+                                            chatList.searchQuery = "";
+                                            if (headerSearchField) headerSearchField.text = "";
+                                        }
+                                    }
+                                ]
+                                Label {
+                                    text: "\u2190"
+                                    textStyle.color: Color.White
+                                    textStyle.fontSize: FontSize.XLarge
+                                    horizontalAlignment: HorizontalAlignment.Center
+                                    verticalAlignment: VerticalAlignment.Center
+                                }
                             }
 
+                            // Search TextField
                             TextField {
-                                id: searchField
+                                id: headerSearchField
                                 hintText: "Search"
                                 inputMode: TextFieldInputMode.Text
                                 backgroundVisible: false
                                 verticalAlignment: VerticalAlignment.Center
-                                leftMargin: 34.0
-                                rightMargin: 8.0
+                                textStyle.color: Color.White
+                                textStyle.fontSize: FontSize.Medium
+                                layoutProperties: StackLayoutProperties { spaceQuota: 1.0 }
                                 onTextChanging: {
                                     chatList.searchQuery = text;
+                                }
+                            }
+
+                            // Clear button
+                            Container {
+                                preferredWidth: 36.0
+                                preferredHeight: 44.0
+                                verticalAlignment: VerticalAlignment.Center
+                                layout: DockLayout {}
+                                gestureHandlers: [
+                                    TapHandler {
+                                        onTapped: {
+                                            headerSearchField.text = "";
+                                            chatList.searchQuery = "";
+                                        }
+                                    }
+                                ]
+                                Label {
+                                    text: "\u2715"
+                                    textStyle.color: Color.create("#8b9cae")
+                                    textStyle.fontSize: FontSize.Medium
+                                    horizontalAlignment: HorizontalAlignment.Center
+                                    verticalAlignment: VerticalAlignment.Center
                                 }
                             }
                         }
                     }
 
-                    // List area
+                    // ---------------------------------------------------------
+                    // CATEGORY / FOLDER TABS BAR (All, Private, Groups, Channels, Unread)
+                    // ---------------------------------------------------------
+                    Container {
+                        id: folderTabsBar
+                        horizontalAlignment: HorizontalAlignment.Fill
+                        background: Color.create("#1d2733")
+                        topPadding: 2.0
+                        bottomPadding: 8.0
+
+                        ScrollView {
+                            horizontalAlignment: HorizontalAlignment.Fill
+                            scrollViewProperties.scrollMode: ScrollMode.Horizontal
+
+                            Container {
+                                layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
+                                leftPadding: 10.0
+                                rightPadding: 10.0
+
+                                // Tab: All
+                                Container {
+                                    verticalAlignment: VerticalAlignment.Center
+                                    rightMargin: 8.0
+                                    background: chatsScreen.activeFolderTab == 0 ? Color.create("#2a87ff") : Color.Transparent
+                                    topPadding: 6.0
+                                    bottomPadding: 6.0
+                                    leftPadding: 16.0
+                                    rightPadding: 16.0
+                                    layout: DockLayout {}
+                                    gestureHandlers: [
+                                        TapHandler {
+                                            onTapped: {
+                                                chatsScreen.activeFolderTab = 0;
+                                                chatList.setFolderFilter(0);
+                                            }
+                                        }
+                                    ]
+                                    Label {
+                                        text: "All"
+                                        textStyle.color: chatsScreen.activeFolderTab == 0 ? Color.White : Color.create("#8b9cae")
+                                        textStyle.fontSize: FontSize.Small
+                                        textStyle.fontWeight: FontWeight.Bold
+                                        horizontalAlignment: HorizontalAlignment.Center
+                                        verticalAlignment: VerticalAlignment.Center
+                                    }
+                                }
+
+                                // Tab: Private
+                                Container {
+                                    verticalAlignment: VerticalAlignment.Center
+                                    rightMargin: 8.0
+                                    background: chatsScreen.activeFolderTab == 1 ? Color.create("#2a87ff") : Color.Transparent
+                                    topPadding: 6.0
+                                    bottomPadding: 6.0
+                                    leftPadding: 14.0
+                                    rightPadding: 14.0
+                                    layout: DockLayout {}
+                                    gestureHandlers: [
+                                        TapHandler {
+                                            onTapped: {
+                                                chatsScreen.activeFolderTab = 1;
+                                                chatList.setFolderFilter(1);
+                                            }
+                                        }
+                                    ]
+                                    Label {
+                                        text: "Private"
+                                        textStyle.color: chatsScreen.activeFolderTab == 1 ? Color.White : Color.create("#8b9cae")
+                                        textStyle.fontSize: FontSize.Small
+                                        textStyle.fontWeight: FontWeight.Bold
+                                        horizontalAlignment: HorizontalAlignment.Center
+                                        verticalAlignment: VerticalAlignment.Center
+                                    }
+                                }
+
+                                // Tab: Groups + Badge
+                                Container {
+                                    verticalAlignment: VerticalAlignment.Center
+                                    rightMargin: 8.0
+                                    background: chatsScreen.activeFolderTab == 2 ? Color.create("#2a87ff") : Color.Transparent
+                                    topPadding: 6.0
+                                    bottomPadding: 6.0
+                                    leftPadding: 14.0
+                                    rightPadding: 10.0
+                                    layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
+                                    gestureHandlers: [
+                                        TapHandler {
+                                            onTapped: {
+                                                chatsScreen.activeFolderTab = 2;
+                                                chatList.setFolderFilter(2);
+                                            }
+                                        }
+                                    ]
+                                    Label {
+                                        text: "Groups"
+                                        textStyle.color: chatsScreen.activeFolderTab == 2 ? Color.White : Color.create("#8b9cae")
+                                        textStyle.fontSize: FontSize.Small
+                                        textStyle.fontWeight: FontWeight.Bold
+                                        verticalAlignment: VerticalAlignment.Center
+                                        rightMargin: 6.0
+                                    }
+                                    Container {
+                                        verticalAlignment: VerticalAlignment.Center
+                                        background: chatsScreen.activeFolderTab == 2 ? Color.White : Color.create("#2a394a")
+                                        minWidth: 20.0
+                                        minHeight: 20.0
+                                        leftPadding: 6.0
+                                        rightPadding: 6.0
+                                        topPadding: 1.0
+                                        bottomPadding: 1.0
+                                        layout: DockLayout {}
+                                        Label {
+                                            text: chatList.unreadGroupsCount > 0 ? ("" + chatList.unreadGroupsCount) : "5"
+                                            textStyle.color: chatsScreen.activeFolderTab == 2 ? Color.create("#2a87ff") : Color.create("#8b9cae")
+                                            textStyle.fontSize: FontSize.XXSmall
+                                            textStyle.fontWeight: FontWeight.Bold
+                                            horizontalAlignment: HorizontalAlignment.Center
+                                            verticalAlignment: VerticalAlignment.Center
+                                        }
+                                    }
+                                }
+
+                                // Tab: Channels + Badge
+                                Container {
+                                    verticalAlignment: VerticalAlignment.Center
+                                    rightMargin: 8.0
+                                    background: chatsScreen.activeFolderTab == 3 ? Color.create("#2a87ff") : Color.Transparent
+                                    topPadding: 6.0
+                                    bottomPadding: 6.0
+                                    leftPadding: 14.0
+                                    rightPadding: 10.0
+                                    layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
+                                    gestureHandlers: [
+                                        TapHandler {
+                                            onTapped: {
+                                                chatsScreen.activeFolderTab = 3;
+                                                chatList.setFolderFilter(3);
+                                            }
+                                        }
+                                    ]
+                                    Label {
+                                        text: "Channels"
+                                        textStyle.color: chatsScreen.activeFolderTab == 3 ? Color.White : Color.create("#8b9cae")
+                                        textStyle.fontSize: FontSize.Small
+                                        textStyle.fontWeight: FontWeight.Bold
+                                        verticalAlignment: VerticalAlignment.Center
+                                        rightMargin: 6.0
+                                    }
+                                    Container {
+                                        verticalAlignment: VerticalAlignment.Center
+                                        background: chatsScreen.activeFolderTab == 3 ? Color.White : Color.create("#2a394a")
+                                        minWidth: 20.0
+                                        minHeight: 20.0
+                                        leftPadding: 6.0
+                                        rightPadding: 6.0
+                                        topPadding: 1.0
+                                        bottomPadding: 1.0
+                                        layout: DockLayout {}
+                                        Label {
+                                            text: chatList.unreadChannelsCount > 0 ? ("" + chatList.unreadChannelsCount) : "2"
+                                            textStyle.color: chatsScreen.activeFolderTab == 3 ? Color.create("#2a87ff") : Color.create("#8b9cae")
+                                            textStyle.fontSize: FontSize.XXSmall
+                                            textStyle.fontWeight: FontWeight.Bold
+                                            horizontalAlignment: HorizontalAlignment.Center
+                                            verticalAlignment: VerticalAlignment.Center
+                                        }
+                                    }
+                                }
+
+                                // Tab: Unread + Badge
+                                Container {
+                                    verticalAlignment: VerticalAlignment.Center
+                                    background: chatsScreen.activeFolderTab == 4 ? Color.create("#2a87ff") : Color.Transparent
+                                    topPadding: 6.0
+                                    bottomPadding: 6.0
+                                    leftPadding: 14.0
+                                    rightPadding: 10.0
+                                    layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
+                                    gestureHandlers: [
+                                        TapHandler {
+                                            onTapped: {
+                                                chatsScreen.activeFolderTab = 4;
+                                                chatList.setFolderFilter(4);
+                                            }
+                                        }
+                                    ]
+                                    Label {
+                                        text: "Unread"
+                                        textStyle.color: chatsScreen.activeFolderTab == 4 ? Color.White : Color.create("#8b9cae")
+                                        textStyle.fontSize: FontSize.Small
+                                        textStyle.fontWeight: FontWeight.Bold
+                                        verticalAlignment: VerticalAlignment.Center
+                                        rightMargin: 6.0
+                                    }
+                                    Container {
+                                        verticalAlignment: VerticalAlignment.Center
+                                        background: chatsScreen.activeFolderTab == 4 ? Color.White : Color.create("#2a394a")
+                                        minWidth: 20.0
+                                        minHeight: 20.0
+                                        leftPadding: 6.0
+                                        rightPadding: 6.0
+                                        topPadding: 1.0
+                                        bottomPadding: 1.0
+                                        layout: DockLayout {}
+                                        Label {
+                                            text: chatList.unreadTotalCount > 0 ? ("" + chatList.unreadTotalCount) : "7"
+                                            textStyle.color: chatsScreen.activeFolderTab == 4 ? Color.create("#2a87ff") : Color.create("#8b9cae")
+                                            textStyle.fontSize: FontSize.XXSmall
+                                            textStyle.fontWeight: FontWeight.Bold
+                                            horizontalAlignment: HorizontalAlignment.Center
+                                            verticalAlignment: VerticalAlignment.Center
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // ---------------------------------------------------------
+                    // CHAT LIST AREA (Dark background, custom Telegram rows)
+                    // ---------------------------------------------------------
                     Container {
                         horizontalAlignment: HorizontalAlignment.Fill
                         verticalAlignment: VerticalAlignment.Fill
+                        background: Color.create("#0e1621")
                         layoutProperties: StackLayoutProperties { spaceQuota: 1.0 }
 
-                        // States
+                        // States: Loading / Empty
                         Container {
                             visible: chatList.dialogsCount == 0 || auth.authState != 5
                             layout: DockLayout {}
@@ -764,7 +1046,7 @@ NavigationPane {
                             }
                         }
 
-                        // Custom dialog list (flat Telegram rows)
+                        // Dialogs ListView
                         ListView {
                             visible: auth.authState == 5 && chatList.dialogsCount > 0
                             horizontalAlignment: HorizontalAlignment.Fill
@@ -778,101 +1060,188 @@ NavigationPane {
                                     Container {
                                         id: rowRoot
                                         horizontalAlignment: HorizontalAlignment.Fill
-                                        topPadding: 10.0
-                                        bottomPadding: 10.0
-                                        leftPadding: 12.0
-                                        rightPadding: 12.0
+                                        background: Color.create("#0e1621")
 
-                                        layout: StackLayout {
-                                            orientation: LayoutOrientation.LeftToRight
-                                        }
-
-                                        // Avatar
                                         Container {
-                                            verticalAlignment: VerticalAlignment.Center
-                                            preferredWidth: 54.0
-                                            preferredHeight: 54.0
-                                            minWidth: 54.0
-                                            minHeight: 54.0
-                                            background: Color.create(ListItemData.avatarColor ? ListItemData.avatarColor : "#5288c1")
-                                            rightMargin: 12.0
-                                            layout: DockLayout {}
+                                            horizontalAlignment: HorizontalAlignment.Fill
+                                            topPadding: 9.0
+                                            bottomPadding: 9.0
+                                            leftPadding: 12.0
+                                            rightPadding: 12.0
+                                            layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
 
-                                            Label {
-                                                visible: !ListItemData.avatarPath || ListItemData.avatarPath.length == 0
-                                                horizontalAlignment: HorizontalAlignment.Center
+                                            // Circular Avatar (54 x 54)
+                                            Container {
                                                 verticalAlignment: VerticalAlignment.Center
-                                                text: ListItemData.initials ? ListItemData.initials : "?"
-                                                textStyle.color: Color.White
-                                                textStyle.fontSize: FontSize.Medium
-                                                textStyle.fontWeight: FontWeight.Bold
-                                            }
-                                            ImageView {
-                                                visible: ListItemData.avatarPath && ListItemData.avatarPath.length > 0
-                                                imageSource: ListItemData.avatarPath ? (ListItemData.avatarPath.indexOf("file://") === 0 ? ListItemData.avatarPath : "file://" + ListItemData.avatarPath) : ""
                                                 preferredWidth: 54.0
                                                 preferredHeight: 54.0
-                                                scalingMethod: ScalingMethod.AspectFill
-                                                horizontalAlignment: HorizontalAlignment.Center
+                                                minWidth: 54.0
+                                                minHeight: 54.0
+                                                maxWidth: 54.0
+                                                maxHeight: 54.0
+                                                rightMargin: 12.0
+                                                layout: DockLayout {}
+
+                                                // Official Telegram Chat: show Telegram logo
+                                                Container {
+                                                    visible: ListItemData.title == "Telegram"
+                                                    horizontalAlignment: HorizontalAlignment.Fill
+                                                    verticalAlignment: VerticalAlignment.Fill
+                                                    background: Color.create("#24a1de")
+                                                    layout: DockLayout {}
+                                                    ImageView {
+                                                        imageSource: "asset:///images/telegram_logo.png"
+                                                        preferredWidth: 54.0
+                                                        preferredHeight: 54.0
+                                                        scalingMethod: ScalingMethod.AspectFit
+                                                        horizontalAlignment: HorizontalAlignment.Center
+                                                        verticalAlignment: VerticalAlignment.Center
+                                                    }
+                                                }
+
+                                                // Other chats with downloaded avatar image
+                                                ImageView {
+                                                    visible: ListItemData.title != "Telegram" && ListItemData.avatarPath && ListItemData.avatarPath.length > 0
+                                                    imageSource: ListItemData.avatarPath ? (ListItemData.avatarPath.indexOf("file://") === 0 ? ListItemData.avatarPath : "file://" + ListItemData.avatarPath) : ""
+                                                    preferredWidth: 54.0
+                                                    preferredHeight: 54.0
+                                                    scalingMethod: ScalingMethod.AspectFill
+                                                    horizontalAlignment: HorizontalAlignment.Center
+                                                    verticalAlignment: VerticalAlignment.Center
+                                                }
+
+                                                // Other chats fallback: colored circle with initials
+                                                Container {
+                                                    visible: ListItemData.title != "Telegram" && (!ListItemData.avatarPath || ListItemData.avatarPath.length == 0)
+                                                    horizontalAlignment: HorizontalAlignment.Fill
+                                                    verticalAlignment: VerticalAlignment.Fill
+                                                    background: Color.create(ListItemData.avatarColor ? ListItemData.avatarColor : "#5288c1")
+                                                    layout: DockLayout {}
+                                                    Label {
+                                                        horizontalAlignment: HorizontalAlignment.Center
+                                                        verticalAlignment: VerticalAlignment.Center
+                                                        text: ListItemData.initials ? ListItemData.initials : "?"
+                                                        textStyle.color: Color.White
+                                                        textStyle.fontSize: FontSize.Medium
+                                                        textStyle.fontWeight: FontWeight.Bold
+                                                    }
+                                                }
+                                            }
+
+                                            // Text column (Title row + Subtitle row)
+                                            Container {
                                                 verticalAlignment: VerticalAlignment.Center
+                                                layoutProperties: StackLayoutProperties { spaceQuota: 1.0 }
+
+                                                // Title row: Title, Verified/Mute icon, Time
+                                                Container {
+                                                    horizontalAlignment: HorizontalAlignment.Fill
+                                                    layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
+
+                                                    Label {
+                                                        text: ListItemData.title ? ListItemData.title : ""
+                                                        textStyle.color: Color.White
+                                                        textStyle.fontSize: FontSize.Small
+                                                        textStyle.fontWeight: FontWeight.Bold
+                                                        verticalAlignment: VerticalAlignment.Center
+                                                        layoutProperties: StackLayoutProperties { spaceQuota: 1.0 }
+                                                    }
+
+                                                    // Verified badge for Telegram official channel
+                                                    Container {
+                                                        visible: ListItemData.title == "Telegram"
+                                                        verticalAlignment: VerticalAlignment.Center
+                                                        rightMargin: 6.0
+                                                        preferredWidth: 16.0
+                                                        preferredHeight: 16.0
+                                                        background: Color.create("#24a1de")
+                                                        layout: DockLayout {}
+                                                        Label {
+                                                            text: "\u2714"
+                                                            textStyle.color: Color.White
+                                                            textStyle.fontSize: FontSize.XXSmall
+                                                            textStyle.fontWeight: FontWeight.Bold
+                                                            horizontalAlignment: HorizontalAlignment.Center
+                                                            verticalAlignment: VerticalAlignment.Center
+                                                        }
+                                                    }
+
+                                                    // Mute icon for groups/channels
+                                                    Label {
+                                                        visible: ListItemData.title != "Telegram" && (ListItemData.peerType == 2 || ListItemData.peerType == 3)
+                                                        text: "\uD83D\uDD07"
+                                                        textStyle.color: Color.create("#6c7883")
+                                                        textStyle.fontSize: FontSize.XSmall
+                                                        verticalAlignment: VerticalAlignment.Center
+                                                        rightMargin: 6.0
+                                                    }
+
+                                                    // Formatted Timestamp
+                                                    Label {
+                                                        text: ListItemData.formattedTime ? ListItemData.formattedTime : ""
+                                                        textStyle.color: Color.create("#7f8c99")
+                                                        textStyle.fontSize: FontSize.XSmall
+                                                        verticalAlignment: VerticalAlignment.Center
+                                                    }
+                                                }
+
+                                                // Subtitle row: Outgoing indicator, message snippet, unread badge
+                                                Container {
+                                                    horizontalAlignment: HorizontalAlignment.Fill
+                                                    topMargin: 2.0
+                                                    layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
+
+                                                    // Outgoing green checkmark
+                                                    Label {
+                                                        visible: ListItemData.isOutgoing
+                                                        text: "\u2713\u2713 "
+                                                        textStyle.color: Color.create("#4dcd5e")
+                                                        textStyle.fontSize: FontSize.XSmall
+                                                        textStyle.fontWeight: FontWeight.Bold
+                                                        verticalAlignment: VerticalAlignment.Center
+                                                    }
+
+                                                    // Last message text snippet
+                                                    Label {
+                                                        text: ListItemData.lastMessage ? ListItemData.lastMessage : ""
+                                                        textStyle.color: Color.create("#7f8c99")
+                                                        textStyle.fontSize: FontSize.XSmall
+                                                        verticalAlignment: VerticalAlignment.Center
+                                                        layoutProperties: StackLayoutProperties { spaceQuota: 1.0 }
+                                                    }
+
+                                                    // Unread count pill badge
+                                                    Container {
+                                                        visible: ListItemData.unreadCount > 0
+                                                        verticalAlignment: VerticalAlignment.Center
+                                                        background: Color.create("#2e3f51")
+                                                        minWidth: 22.0
+                                                        minHeight: 22.0
+                                                        leftPadding: 6.0
+                                                        rightPadding: 6.0
+                                                        topPadding: 2.0
+                                                        bottomPadding: 2.0
+                                                        layout: DockLayout {}
+                                                        Label {
+                                                            text: "" + ListItemData.unreadCount
+                                                            textStyle.color: Color.White
+                                                            textStyle.fontSize: FontSize.XXSmall
+                                                            textStyle.fontWeight: FontWeight.Bold
+                                                            horizontalAlignment: HorizontalAlignment.Center
+                                                            verticalAlignment: VerticalAlignment.Center
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
 
-                                        // Text column
+                                        // Subtle divider line
                                         Container {
-                                            verticalAlignment: VerticalAlignment.Center
-                                            layoutProperties: StackLayoutProperties { spaceQuota: 1.0 }
-
-                                            Container {
-                                                horizontalAlignment: HorizontalAlignment.Fill
-                                                layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
-                                                Label {
-                                                    text: ListItemData.title ? ListItemData.title : ""
-                                                    textStyle.color: Color.create("#ffffff")
-                                                    textStyle.fontSize: FontSize.Small
-                                                    textStyle.fontWeight: FontWeight.Bold
-                                                    layoutProperties: StackLayoutProperties { spaceQuota: 1.0 }
-                                                }
-                                                Label {
-                                                    text: ListItemData.formattedTime ? ListItemData.formattedTime : ""
-                                                    textStyle.color: Color.create("#7f8b99")
-                                                    textStyle.fontSize: FontSize.XSmall
-                                                    verticalAlignment: VerticalAlignment.Center
-                                                }
-                                            }
-
-                                            Container {
-                                                horizontalAlignment: HorizontalAlignment.Fill
-                                                topMargin: 2.0
-                                                layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
-                                                Label {
-                                                    text: ListItemData.lastMessage ? ListItemData.lastMessage : ""
-                                                    textStyle.color: ListItemData.isOutgoing ? Color.create("#4dcd5e") : Color.create("#7f8b99")
-                                                    textStyle.fontSize: FontSize.XSmall
-                                                    textStyle.fontWeight: ListItemData.unreadCount > 0 ? FontWeight.Bold : FontWeight.Normal
-                                                    layoutProperties: StackLayoutProperties { spaceQuota: 1.0 }
-                                                }
-                                                Container {
-                                                    visible: ListItemData.unreadCount > 0
-                                                    verticalAlignment: VerticalAlignment.Center
-                                                    minWidth: 22.0
-                                                    minHeight: 22.0
-                                                    background: Color.create("#2ea043")
-                                                    topPadding: 2.0
-                                                    bottomPadding: 2.0
-                                                    leftPadding: 6.0
-                                                    rightPadding: 6.0
-                                                    layout: DockLayout {}
-                                                    Label {
-                                                        text: "" + ListItemData.unreadCount
-                                                        textStyle.color: Color.White
-                                                        textStyle.fontSize: FontSize.XXSmall
-                                                        textStyle.fontWeight: FontWeight.Bold
-                                                        horizontalAlignment: HorizontalAlignment.Center
-                                                        verticalAlignment: VerticalAlignment.Center
-                }
-            }
-                                            }
+                                            horizontalAlignment: HorizontalAlignment.Fill
+                                            leftMargin: 78.0
+                                            minHeight: 1.0
+                                            maxHeight: 1.0
+                                            background: Color.create("#131d27")
                                         }
                                     }
                                 }
@@ -884,7 +1253,7 @@ NavigationPane {
                                     chatList.selectDialog(indexPath);
                                     chatList.logDiagnostic("before createObject");
                                     var page = chatScreenDef.createObject();
-                                    chatList.logDiagnostic("page null? " + (page === null ? "YES" : "NO"));
+                                    chatList.logDiagnostic("page null? " + (page === null ? ("YES (status=" + chatScreenDef.status + ", err=" + chatScreenDef.errorString() + ")") : "NO"));
                                     if (page) {
                                         page.loadChat(data.title, data.peerType, "" + data.peerId, "" + data.accessHash, data.initials, data.avatarColor, data.avatarPath ? data.avatarPath : "", chatList.canSend);
                                         chatList.logDiagnostic("about to push");
@@ -894,6 +1263,127 @@ NavigationPane {
                                 }
                             }
                         }
+                    }
+                }
+
+                // -------------------------------------------------------------
+                // FLOATING ACTION BUTTONS (Camera mini FAB + Compose main FAB)
+                // -------------------------------------------------------------
+                Container {
+                    horizontalAlignment: HorizontalAlignment.Right
+                    verticalAlignment: VerticalAlignment.Bottom
+                    rightMargin: 18.0
+                    bottomMargin: 76.0
+
+                    layout: StackLayout { orientation: LayoutOrientation.TopToBottom }
+
+                    // Upper Mini FAB: Camera
+                    Container {
+                        preferredWidth: 42.0
+                        preferredHeight: 42.0
+                        minWidth: 42.0
+                        minHeight: 42.0
+                        background: Color.create("#1e2b38")
+                        horizontalAlignment: HorizontalAlignment.Center
+                        bottomMargin: 12.0
+                        layout: DockLayout {}
+                        Label {
+                            text: "\uD83D\uDCF7"
+                            textStyle.color: Color.White
+                            textStyle.fontSize: FontSize.Medium
+                            horizontalAlignment: HorizontalAlignment.Center
+                            verticalAlignment: VerticalAlignment.Center
+                        }
+                        gestureHandlers: [
+                            TapHandler {
+                                onTapped: {
+                                    chatList.logDiagnostic("Camera FAB tapped");
+                                }
+                            }
+                        ]
+                    }
+
+                    // Lower Main FAB: Compose New Message
+                    Container {
+                        preferredWidth: 56.0
+                        preferredHeight: 56.0
+                        minWidth: 56.0
+                        minHeight: 56.0
+                        background: Color.create("#24a1de")
+                        horizontalAlignment: HorizontalAlignment.Center
+                        layout: DockLayout {}
+                        Label {
+                            text: "\u270E"
+                            textStyle.color: Color.White
+                            textStyle.fontSize: FontSize.Large
+                            textStyle.fontWeight: FontWeight.Bold
+                            horizontalAlignment: HorizontalAlignment.Center
+                            verticalAlignment: VerticalAlignment.Center
+                        }
+                        gestureHandlers: [
+                            TapHandler {
+                                onTapped: {
+                                    shellPage.activeSection = 2; // Open Contacts
+                                }
+                            }
+                        ]
+                    }
+                }
+
+                // -------------------------------------------------------------
+                // 3-DOTS OVERFLOW POPUP MENU
+                // -------------------------------------------------------------
+                Container {
+                    visible: chatsScreen.showOverflowMenu
+                    horizontalAlignment: HorizontalAlignment.Right
+                    verticalAlignment: VerticalAlignment.Top
+                    topMargin: 56.0
+                    rightMargin: 12.0
+                    minWidth: 170.0
+                    background: Color.create("#1e2b38")
+                    topPadding: 8.0
+                    bottomPadding: 8.0
+                    leftPadding: 14.0
+                    rightPadding: 14.0
+
+                    Container {
+                        horizontalAlignment: HorizontalAlignment.Fill
+                        minHeight: 38.0
+                        layout: DockLayout {}
+                        Label {
+                            text: "Sync Chats"
+                            textStyle.color: Color.White
+                            textStyle.fontSize: FontSize.Small
+                            verticalAlignment: VerticalAlignment.Center
+                        }
+                        gestureHandlers: [
+                            TapHandler {
+                                onTapped: {
+                                    chatsScreen.showOverflowMenu = false;
+                                    chatList.refreshDialogs();
+                                }
+                            }
+                        ]
+                    }
+
+                    Container {
+                        horizontalAlignment: HorizontalAlignment.Fill
+                        minHeight: 38.0
+                        layout: DockLayout {}
+                        Label {
+                            text: "About"
+                            textStyle.color: Color.White
+                            textStyle.fontSize: FontSize.Small
+                            verticalAlignment: VerticalAlignment.Center
+                        }
+                        gestureHandlers: [
+                            TapHandler {
+                                onTapped: {
+                                    chatsScreen.showOverflowMenu = false;
+                                    shellPage.activeSection = 4;
+                                }
+                            }
+                        ]
                     }
                 }
             }
@@ -1572,7 +2062,7 @@ NavigationPane {
             }
 
             // =================================================================
-            // CUSTOM BOTTOM NAVIGATION RAIL
+            // CUSTOM BOTTOM NAVIGATION RAIL (4 Tabs: Chats, Contacts, Settings, Profile)
             // =================================================================
             Container {
                 id: bottomNavBar
@@ -1580,10 +2070,11 @@ NavigationPane {
                 horizontalAlignment: HorizontalAlignment.Fill
                 verticalAlignment: VerticalAlignment.Bottom
                 minHeight: 62.0
-                background: tPanel
+                background: Color.create("#16202b")
 
                 layout: StackLayout { orientation: LayoutOrientation.TopToBottom }
 
+                // Top border line
                 Container {
                     horizontalAlignment: HorizontalAlignment.Fill
                     minHeight: 1.0
@@ -1593,184 +2084,171 @@ NavigationPane {
 
                 Container {
                     layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
-                    topPadding: 4.0
-                    bottomPadding: 4.0
+                    topPadding: 5.0
+                    bottomPadding: 5.0
                     horizontalAlignment: HorizontalAlignment.Fill
 
-                // Chats
-                Container {
-                    layoutProperties: StackLayoutProperties { spaceQuota: 1.0 }
-                    verticalAlignment: VerticalAlignment.Center
-                    layout: DockLayout {}
-                    horizontalAlignment: HorizontalAlignment.Fill
-                    gestureHandlers: [ TapHandler { onTapped: { shellPage.activeSection = 0; } } ]
-
+                    // Tab 1: Chats
                     Container {
-                        horizontalAlignment: HorizontalAlignment.Center
-                        verticalAlignment: VerticalAlignment.Bottom
-                        minWidth: 44.0
-                        minHeight: 2.0
-                        background: shellPage.activeSection == 0 ? tBlue : Color.Transparent
-                    }
-                    Container {
-                        horizontalAlignment: HorizontalAlignment.Center
+                        layoutProperties: StackLayoutProperties { spaceQuota: 1.0 }
                         verticalAlignment: VerticalAlignment.Center
-                        Label {
-                            text: "\u2709" // envelope
-                            textStyle.color: shellPage.activeSection == 0 ? tBlue : tSecondary
-                            textStyle.fontSize: FontSize.XXLarge
+                        horizontalAlignment: HorizontalAlignment.Center
+                        gestureHandlers: [
+                            TapHandler {
+                                onTapped: {
+                                    shellPage.activeSection = 0;
+                                }
+                            }
+                        ]
+
+                        // Active capsule / pill indicator around icon
+                        Container {
                             horizontalAlignment: HorizontalAlignment.Center
-                            verticalAlignment: VerticalAlignment.Center
+                            minWidth: 54.0
+                            minHeight: 28.0
+                            background: shellPage.activeSection == 0 ? Color.create("#203850") : Color.Transparent
+                            layout: DockLayout {}
+                            Label {
+                                text: "\uD83D\uDCAC"
+                                textStyle.color: shellPage.activeSection == 0 ? Color.create("#24a1de") : Color.create("#7f8c99")
+                                textStyle.fontSize: FontSize.Large
+                                horizontalAlignment: HorizontalAlignment.Center
+                                verticalAlignment: VerticalAlignment.Center
+                            }
                         }
                         Label {
                             text: "Chats"
-                            textStyle.color: shellPage.activeSection == 0 ? tBlue : tSecondary
+                            textStyle.color: shellPage.activeSection == 0 ? Color.create("#24a1de") : Color.create("#7f8c99")
                             textStyle.fontSize: FontSize.XXSmall
+                            textStyle.fontWeight: shellPage.activeSection == 0 ? FontWeight.Bold : FontWeight.Normal
                             horizontalAlignment: HorizontalAlignment.Center
-                            topMargin: 18.0
+                            topMargin: 2.0
                         }
                     }
-                }
 
-                // Account
-                Container {
-                    layoutProperties: StackLayoutProperties { spaceQuota: 1.0 }
-                    verticalAlignment: VerticalAlignment.Center
-                    layout: DockLayout {}
-                    horizontalAlignment: HorizontalAlignment.Fill
-                    gestureHandlers: [ TapHandler { onTapped: { shellPage.activeSection = 1; } } ]
-
+                    // Tab 2: Contacts
                     Container {
-                        horizontalAlignment: HorizontalAlignment.Center
-                        verticalAlignment: VerticalAlignment.Bottom
-                        minWidth: 44.0
-                        minHeight: 2.0
-                        background: shellPage.activeSection == 1 ? tBlue : Color.Transparent
-                    }
-                    Container {
-                        horizontalAlignment: HorizontalAlignment.Center
+                        layoutProperties: StackLayoutProperties { spaceQuota: 1.0 }
                         verticalAlignment: VerticalAlignment.Center
-                        Label {
-                            text: "\u25C9" // circle user
-                            textStyle.color: shellPage.activeSection == 1 ? tBlue : tSecondary
-                            textStyle.fontSize: FontSize.XXLarge
-                            horizontalAlignment: HorizontalAlignment.Center
-                            verticalAlignment: VerticalAlignment.Center
-                        }
-                        Label {
-                            text: "Account"
-                            textStyle.color: shellPage.activeSection == 1 ? tBlue : tSecondary
-                            textStyle.fontSize: FontSize.XXSmall
-                            horizontalAlignment: HorizontalAlignment.Center
-                            topMargin: 18.0
-                        }
-                    }
-                }
-
-                // Contacts
-                Container {
-                    layoutProperties: StackLayoutProperties { spaceQuota: 1.0 }
-                    verticalAlignment: VerticalAlignment.Center
-                    layout: DockLayout {}
-                    horizontalAlignment: HorizontalAlignment.Fill
-                    gestureHandlers: [ TapHandler { onTapped: { shellPage.activeSection = 2; } } ]
-
-                    Container {
                         horizontalAlignment: HorizontalAlignment.Center
-                        verticalAlignment: VerticalAlignment.Bottom
-                        minWidth: 32.0
-                        minHeight: 2.0
-                        background: shellPage.activeSection == 2 ? tBlue : Color.Transparent
-                    }
-                    Container {
-                        horizontalAlignment: HorizontalAlignment.Center
-                        verticalAlignment: VerticalAlignment.Center
-                        Label {
-                            text: "\u260E" // telephone glyph
-                            textStyle.color: shellPage.activeSection == 2 ? tBlue : tSecondary
-                            textStyle.fontSize: FontSize.XXLarge
+                        gestureHandlers: [
+                            TapHandler {
+                                onTapped: {
+                                    shellPage.activeSection = 2;
+                                }
+                            }
+                        ]
+
+                        Container {
                             horizontalAlignment: HorizontalAlignment.Center
-                            verticalAlignment: VerticalAlignment.Center
+                            minWidth: 54.0
+                            minHeight: 28.0
+                            background: shellPage.activeSection == 2 ? Color.create("#203850") : Color.Transparent
+                            layout: DockLayout {}
+                            Label {
+                                text: "\uD83D\uDC64"
+                                textStyle.color: shellPage.activeSection == 2 ? Color.create("#24a1de") : Color.create("#7f8c99")
+                                textStyle.fontSize: FontSize.Large
+                                horizontalAlignment: HorizontalAlignment.Center
+                                verticalAlignment: VerticalAlignment.Center
+                            }
                         }
                         Label {
                             text: "Contacts"
-                            textStyle.color: shellPage.activeSection == 2 ? tBlue : tSecondary
+                            textStyle.color: shellPage.activeSection == 2 ? Color.create("#24a1de") : Color.create("#7f8c99")
                             textStyle.fontSize: FontSize.XXSmall
+                            textStyle.fontWeight: shellPage.activeSection == 2 ? FontWeight.Bold : FontWeight.Normal
                             horizontalAlignment: HorizontalAlignment.Center
-                            topMargin: 18.0
+                            topMargin: 2.0
                         }
                     }
-                }
 
-                // Settings
-                Container {
-                    layoutProperties: StackLayoutProperties { spaceQuota: 1.0 }
-                    verticalAlignment: VerticalAlignment.Center
-                    layout: DockLayout {}
-                    horizontalAlignment: HorizontalAlignment.Fill
-                    gestureHandlers: [ TapHandler { onTapped: { shellPage.activeSection = 3; } } ]
-
+                    // Tab 3: Settings
                     Container {
-                        horizontalAlignment: HorizontalAlignment.Center
-                        verticalAlignment: VerticalAlignment.Bottom
-                        minWidth: 32.0
-                        minHeight: 2.0
-                        background: shellPage.activeSection == 3 ? tBlue : Color.Transparent
-                    }
-                    Container {
-                        horizontalAlignment: HorizontalAlignment.Center
+                        layoutProperties: StackLayoutProperties { spaceQuota: 1.0 }
                         verticalAlignment: VerticalAlignment.Center
-                        Label {
-                            text: "\u2699" // gear glyph
-                            textStyle.color: shellPage.activeSection == 3 ? tBlue : tSecondary
-                            textStyle.fontSize: FontSize.XXLarge
+                        horizontalAlignment: HorizontalAlignment.Center
+                        gestureHandlers: [
+                            TapHandler {
+                                onTapped: {
+                                    shellPage.activeSection = 3;
+                                }
+                            }
+                        ]
+
+                        Container {
                             horizontalAlignment: HorizontalAlignment.Center
-                            verticalAlignment: VerticalAlignment.Center
+                            minWidth: 54.0
+                            minHeight: 28.0
+                            background: shellPage.activeSection == 3 ? Color.create("#203850") : Color.Transparent
+                            layout: DockLayout {}
+                            Label {
+                                text: "\u2699"
+                                textStyle.color: shellPage.activeSection == 3 ? Color.create("#24a1de") : Color.create("#7f8c99")
+                                textStyle.fontSize: FontSize.Large
+                                horizontalAlignment: HorizontalAlignment.Center
+                                verticalAlignment: VerticalAlignment.Center
+                            }
                         }
                         Label {
                             text: "Settings"
-                            textStyle.color: shellPage.activeSection == 3 ? tBlue : tSecondary
+                            textStyle.color: shellPage.activeSection == 3 ? Color.create("#24a1de") : Color.create("#7f8c99")
                             textStyle.fontSize: FontSize.XXSmall
+                            textStyle.fontWeight: shellPage.activeSection == 3 ? FontWeight.Bold : FontWeight.Normal
                             horizontalAlignment: HorizontalAlignment.Center
-                            topMargin: 18.0
+                            topMargin: 2.0
                         }
                     }
-                }
 
-                // About
-                Container {
-                    layoutProperties: StackLayoutProperties { spaceQuota: 1.0 }
-                    verticalAlignment: VerticalAlignment.Center
-                    layout: DockLayout {}
-                    horizontalAlignment: HorizontalAlignment.Fill
-                    gestureHandlers: [ TapHandler { onTapped: { shellPage.activeSection = 4; } } ]
-
+                    // Tab 4: Profile
                     Container {
-                        horizontalAlignment: HorizontalAlignment.Center
-                        verticalAlignment: VerticalAlignment.Bottom
-                        minWidth: 32.0
-                        minHeight: 2.0
-                        background: shellPage.activeSection == 4 ? tBlue : Color.Transparent
-                    }
-                    Container {
-                        horizontalAlignment: HorizontalAlignment.Center
+                        layoutProperties: StackLayoutProperties { spaceQuota: 1.0 }
                         verticalAlignment: VerticalAlignment.Center
-                        Label {
-                            text: "\u2139" // info glyph
-                            textStyle.color: shellPage.activeSection == 4 ? tBlue : tSecondary
-                            textStyle.fontSize: FontSize.XXLarge
+                        horizontalAlignment: HorizontalAlignment.Center
+                        gestureHandlers: [
+                            TapHandler {
+                                onTapped: {
+                                    shellPage.activeSection = 1;
+                                }
+                            }
+                        ]
+
+                        Container {
                             horizontalAlignment: HorizontalAlignment.Center
-                            verticalAlignment: VerticalAlignment.Center
+                            minWidth: 54.0
+                            minHeight: 28.0
+                            background: shellPage.activeSection == 1 ? Color.create("#203850") : Color.Transparent
+                            layout: DockLayout {}
+
+                            // Blue circular avatar with user initial
+                            Container {
+                                preferredWidth: 22.0
+                                preferredHeight: 22.0
+                                minWidth: 22.0
+                                minHeight: 22.0
+                                background: Color.create("#24a1de")
+                                horizontalAlignment: HorizontalAlignment.Center
+                                verticalAlignment: VerticalAlignment.Center
+                                layout: DockLayout {}
+                                Label {
+                                    text: auth.userName.length > 0 ? auth.userName.trim().left(1).toUpperCase() : "J"
+                                    textStyle.color: Color.White
+                                    textStyle.fontSize: FontSize.XXSmall
+                                    textStyle.fontWeight: FontWeight.Bold
+                                    horizontalAlignment: HorizontalAlignment.Center
+                                    verticalAlignment: VerticalAlignment.Center
+                                }
+                            }
                         }
                         Label {
-                            text: "About"
-                            textStyle.color: shellPage.activeSection == 4 ? tBlue : tSecondary
+                            text: "Profile"
+                            textStyle.color: shellPage.activeSection == 1 ? Color.create("#24a1de") : Color.create("#7f8c99")
                             textStyle.fontSize: FontSize.XXSmall
+                            textStyle.fontWeight: shellPage.activeSection == 1 ? FontWeight.Bold : FontWeight.Normal
                             horizontalAlignment: HorizontalAlignment.Center
-                            topMargin: 18.0
+                            topMargin: 2.0
                         }
                     }
-                }
                 }
             }
         }
@@ -1787,7 +2265,7 @@ NavigationPane {
     attachedObjects: [
         ComponentDefinition {
             id: chatScreenDef
-            source: "ChatScreen.qml"
+            source: "asset:///ChatScreen.qml"
         }
     ]
 }

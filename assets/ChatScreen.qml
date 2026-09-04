@@ -33,13 +33,11 @@ Page {
     property color tSecondary:  Color.create("#7f8b99")
     property color tAuthor:     Color.create("#6cb5f3")
 
-    // Set the page background so no native chrome shows through
-    background: tBg
-
-    Container {
+    content: Container {
         layout: DockLayout {}
         horizontalAlignment: HorizontalAlignment.Fill
         verticalAlignment: VerticalAlignment.Fill
+        background: chatPage.tBg
 
         Container {
             layout: DockLayout {}
@@ -73,9 +71,8 @@ Page {
                     gestureHandlers: [
                         TapHandler {
                             onTapped: {
-                                var nav = chatPage.navigationPane;
-                                if (nav) {
-                                    nav.pop(chatPage);
+                                if (typeof rootNavPane !== "undefined") {
+                                    rootNavPane.pop();
                                 }
                             }
                         }
@@ -301,7 +298,7 @@ Page {
 
             // Empty state shown when there are no messages
             Label {
-                visible: chatList.messagesModel && chatList.messagesModel.size == 0
+                visible: chatList.messagesModel && chatList.messagesModel.size() == 0
                 text: "No messages yet"
                 textStyle.color: tSecondary
                 textStyle.fontSize: FontSize.Small
