@@ -1,5 +1,5 @@
 1
-17
+23
 ChatScreen.qml
 images/telegram_logo.png
 images/telegram_logo.svg
@@ -7,13 +7,19 @@ images/tg_add_user.png
 images/tg_attach.png
 images/tg_back.png
 images/tg_call.png
+images/tg_camera_white.png
+images/tg_edit_info.png
 images/tg_emoji.png
 images/tg_mic.png
 images/tg_more.png
 images/tg_msg.png
 images/tg_mute.png
 images/tg_qrcode.png
+images/tg_qr_scan.png
 images/tg_send.png
+images/tg_settings_tile.png
+images/tg_set_photo.png
 images/tg_video.png
 main.qml
+MyProfileView.qml
 ProfileScreen.qml

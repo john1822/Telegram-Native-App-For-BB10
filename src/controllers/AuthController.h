@@ -35,6 +35,7 @@ class AuthController : public QObject {
     Q_PROPERTY(QString userHandle READ userHandle NOTIFY userProfileChanged)
     Q_PROPERTY(QString userId READ userId NOTIFY userProfileChanged)
     Q_PROPERTY(QString userPhone READ userPhone NOTIFY userProfileChanged)
+    Q_PROPERTY(QString userBio READ userBio NOTIFY userProfileChanged)
     Q_PROPERTY(QString qrTokenUrl READ qrTokenUrl NOTIFY qrTokenUrlChanged)
     Q_PROPERTY(QString qrImagePath READ qrImagePath NOTIFY qrImagePathChanged)
 
@@ -66,6 +67,7 @@ public:
     QString userHandle() const { return m_userHandle; }
     QString userId() const { return m_userId; }
     QString userPhone() const { return m_userPhone; }
+    QString userBio() const { return m_userBio; }
     QString qrTokenUrl() const { return m_qrTokenUrl; }
     QString qrImagePath() const { return m_qrImagePath; }
 
@@ -109,6 +111,7 @@ private slots:
     void onRpcErrorReceived(int errorCode, const QString& errorMessage);
     void onSessionError(const QString& error);
     void onQrPollTimer();
+    void onMyProfileReceived(const QString& bio, const QString& username, const QString& phone);
 
 private:
     void setAuthState(AuthState state);
@@ -133,6 +136,7 @@ private:
     QString m_userHandle;
     QString m_userId;
     QString m_userPhone;
+    QString m_userBio;
     QString m_qrTokenUrl;
     QString m_qrImagePath;
 };

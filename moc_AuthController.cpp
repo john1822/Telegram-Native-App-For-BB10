@@ -22,8 +22,8 @@ static const uint qt_meta_data_Telegram__Controllers__AuthController[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-      33,   14, // methods
-      15,  179, // properties
+      34,   14, // methods
+      16,  184, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
@@ -65,23 +65,25 @@ static const uint qt_meta_data_Telegram__Controllers__AuthController[] = {
     1052, 1029,   38,   38, 0x08,
     1084,  380,   38,   38, 0x08,
     1108,   38,   38,   38, 0x08,
+    1143, 1124,   38,   38, 0x08,
 
  // properties: name, type, flags
-    1128, 1124, 0x02495001,
-    1146, 1138, 0x0a495001,
-    1162, 1138, 0x0a495103,
-    1174, 1138, 0x0a495001,
-    1188, 1138, 0x0a495001,
-    1201, 1124, 0x02495001,
-    1213, 1138, 0x0a495001,
-    1231, 1226, 0x01495001,
-    1238, 1138, 0x0a495001,
-    1252, 1138, 0x0a495001,
-    1261, 1138, 0x0a495001,
-    1272, 1138, 0x0a495001,
-    1279, 1138, 0x0a495001,
-    1289, 1138, 0x0a495001,
-    1300, 1138, 0x0a495001,
+    1192, 1188, 0x02495001,
+    1210, 1202, 0x0a495001,
+    1226, 1202, 0x0a495103,
+    1238, 1202, 0x0a495001,
+    1252, 1202, 0x0a495001,
+    1265, 1188, 0x02495001,
+    1277, 1202, 0x0a495001,
+    1295, 1290, 0x01495001,
+    1302, 1202, 0x0a495001,
+    1316, 1202, 0x0a495001,
+    1325, 1202, 0x0a495001,
+    1336, 1202, 0x0a495001,
+    1343, 1202, 0x0a495001,
+    1353, 1202, 0x0a495001,
+    1361, 1202, 0x0a495001,
+    1372, 1202, 0x0a495001,
 
  // properties: notify_signal_id
        0,
@@ -93,6 +95,7 @@ static const uint qt_meta_data_Telegram__Controllers__AuthController[] = {
        5,
        6,
        7,
+       8,
        8,
        8,
        8,
@@ -135,11 +138,14 @@ static const char qt_meta_stringdata_Telegram__Controllers__AuthController[] = {
     "onDcMigrated(int)\0errorCode,errorMessage\0"
     "onRpcErrorReceived(int,QString)\0"
     "onSessionError(QString)\0onQrPollTimer()\0"
+    "bio,username,phone\0"
+    "onMyProfileReceived(QString,QString,QString)\0"
     "int\0authState\0QString\0authStateString\0"
     "phoneNumber\0phoneCodeHash\0deliveryType\0"
     "codeTimeout\0passwordHint\0bool\0isBusy\0"
     "statusMessage\0userName\0userHandle\0"
-    "userId\0userPhone\0qrTokenUrl\0qrImagePath\0"
+    "userId\0userPhone\0userBio\0qrTokenUrl\0"
+    "qrImagePath\0"
 };
 
 void Telegram::Controllers::AuthController::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -181,6 +187,7 @@ void Telegram::Controllers::AuthController::qt_static_metacall(QObject *_o, QMet
         case 30: _t->onRpcErrorReceived((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
         case 31: _t->onSessionError((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 32: _t->onQrPollTimer(); break;
+        case 33: _t->onMyProfileReceived((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3]))); break;
         default: ;
         }
     }
@@ -218,9 +225,9 @@ int Telegram::Controllers::AuthController::qt_metacall(QMetaObject::Call _c, int
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 33)
+        if (_id < 34)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 33;
+        _id -= 34;
     }
 #ifndef QT_NO_PROPERTIES
       else if (_c == QMetaObject::ReadProperty) {
@@ -239,28 +246,29 @@ int Telegram::Controllers::AuthController::qt_metacall(QMetaObject::Call _c, int
         case 10: *reinterpret_cast< QString*>(_v) = userHandle(); break;
         case 11: *reinterpret_cast< QString*>(_v) = userId(); break;
         case 12: *reinterpret_cast< QString*>(_v) = userPhone(); break;
-        case 13: *reinterpret_cast< QString*>(_v) = qrTokenUrl(); break;
-        case 14: *reinterpret_cast< QString*>(_v) = qrImagePath(); break;
+        case 13: *reinterpret_cast< QString*>(_v) = userBio(); break;
+        case 14: *reinterpret_cast< QString*>(_v) = qrTokenUrl(); break;
+        case 15: *reinterpret_cast< QString*>(_v) = qrImagePath(); break;
         }
-        _id -= 15;
+        _id -= 16;
     } else if (_c == QMetaObject::WriteProperty) {
         void *_v = _a[0];
         switch (_id) {
         case 2: setPhoneNumber(*reinterpret_cast< QString*>(_v)); break;
         }
-        _id -= 15;
+        _id -= 16;
     } else if (_c == QMetaObject::ResetProperty) {
-        _id -= 15;
+        _id -= 16;
     } else if (_c == QMetaObject::QueryPropertyDesignable) {
-        _id -= 15;
+        _id -= 16;
     } else if (_c == QMetaObject::QueryPropertyScriptable) {
-        _id -= 15;
+        _id -= 16;
     } else if (_c == QMetaObject::QueryPropertyStored) {
-        _id -= 15;
+        _id -= 16;
     } else if (_c == QMetaObject::QueryPropertyEditable) {
-        _id -= 15;
+        _id -= 16;
     } else if (_c == QMetaObject::QueryPropertyUser) {
-        _id -= 15;
+        _id -= 16;
     }
 #endif // QT_NO_PROPERTIES
     return _id;

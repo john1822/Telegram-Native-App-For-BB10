@@ -1906,6 +1906,7 @@ void MTProtoSession::handleRpcResult(qint64 reqMsgId, quint32 innerRpcConstructo
         emit logMessage(QString("[USER_FULL] userId: %1, bio: '%2', username: @%3, phone: %4")
                         .arg(userId).arg(bio).arg(username).arg(phone));
         emit userFullReceived(userId, bio, username, phone);
+        emit myProfileReceived(bio, username, phone);
     } else if (innerRpcConstructor == TL::ID_MESSAGES_CHATS || innerRpcConstructor == TL::ID_MESSAGES_CHATS_SLICE ||
                innerRpcConstructor == 0x64ff9fd5 || innerRpcConstructor == 0x9cd81144 || innerRpcConstructor == 0x9c3e200b) {
         emit logMessage(QString("=================================================="));
@@ -2078,6 +2079,22 @@ void MTProtoSession::sendUsersGetFullUser(qint64 userId, quint64 accessHash) {
     buf.writeUInt32(TL::ID_INPUT_USER);
     buf.writeInt64(userId);
     buf.writeInt64(static_cast<int64_t>(accessHash));
+
+    sendEncryptedMessage(buf.buffer(), true);
+}
+
+void MTProtoSession::sendUsersGetMyFull() {
+    emit logMessage("Requesting live Telegram full user for current logged-in user (inputUserSelf)...");
+
+    TL::TLBuffer buf;
+    buf.writeUInt32(0xda9b0d0d); // invokeWithLayer#da9b0d0d
+    buf.writeInt32(195);        // layer 195
+
+    // users.getFullUser#b60f5918 id:InputUser = users.UserFull;
+    buf.writeUInt32(TL::ID_USERS_GET_FULL_USER);
+
+    // inputUserSelf#f7c1b13f = InputUser;
+    buf.writeUInt32(TL::ID_INPUT_USER_SELF);
 
     sendEncryptedMessage(buf.buffer(), true);
 }

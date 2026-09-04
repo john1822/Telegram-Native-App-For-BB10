@@ -49,6 +49,8 @@ AuthController::AuthController(Core::MTProtoSession* session, Storage::SessionSt
             this, SLOT(onDcMigrated(int)));
     connect(m_session, SIGNAL(rpcErrorReceived(int,QString)),
             this, SLOT(onRpcErrorReceived(int,QString)));
+    connect(m_session, SIGNAL(myProfileReceived(QString,QString,QString)),
+            this, SLOT(onMyProfileReceived(QString,QString,QString)));
     connect(m_session, SIGNAL(errorOccurred(QString)),
             this, SLOT(onSessionError(QString)));
 
@@ -229,6 +231,7 @@ void AuthController::logout() {
     m_userHandle.clear();
     m_userId.clear();
     m_userPhone.clear();
+    m_userBio.clear();
     m_qrTokenUrl.clear();
     m_qrImagePath.clear();
     emit userProfileChanged();
@@ -248,6 +251,7 @@ void AuthController::onSessionStateChanged(int newState, const QString& stateTex
             setStatus("Connected to Telegram");
         } else if (m_authState == STATE_LOGGED_IN) {
             m_session->sendMessagesGetDialogs();
+            m_session->sendUsersGetMyFull();
         }
     }
 }
@@ -302,6 +306,7 @@ void AuthController::onAuthSuccessReceived(qint64 userId, quint64 accessHash,
     setAuthState(STATE_LOGGED_IN);
     setStatus(QString("Welcome, %1!").arg(m_userName));
     setBusy(false);
+    m_session->sendUsersGetMyFull();
 }
 
 void AuthController::onAuthSignUpRequired() {
@@ -389,6 +394,19 @@ void AuthController::onSessionError(const QString& error) {
     setBusy(false);
     setStatus(error);
     emit authErrorOccurred(error);
+}
+
+void AuthController::onMyProfileReceived(const QString& bio, const QString& username, const QString& phone) {
+    if (!bio.isEmpty()) {
+        m_userBio = bio;
+    }
+    if (!username.isEmpty()) {
+        m_userHandle = username.startsWith("@") ? username : "@" + username;
+    }
+    if (!phone.isEmpty()) {
+        m_userPhone = phone;
+    }
+    emit userProfileChanged();
 }
 
 } // namespace Controllers
